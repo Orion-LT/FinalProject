@@ -8,6 +8,7 @@ const App = () => {
   const [showRegister, setShowRegister] = useState(false);
   const [selectedUniversity, setSelectedUniversity] = useState(null);
   const [showSettings, setShowSettings] = useState(false);
+  const [selectedCareerField, setSelectedCareerField] = useState(null);
   
   // Состояния для фильтров
   const [searchQuery, setSearchQuery] = useState('');
@@ -79,6 +80,38 @@ const App = () => {
     setHasPartnership(false);
   };
 
+  // Карьерные сферы
+  const careerFields = [
+    { id: 1, name: 'IT', icon: '💻', description: 'Информационные технологии, программирование, разработка ПО' },
+    { id: 2, name: 'Инженерия', icon: '⚙️', description: 'Технические специальности, проектирование, конструирование' },
+    { id: 3, name: 'Медицина', icon: '🏥', description: 'Здравоохранение, лечение, медицинские исследования' },
+    { id: 4, name: 'Бизнес', icon: '📈', description: 'Предпринимательство, управление, финансы' },
+    { id: 5, name: 'Образование', icon: '📚', description: 'Педагогика, обучение, научная деятельность' },
+    { id: 6, name: 'Юриспруденция', icon: '⚖️', description: 'Право, суд, юридические услуги' }
+  ];
+
+  // Направления в вузах
+  const universityDirections = [
+    { id: 1, university: 'МГУ им. М.В. Ломоносова', direction: 'Прикладная математика и информатика', faculty: 'Факультет вычислительной математики и кибернетики' },
+    { id: 2, university: 'МФТИ', direction: 'Информатика и вычислительная техника', faculty: 'Факультет радиотехники и кибернетики' },
+    { id: 3, university: 'НИЯУ МИФИ', direction: 'Ядерные физика и технологии', faculty: 'Физико-энергетический факультет' },
+    { id: 4, university: 'НИУ ВШЭ', direction: 'Бизнес-информатика', faculty: 'Факультет бизнеса и менеджмента' },
+    { id: 5, university: 'МИСИС', direction: 'Материаловедение и технологии материалов', faculty: 'Институт новых материалов и нанотехнологий' },
+    { id: 6, university: 'РНИМУ им. Н.И. Пирогова', direction: 'Лечебное дело', faculty: 'Лечебный факультет' },
+    { id: 7, university: 'МГТУ им. Н.Э. Баумана', direction: 'Робототехника и мехатроника', faculty: 'Факультет robotics' },
+    { id: 8, university: 'НИУ МЭИ', direction: 'Электроэнергетика и электротехника', faculty: 'Энергомашинное строение' }
+  ];
+
+  // Профессии
+  const professions = [
+    { id: 1, name: 'Программист', description: 'Разработка программного обеспечения, написание кода, тестирование' },
+    { id: 2, name: 'Инженер-программист', description: 'Разработка программ для технических систем, встраиваемые системы' },
+    { id: 3, name: 'Data Scientist', description: 'Анализ больших данных, машинное обучение, искусственный интеллект' },
+    { id: 4, name: 'Системный аналитик', description: 'Анализ бизнес-процессов, оптимизация систем' },
+    { id: 5, name: 'DevOps инженер', description: 'Автоматизация процессов разработки и эксплуатации' },
+    { id: 6, name: 'UX/UI дизайнер', description: 'Проектирование интерфейсов, пользовательский опыт' }
+  ];
+
   const renderContent = () => {
     if (selectedUniversity) {
       return (
@@ -117,6 +150,42 @@ const App = () => {
               </div>
               <div className="w-40 h-40 bg-gradient-to-br from-yellow-600 to-red-600 rounded-3xl flex items-center justify-center transform rotate-6">
                 <div className="w-32 h-32 bg-gradient-to-br from-purple-500 to-pink-500 rounded-lg"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      );
+    }
+
+    if (selectedCareerField) {
+      return (
+        <div className="py-8">
+          <button 
+            onClick={() => setSelectedCareerField(null)}
+            className="flex items-center text-white mb-8 bg-gradient-to-r from-black via-purple-900 to-cyan-500 hover:from-black hover:via-purple-800 hover:to-cyan-400 px-6 py-3 rounded-full font-semibold transition-all duration-300 transform hover:scale-105"
+          >
+            <ArrowLeft className="w-5 h-5 mr-2" />
+            Назад к карьерным направлениям
+          </button>
+          <div className="text-center py-20">
+            <div className="relative inline-block">
+              <div className="absolute -inset-4 bg-gradient-to-r from-purple-600 to-pink-600 rounded-3xl blur-lg opacity-30"></div>
+              <h1 className="text-5xl font-bold relative z-10 bg-gradient-to-r from-purple-400 via-pink-400 to-orange-400 bg-clip-text text-transparent">
+                {selectedCareerField.name}
+              </h1>
+            </div>
+            <p className="text-xl text-gray-300 mt-6 max-w-2xl mx-auto">
+              {selectedCareerField.description}
+            </p>
+            <div className="mt-12 grid grid-cols-3 gap-8">
+              <div className="w-32 h-32 bg-gradient-to-br from-purple-600 to-pink-600 rounded-2xl flex items-center justify-center transform rotate-12">
+                <div className="w-24 h-24 bg-gradient-to-br from-blue-500 to-purple-500 rounded-xl"></div>
+              </div>
+              <div className="w-32 h-32 bg-gradient-to-br from-blue-600 to-cyan-600 rounded-2xl flex items-center justify-center transform -rotate-6">
+                <div className="w-24 h-24 bg-gradient-to-br from-green-500 to-blue-500 rounded-full"></div>
+              </div>
+              <div className="w-32 h-32 bg-gradient-to-br from-green-600 to-teal-600 rounded-2xl flex items-center justify-center transform rotate-12">
+                <div className="w-24 h-24 bg-gradient-to-br from-yellow-500 to-green-500 rounded-lg"></div>
               </div>
             </div>
           </div>
@@ -597,16 +666,101 @@ const App = () => {
 
       case 'career':
         return (
-          <div className="py-20 text-center">
-            <div className="bg-gray-800/50 backdrop-blur-sm rounded-2xl p-12 border border-gray-700 max-w-4xl mx-auto">
-              <Briefcase className="w-16 h-16 text-purple-400 mx-auto mb-6" />
-              <h1 className="text-4xl font-bold mb-6">💼 Карьерные возможности</h1>
-              <div className="text-2xl font-semibold text-purple-400 mb-4">Раздел в разработке</div>
-              <p className="text-gray-300 mb-8">Раздел с информацией о стажировках, вакансиях и карьерных путях появится здесь в ближайшее время</p>
-              <div className="bg-gray-700/50 rounded-xl p-6">
-                <p className="text-gray-300">Информация о возможностях трудоустройства и карьерного роста</p>
-              </div>
+          <div className="py-8">
+            <div className="mb-8">
+              <h1 className="text-4xl font-bold mb-2">💼 Карьерные возможности</h1>
+              <p className="text-xl text-gray-300">Исследуйте различные карьерные направления и выберите свой путь</p>
             </div>
+            
+            {/* Описание вкладки */}
+            <div className="bg-gray-800/50 backdrop-blur-sm rounded-2xl p-8 border border-gray-700 mb-12">
+              <h2 className="text-2xl font-bold mb-4 text-purple-400">Добро пожаловать в раздел карьерных возможностей!</h2>
+              <p className="text-gray-300 mb-4">
+                Здесь вы найдете всю необходимую информацию для построения успешной карьеры. Мы поможем вам:
+              </p>
+              <ul className="text-gray-300 list-disc list-inside space-y-2">
+                <li>Определить свое профессиональное призвание</li>
+                <li>Выбрать подходящие направления обучения</li>
+                <li>Изучить перспективные сферы деятельности</li>
+                <li>Найти подходящие вузы и специальности</li>
+                <li>Познакомиться с различными профессиями</li>
+              </ul>
+            </div>
+
+            {/* Карьерные сферы */}
+            <section className="mb-12">
+              <h2 className="text-3xl font-bold mb-8 text-center">Карьерные сферы</h2>
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                {careerFields.map((field) => (
+                  <div 
+                    key={field.id}
+                    onClick={() => setSelectedCareerField(field)}
+                    className="bg-gray-800/50 backdrop-blur-sm rounded-2xl p-6 border border-gray-700 hover:border-purple-500 transition-all duration-300 cursor-pointer group"
+                  >
+                    <div className="flex items-center mb-4">
+                      <span className="text-3xl mr-4">{field.icon}</span>
+                      <h3 className="text-xl font-bold group-hover:text-purple-400 transition-colors">{field.name}</h3>
+                    </div>
+                    <p className="text-gray-300">{field.description}</p>
+                  </div>
+                ))}
+              </div>
+            </section>
+
+            {/* Направления в вузах */}
+            <section className="mb-12">
+              <h2 className="text-3xl font-bold mb-8 text-center">Популярные направления в вузах</h2>
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                {universityDirections.map((direction) => (
+                  <div key={direction.id} className="bg-gray-800/50 backdrop-blur-sm rounded-2xl p-6 border border-gray-700 hover:border-purple-500 transition-all duration-300">
+                    <div className="flex items-start">
+                      <Building2 className="w-8 h-8 text-purple-400 mr-4 mt-1" />
+                      <div>
+                        <h3 className="text-xl font-bold mb-2 text-purple-400">{direction.university}</h3>
+                        <h4 className="text-lg font-semibold mb-1">{direction.direction}</h4>
+                        <p className="text-gray-300 text-sm">{direction.faculty}</p>
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </section>
+
+            {/* Профессии */}
+            <section className="mb-12">
+              <h2 className="text-3xl font-bold mb-8 text-center">Популярные профессии</h2>
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                {professions.map((profession) => (
+                  <div key={profession.id} className="bg-gray-800/50 backdrop-blur-sm rounded-2xl p-6 border border-gray-700 hover:border-purple-500 transition-all duration-300">
+                    <div className="flex items-start mb-3">
+                      <Briefcase className="w-6 h-6 text-purple-400 mr-3 mt-1" />
+                      <h3 className="text-xl font-bold">{profession.name}</h3>
+                    </div>
+                    <p className="text-gray-300">{profession.description}</p>
+                  </div>
+                ))}
+              </div>
+            </section>
+
+            {/* CTA */}
+            <section className="text-center py-12 bg-gradient-to-r from-purple-900/30 to-blue-900/30 rounded-2xl p-8">
+              <h2 className="text-3xl font-bold mb-4">Готовы начать строить карьеру?</h2>
+              <p className="text-xl text-gray-300 mb-8">Исследуйте наши рекомендации и найдите свой путь</p>
+              <div className="flex justify-center gap-4">
+                <button 
+                  onClick={goToUniversities}
+                  className="bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 px-8 py-3 rounded-xl font-semibold transition-all duration-300 transform hover:scale-105"
+                >
+                  🎓 Изучить ВУЗы
+                </button>
+                <button 
+                  onClick={goToMap}
+                  className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 px-8 py-3 rounded-xl font-semibold transition-all duration-300 transform hover:scale-105"
+                >
+                  🗺️ Найти мероприятия
+                </button>
+              </div>
+            </section>
           </div>
         );
 
@@ -631,7 +785,7 @@ const App = () => {
   };
 
   return (
-    <div className="min-h-screen flex flex-col bg-gradient-to-br from-gray-900 via-purple-900 to-black text-white relative">
+    <div className="min-h-screen flex flex-col bg-gradient-to-br from-gray-900 via-purple-900 to-black text-white">
       {/* Settings Dropdown - Outside header flow */}
       {showSettings && (
         <>
@@ -649,7 +803,7 @@ const App = () => {
                 <button className="w-full text-left px-3 py-2 rounded-lg bg-gradient-to-r from-gray-100 via-gray-200 to-gray-300 text-gray-800 hover:from-gray-200 hover:to-gray-400 transition-all duration-200 border border-gray-300 shadow-inner">
                   ☀️ Light Steel
                 </button>
-                <button className="w-full text-left px-3 py-2 rounded-lg bg-gradient-to-r from-yellow-900 to-yellow-800 text-white hover:from-yellow-800 hover:to-yellow-700 transition-all duration-200 border border-yellow-600/50">
+                <button className="w-full text-left px-3 py-2 rounded-lg bg-gradient-to-r from-gray-900 to-gray-800 text-white hover:from-gray-800 hover:to-gray-700 transition-all duration-200 border border-gray-600/50">
                   🟡 Dark gold
                 </button>
               </div>
@@ -690,9 +844,10 @@ const App = () => {
                     onClick={() => {
                       setActiveTab(item.id);
                       setSelectedUniversity(null);
+                      setSelectedCareerField(null);
                     }}
                     className={`flex items-center space-x-2 px-4 py-2 rounded-xl transition-all duration-300 ${
-                      activeTab === item.id || (selectedUniversity && item.id === 'universities')
+                      activeTab === item.id || (selectedUniversity && item.id === 'universities') || (selectedCareerField && item.id === 'career')
                         ? 'bg-purple-600 text-white'
                         : 'text-gray-300 hover:text-white hover:bg-purple-600/20'
                     }`}
@@ -755,10 +910,11 @@ const App = () => {
                       onClick={() => {
                         setActiveTab(item.id);
                         setSelectedUniversity(null);
+                        setSelectedCareerField(null);
                         setIsMenuOpen(false);
                       }}
                       className={`flex items-center space-x-2 px-4 py-3 rounded-xl transition-all duration-300 ${
-                        activeTab === item.id || (selectedUniversity && item.id === 'universities')
+                        activeTab === item.id || (selectedUniversity && item.id === 'universities') || (selectedCareerField && item.id === 'career')
                           ? 'bg-purple-600 text-white'
                           : 'text-gray-300 hover:text-white hover:bg-purple-600/20'
                       }`}
