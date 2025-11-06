@@ -9,6 +9,7 @@ const App = () => {
   const [selectedUniversity, setSelectedUniversity] = useState(null);
   const [showSettings, setShowSettings] = useState(false);
   const [selectedCareerField, setSelectedCareerField] = useState(null);
+  const [currentTheme, setCurrentTheme] = useState('galaxy'); // 'galaxy' или 'light-steel'
   
   // Состояния для фильтров
   const [searchQuery, setSearchQuery] = useState('');
@@ -20,6 +21,15 @@ const App = () => {
   const [showSpecialtyDropdown, setShowSpecialtyDropdown] = useState(false);
   const [showMapTypeDropdown, setShowMapTypeDropdown] = useState(false);
   const [showMapCategoryDropdown, setShowMapCategoryDropdown] = useState(false);
+  const [showMapTypeDropdownMap, setShowMapTypeDropdownMap] = useState(false);
+  const [showMapCategoryDropdownMap, setShowMapCategoryDropdownMap] = useState(false);
+
+  const stats = [
+    { value: '50+', label: 'Мероприятий' },
+    { value: '25+', label: 'ВУЗов-партнеров' },
+    { value: '100+', label: 'Направлений' },
+    { value: '5000+', label: 'Участников' }
+  ];
 
   const directions = [
     { icon: '💻', title: 'IT', subtitle: 'Python, JS' },
@@ -39,9 +49,11 @@ const App = () => {
 
   // Функции для переключения вкладок
   const goToMap = () => setActiveTab('map');
-  const goToEvents = () => setActiveTab('events');
-  const goToUniversities = () => setActiveTab('universities');
   const goToCareer = () => setActiveTab('career');
+  const goToUniversities = () => {
+    setActiveTab('universities');
+    setSelectedUniversity(null);
+  };
 
   const universities = [
     { id: 1, name: 'МГУ им. М.В. Ломоносова', location: 'Москва, Ленинские горы, д. 1', students: '40 000', rank: 'Топ-1 в России', type: 'Университет', specialties: ['IT', 'Инженерия', 'Медицина', 'Экономика', 'Право'] },
@@ -58,6 +70,38 @@ const App = () => {
     { id: 12, name: 'МГЮА им. О.Е. Кутафина', location: 'Москва, ул. Садовая-Кудринская, д. 9', students: '12 000', rank: 'Топ-2 в юриспруденции', type: 'Университет', specialties: ['Право', 'Юриспруденция', 'Политология'] },
     { id: 13, name: 'Финансовый университет', location: 'Москва, ул. Ленинградский пр., д. 49', students: '14 000', rank: 'Топ-3 в экономике', type: 'Университет', specialties: ['Экономика', 'Финансы', 'Менеджмент'] },
     { id: 14, name: 'РХТУ им. Д.И. Менделеева', location: 'Москва, ул. Мира, д. 26', students: '6 000', rank: 'Топ-2 в химии', type: 'Университет', specialties: ['Химия', 'Технологии', 'Материаловедение'] }
+  ];
+
+  // Карьерные сферы
+  const careerFields = [
+    { id: 1, name: 'IT', icon: '💻', description: 'Информационные технологии, программирование, разработка ПО' },
+    { id: 2, name: 'Инженерия', icon: '⚙️', description: 'Технические специальности, проектирование, конструирование' },
+    { id: 3, name: 'Медицина', icon: '🏥', description: 'Здравоохранение, лечение, медицинские исследования' },
+    { id: 4, name: 'Бизнес', icon: '📈', description: 'Предпринимательство, управление, финансы' },
+    { id: 5, name: 'Образование', icon: '📚', description: 'Педагогика, обучение, научная деятельность' },
+    { id: 6, name: 'Юриспруденция', icon: '⚖️', description: 'Право, суд, юридические услуги' }
+  ];
+
+  // Направления в вузах
+  const universityDirections = [
+    { id: 1, university: 'МГУ им. М.В. Ломоносова', direction: 'Прикладная математика и информатика', faculty: 'Факультет вычислительной математики и кибернетики' },
+    { id: 2, university: 'МФТИ', direction: 'Информатика и вычислительная техника', faculty: 'Факультет радиотехники и кибернетики' },
+    { id: 3, university: 'НИЯУ МИФИ', direction: 'Ядерные физика и технологии', faculty: 'Физико-энергетический факультет' },
+    { id: 4, university: 'НИУ ВШЭ', direction: 'Бизнес-информатика', faculty: 'Факультет бизнеса и менеджента' },
+    { id: 5, university: 'МИСИС', direction: 'Материаловедение и технологии материалов', faculty: 'Институт новых материалов и нанотехнологий' },
+    { id: 6, university: 'РНИМУ им. Н.И. Пирогова', direction: 'Лечебное дело', faculty: 'Лечебный факультет' },
+    { id: 7, university: 'МГТУ им. Н.Э. Баумана', direction: 'Робототехника и мехатроника', faculty: 'Факультет robotics' },
+    { id: 8, university: 'НИУ МЭИ', direction: 'Электроэнергетика и электротехника', faculty: 'Энергомашинное строение' }
+  ];
+
+  // Профессии
+  const professions = [
+    { id: 1, name: 'Программист', description: 'Разработка программного обеспечения, написание кода, тестирование' },
+    { id: 2, name: 'Инженер-программист', description: 'Разработка программ для технических систем, встраиваемые системы' },
+    { id: 3, name: 'Data Scientist', description: 'Анализ больших данных, машинное обучение, искусственный интеллект' },
+    { id: 4, name: 'Системный аналитик', description: 'Анализ бизнес-процессов, оптимизация систем' },
+    { id: 5, name: 'DevOps инженер', description: 'Автоматизация процессов разработки и эксплуатации' },
+    { id: 6, name: 'UX/UI дизайнер', description: 'Проектирование интерфейсов, пользовательский опыт' }
   ];
 
   // Фильтрация вузов
@@ -80,37 +124,11 @@ const App = () => {
     setHasPartnership(false);
   };
 
-  // Карьерные сферы
-  const careerFields = [
-    { id: 1, name: 'IT', icon: '💻', description: 'Информационные технологии, программирование, разработка ПО' },
-    { id: 2, name: 'Инженерия', icon: '⚙️', description: 'Технические специальности, проектирование, конструирование' },
-    { id: 3, name: 'Медицина', icon: '🏥', description: 'Здравоохранение, лечение, медицинские исследования' },
-    { id: 4, name: 'Бизнес', icon: '📈', description: 'Предпринимательство, управление, финансы' },
-    { id: 5, name: 'Образование', icon: '📚', description: 'Педагогика, обучение, научная деятельность' },
-    { id: 6, name: 'Юриспруденция', icon: '⚖️', description: 'Право, суд, юридические услуги' }
-  ];
-
-  // Направления в вузах
-  const universityDirections = [
-    { id: 1, university: 'МГУ им. М.В. Ломоносова', direction: 'Прикладная математика и информатика', faculty: 'Факультет вычислительной математики и кибернетики' },
-    { id: 2, university: 'МФТИ', direction: 'Информатика и вычислительная техника', faculty: 'Факультет радиотехники и кибернетики' },
-    { id: 3, university: 'НИЯУ МИФИ', direction: 'Ядерные физика и технологии', faculty: 'Физико-энергетический факультет' },
-    { id: 4, university: 'НИУ ВШЭ', direction: 'Бизнес-информатика', faculty: 'Факультет бизнеса и менеджмента' },
-    { id: 5, university: 'МИСИС', direction: 'Материаловедение и технологии материалов', faculty: 'Институт новых материалов и нанотехнологий' },
-    { id: 6, university: 'РНИМУ им. Н.И. Пирогова', direction: 'Лечебное дело', faculty: 'Лечебный факультет' },
-    { id: 7, university: 'МГТУ им. Н.Э. Баумана', direction: 'Робототехника и мехатроника', faculty: 'Факультет robotics' },
-    { id: 8, university: 'НИУ МЭИ', direction: 'Электроэнергетика и электротехника', faculty: 'Энергомашинное строение' }
-  ];
-
-  // Профессии
-  const professions = [
-    { id: 1, name: 'Программист', description: 'Разработка программного обеспечения, написание кода, тестирование' },
-    { id: 2, name: 'Инженер-программист', description: 'Разработка программ для технических систем, встраиваемые системы' },
-    { id: 3, name: 'Data Scientist', description: 'Анализ больших данных, машинное обучение, искусственный интеллект' },
-    { id: 4, name: 'Системный аналитик', description: 'Анализ бизнес-процессов, оптимизация систем' },
-    { id: 5, name: 'DevOps инженер', description: 'Автоматизация процессов разработки и эксплуатации' },
-    { id: 6, name: 'UX/UI дизайнер', description: 'Проектирование интерфейсов, пользовательский опыт' }
-  ];
+  // Функция для смены темы
+  const changeTheme = (theme) => {
+    setCurrentTheme(theme);
+    setShowSettings(false);
+  };
 
   const renderContent = () => {
     if (selectedUniversity) {
@@ -233,11 +251,21 @@ const App = () => {
               </div>
             </section>
 
+            {/* Stats */}
+            <section className="grid grid-cols-2 md:grid-cols-4 gap-6 mb-16">
+              {stats.map((stat, index) => (
+                <div key={index} className="bg-gray-800/50 backdrop-blur-sm rounded-2xl p-6 text-center border border-gray-700 hover:border-purple-500 transition-all duration-300">
+                  <div className="text-3xl font-bold text-purple-400 mb-2">{stat.value}</div>
+                  <div className="text-gray-300">{stat.label}</div>
+                </div>
+              ))}
+            </section>
+
             {/* How to Start */}
             <section className="mb-16">
               <h2 className="text-3xl font-bold mb-8 text-center">Как начать использовать платформу</h2>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                {/* Найти мероприятия -> Карта */}
+                {/* Найти мероприятия */}
                 <div 
                   className="bg-gray-800/50 backdrop-blur-sm rounded-2xl p-6 border border-gray-700 hover:border-purple-500 transition-all duration-300 cursor-pointer"
                   onClick={goToMap}
@@ -254,7 +282,7 @@ const App = () => {
                   <p className="text-gray-300">Открой для себя интересные события в твоем городе</p>
                 </div>
 
-                {/* Запланировать участие -> Мероприятия */}
+                {/* Запланировать участие */}
                 <div 
                   className="bg-gray-800/50 backdrop-blur-sm rounded-2xl p-6 border border-gray-700 hover:border-purple-500 transition-all duration-300 cursor-pointer"
                   onClick={goToEvents}
@@ -271,7 +299,7 @@ const App = () => {
                   <p className="text-gray-300">Добавляй события в свой календарь</p>
                 </div>
 
-                {/* Изучить ВУЗы -> Вузы */}
+                {/* Изучить ВУЗы */}
                 <div 
                   className="bg-gray-800/50 backdrop-blur-sm rounded-2xl p-6 border border-gray-700 hover:border-purple-500 transition-all duration-300 cursor-pointer"
                   onClick={goToUniversities}
@@ -288,7 +316,7 @@ const App = () => {
                   <p className="text-gray-300">Найди подходящие учебные заведения</p>
                 </div>
 
-                {/* Построить карьеру -> Карьера */}
+                {/* Построить карьеру */}
                 <div 
                   className="bg-gray-800/50 backdrop-blur-sm rounded-2xl p-6 border border-gray-700 hover:border-purple-500 transition-all duration-300 cursor-pointer"
                   onClick={goToCareer}
@@ -362,6 +390,8 @@ const App = () => {
         return (
           <div className="py-8">
             <h1 className="text-4xl font-bold mb-8 text-center">🗺️ Карта профориентационных мероприятий Москвы</h1>
+            <p className="text-xl text-gray-300 text-center mb-12">Найдите интересующие вас события на интерактивной карте</p>
+            
             <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
               <div className="lg:col-span-1">
                 <div className="bg-gray-800/50 backdrop-blur-sm rounded-2xl p-6 border border-gray-700">
@@ -371,23 +401,29 @@ const App = () => {
                   </h3>
                   <div className="space-y-4">
                     <div>
+                      <label className="block text-sm font-medium mb-2">Поиск</label>
+                      <input type="text" placeholder="Название мероприятия..." className="w-full bg-gray-700/50 border border-gray-600 rounded-lg px-3 py-2 text-white" />
+                    </div>
+                    
+                    {/* Custom Map Type Dropdown */}
+                    <div className="relative">
                       <label className="block text-sm font-medium mb-2">Типы</label>
                       <div 
                         className="w-full bg-gray-700/50 border border-gray-600 rounded-lg px-3 py-2 text-white cursor-pointer relative"
-                        onClick={() => setShowMapTypeDropdown(!showMapTypeDropdown)}
+                        onClick={() => setShowMapTypeDropdownMap(!showMapTypeDropdownMap)}
                       >
                         Все типы
-                        <ChevronRight className={`w-4 h-4 absolute right-2 top-1/2 transform -translate-y-1/2 transition-transform ${showMapTypeDropdown ? 'rotate-90' : ''}`} />
+                        <ChevronRight className={`w-4 h-4 absolute right-2 top-1/2 transform -translate-y-1/2 transition-transform ${showMapTypeDropdownMap ? 'rotate-90' : ''}`} />
                       </div>
                       
-                      {showMapTypeDropdown && (
+                      {showMapTypeDropdownMap && (
                         <div className="absolute z-20 mt-1 w-full bg-gradient-to-br from-black via-purple-900 to-cyan-500 border border-purple-700/50 rounded-lg shadow-lg max-h-60 overflow-y-auto">
                           {['Все типы', 'Мастер-класс', 'Вебинар', 'Конференция'].map((type) => (
                             <div
                               key={type}
                               className="px-4 py-3 text-white hover:bg-gradient-to-r hover:from-orange-600 hover:to-purple-600 hover:text-transparent hover:bg-clip-text hover:bg-clip-text cursor-pointer transition-all duration-200"
                               onClick={() => {
-                                setShowMapTypeDropdown(false);
+                                setShowMapTypeDropdownMap(false);
                               }}
                             >
                               {type}
@@ -397,24 +433,25 @@ const App = () => {
                       )}
                     </div>
                     
-                    <div>
+                    {/* Custom Map Category Dropdown */}
+                    <div className="relative">
                       <label className="block text-sm font-medium mb-2">Категории</label>
                       <div 
                         className="w-full bg-gray-700/50 border border-gray-600 rounded-lg px-3 py-2 text-white cursor-pointer relative"
-                        onClick={() => setShowMapCategoryDropdown(!showMapCategoryDropdown)}
+                        onClick={() => setShowMapCategoryDropdownMap(!showMapCategoryDropdownMap)}
                       >
                         Все категории
-                        <ChevronRight className={`w-4 h-4 absolute right-2 top-1/2 transform -translate-y-1/2 transition-transform ${showMapCategoryDropdown ? 'rotate-90' : ''}`} />
+                        <ChevronRight className={`w-4 h-4 absolute right-2 top-1/2 transform -translate-y-1/2 transition-transform ${showMapCategoryDropdownMap ? 'rotate-90' : ''}`} />
                       </div>
                       
-                      {showMapCategoryDropdown && (
+                      {showMapCategoryDropdownMap && (
                         <div className="absolute z-20 mt-1 w-full bg-gradient-to-br from-black via-purple-900 to-cyan-500 border border-purple-700/50 rounded-lg shadow-lg max-h-60 overflow-y-auto">
                           {['Все категории', 'IT', 'Инженерия', 'Медицина', 'Бизнес'].map((category) => (
                             <div
                               key={category}
                               className="px-4 py-3 text-white hover:bg-gradient-to-r hover:from-orange-600 hover:to-purple-600 hover:text-transparent hover:bg-clip-text hover:bg-clip-text cursor-pointer transition-all duration-200"
                               onClick={() => {
-                                setShowMapCategoryDropdown(false);
+                                setShowMapCategoryDropdownMap(false);
                               }}
                             >
                               {category}
@@ -455,7 +492,7 @@ const App = () => {
                   </div>
                 </div>
                 
-                <div className="bg-gray-800/50 backdrop-blur-sm rounded-2xl p-6 border border-gray-700 h-[500px] flex items-center justify-center">
+                <div className="bg-gray-800/50 backdrop-blur-sm rounded-2xl p-6 border border-gray-700 h-96 flex items-center justify-center">
                   <div className="text-center">
                     <MapPin className="w-16 h-16 text-purple-400 mx-auto mb-4" />
                     <h3 className="text-2xl font-semibold mb-2">Интерактивная карта</h3>
@@ -504,6 +541,18 @@ const App = () => {
                   </h3>
                   <div className="space-y-4">
                     <div>
+                      <label className="block text-sm font-medium mb-2">Поиск</label>
+                      <input 
+                        type="text" 
+                        placeholder="Название ВУЗа..." 
+                        className="w-full bg-gray-700/50 border border-gray-600 rounded-lg px-3 py-2 text-white placeholder-gray-400 focus:border-purple-500 focus:outline-none"
+                        value={searchQuery}
+                        onChange={(e) => setSearchQuery(e.target.value)}
+                      />
+                    </div>
+                    
+                    {/* Custom Type Dropdown */}
+                    <div className="relative">
                       <label className="block text-sm font-medium mb-2">Тип</label>
                       <div 
                         className="w-full bg-gray-700/50 border border-gray-600 rounded-lg px-3 py-2 text-white cursor-pointer relative"
@@ -531,7 +580,8 @@ const App = () => {
                       )}
                     </div>
                     
-                    <div>
+                    {/* Custom Specialty Dropdown */}
+                    <div className="relative">
                       <label className="block text-sm font-medium mb-2">Специальности</label>
                       <div 
                         className="w-full bg-gray-700/50 border border-gray-600 rounded-lg px-3 py-2 text-white cursor-pointer relative"
@@ -591,20 +641,6 @@ const App = () => {
               </div>
               
               <div className="lg:col-span-3">
-                {/* Smart Search Bar */}
-                <div className="mb-6">
-                  <div className="relative">
-                    <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
-                    <input
-                      type="text"
-                      placeholder="Найдите интересующие вузы и специальности..."
-                      className="w-full bg-gray-700/50 border border-gray-600 rounded-2xl pl-12 pr-4 py-4 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent"
-                      value={searchQuery}
-                      onChange={(e) => setSearchQuery(e.target.value)}
-                    />
-                  </div>
-                </div>
-                
                 <div className="space-y-6">
                   {filteredUniversities.length > 0 ? (
                     filteredUniversities.map((uni) => (
@@ -743,21 +779,20 @@ const App = () => {
             </section>
 
             {/* CTA */}
-            <section className="text-center py-12 bg-gradient-to-r from-purple-900/30 to-blue-900/30 rounded-2xl p-8">
-              <h2 className="text-3xl font-bold mb-4">Готовы начать строить карьеру?</h2>
-              <p className="text-xl text-gray-300 mb-8">Исследуйте наши рекомендации и найдите свой путь</p>
-              <div className="flex justify-center gap-4">
-                <button 
-                  onClick={goToUniversities}
-                  className="bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 px-8 py-3 rounded-xl font-semibold transition-all duration-300 transform hover:scale-105"
-                >
-                  🎓 Изучить ВУЗы
-                </button>
+            <section className="text-center py-16">
+              <h2 className="text-4xl font-bold mb-8">🚀 Начни строить свою карьеру сегодня!</h2>
+              <div className="flex justify-center gap-6">
                 <button 
                   onClick={goToMap}
-                  className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 px-8 py-3 rounded-xl font-semibold transition-all duration-300 transform hover:scale-105"
+                  className="bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 px-12 py-4 rounded-2xl font-semibold transition-all duration-300 transform hover:scale-105"
                 >
-                  🗺️ Найти мероприятия
+                  ▶ Начать поиск
+                </button>
+                <button 
+                  onClick={goToUniversities}
+                  className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 px-12 py-4 rounded-2xl font-semibold transition-all duration-300 transform hover:scale-105"
+                >
+                  🧭 Исследовать пути
                 </button>
               </div>
             </section>
@@ -784,8 +819,16 @@ const App = () => {
     }
   };
 
+  // Функции для переключения вкладок
+  const goToEvents = () => setActiveTab('events');
+  const goToBlog = () => setActiveTab('blog');
+
   return (
-    <div className="min-h-screen flex flex-col bg-gradient-to-br from-gray-900 via-purple-900 to-black text-white">
+    <div className={`min-h-screen flex flex-col ${
+      currentTheme === 'galaxy' 
+        ? 'bg-gradient-to-br from-gray-900 via-purple-900 to-black text-white' 
+        : 'bg-gradient-to-br from-gray-200 via-gray-300 to-gray-400 text-gray-800'
+    }`}>
       {/* Settings Dropdown - Outside header flow */}
       {showSettings && (
         <>
@@ -793,18 +836,45 @@ const App = () => {
             className="fixed inset-0 z-30"
             onClick={() => setShowSettings(false)}
           ></div>
-          <div className="absolute right-4 top-20 w-64 bg-gray-800/90 backdrop-blur-lg rounded-xl shadow-xl z-40 border border-gray-700">
+          <div className={`absolute right-4 top-20 w-64 ${
+            currentTheme === 'galaxy' 
+              ? 'bg-gray-800/90 backdrop-blur-lg border border-gray-700' 
+              : 'bg-white/90 backdrop-blur-lg border border-gray-300'
+          } rounded-xl shadow-xl z-40`}>
             <div className="p-4">
-              <h3 className="text-lg font-semibold mb-3 text-white">Настройки темы</h3>
+              <h3 className={`text-lg font-semibold mb-3 ${
+                currentTheme === 'galaxy' ? 'text-white' : 'text-gray-800'
+              }`}>Настройки темы</h3>
               <div className="space-y-2">
-                <button className="w-full text-left px-3 py-2 rounded-lg bg-gradient-to-r from-black to-purple-900 text-white hover:from-purple-900 hover:to-purple-800 transition-all duration-200 border border-purple-700/50">
+                <button 
+                  onClick={() => changeTheme('galaxy')}
+                  className={`w-full text-left px-3 py-2 rounded-lg ${
+                    currentTheme === 'galaxy' 
+                      ? 'bg-gradient-to-r from-black to-purple-900 text-white border border-purple-700/50' 
+                      : 'bg-gradient-to-r from-gray-700 to-gray-800 text-white border border-gray-600'
+                  } hover:from-purple-900 hover:to-purple-800 transition-all duration-200`}
+                >
                   🌌 Galaxy (Default)
                 </button>
-                <button className="w-full text-left px-3 py-2 rounded-lg bg-gradient-to-r from-gray-100 via-gray-200 to-gray-300 text-gray-800 hover:from-gray-200 hover:to-gray-400 transition-all duration-200 border border-gray-300 shadow-inner">
+                <button 
+                  onClick={() => changeTheme('light-steel')}
+                  className={`w-full text-left px-3 py-2 rounded-lg ${
+                    currentTheme === 'light-steel' 
+                      ? 'bg-gradient-to-r from-gray-400 to-gray-500 text-gray-800 border border-gray-400' 
+                      : 'bg-gradient-to-r from-gray-200 to-gray-300 text-gray-800 border border-gray-300'
+                  } hover:from-gray-300 hover:to-gray-400 transition-all duration-200`}
+                >
                   ☀️ Light Steel
                 </button>
-                <button className="w-full text-left px-3 py-2 rounded-lg bg-gradient-to-r from-gray-900 to-gray-800 text-white hover:from-gray-800 hover:to-gray-700 transition-all duration-200 border border-gray-600/50">
-                  🟡 Dark gold
+                <button 
+                  onClick={() => changeTheme('dark-gold')}
+                  className={`w-full text-left px-3 py-2 rounded-lg ${
+                    currentTheme === 'dark-gold' 
+                      ? 'bg-gradient-to-r from-gray-800 to-gray-900 text-white border border-gray-600' 
+                      : 'bg-gradient-to-r from-gray-600 to-gray-700 text-white border border-gray-500'
+                  } hover:from-gray-700 hover:to-gray-800 transition-all duration-200`}
+                >
+                  ⚫ Dark gold
                 </button>
               </div>
             </div>
@@ -813,7 +883,11 @@ const App = () => {
       )}
 
       {/* Header with deep galaxy gradient */}
-      <header className="bg-gradient-to-r from-black via-purple-900 via-blue-900 via-indigo-900 to-gray-900 border-b border-purple-800/50 relative overflow-hidden">
+      <header className={
+        currentTheme === 'galaxy' 
+          ? 'bg-gradient-to-r from-black via-purple-900 via-blue-900 via-indigo-900 to-gray-900 border-b border-purple-800/50 relative overflow-hidden' 
+          : 'bg-gradient-to-r from-gray-700 via-gray-800 to-gray-900 border-b border-gray-600 relative overflow-hidden'
+      }>
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-purple-900/20 via-black to-transparent"></div>
         <div className="absolute inset-0 bg-[conic-gradient(from_0deg_at_50%_50%,_var(--tw-gradient-stops))] from-purple-900/10 via-blue-900/10 to-transparent animate-spin-slow"></div>
         <div className="container mx-auto px-4 py-4 relative z-10">
@@ -936,7 +1010,11 @@ const App = () => {
       </main>
 
       {/* Footer with deep galaxy gradient */}
-      <footer className="bg-gradient-to-r from-black via-purple-900 via-blue-900 via-indigo-900 to-gray-900 border-t border-purple-800/50 py-8 mt-auto relative overflow-hidden">
+      <footer className={
+        currentTheme === 'galaxy' 
+          ? 'bg-gradient-to-r from-black via-purple-900 via-blue-900 via-indigo-900 to-gray-900 border-t border-purple-800/50 py-8 mt-auto relative overflow-hidden' 
+          : 'bg-gradient-to-r from-gray-700 via-gray-800 to-gray-900 border-t border-gray-600 py-8 mt-auto relative overflow-hidden'
+      }>
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-purple-900/20 via-black to-transparent"></div>
         <div className="absolute inset-0 bg-[conic-gradient(from_0deg_at_50%_50%,_var(--tw-gradient-stops))] from-purple-900/10 via-blue-900/10 to-transparent animate-spin-slow"></div>
         <div className="container mx-auto px-4 relative z-10">
@@ -961,10 +1039,16 @@ const App = () => {
       {/* Login Modal */}
       {showLogin && (
         <div className="fixed inset-0 bg-black/70 backdrop-blur-sm flex items-center justify-center z-50 p-4">
-          <div className="bg-gray-800/90 backdrop-blur-lg rounded-2xl p-8 border border-gray-700 max-w-md w-full relative">
+          <div className={`${
+            currentTheme === 'galaxy' 
+              ? 'bg-gray-800/90 backdrop-blur-lg border border-gray-700' 
+              : 'bg-white/90 backdrop-blur-lg border border-gray-300'
+          } rounded-2xl p-8 max-w-md w-full relative`}>
             <button
               onClick={() => setShowLogin(false)}
-              className="absolute top-4 right-4 text-gray-400 hover:text-white"
+              className={`absolute top-4 right-4 ${
+                currentTheme === 'galaxy' ? 'text-gray-400 hover:text-white' : 'text-gray-600 hover:text-gray-800'
+              }`}
             >
               <X className="w-6 h-6" />
             </button>
@@ -976,33 +1060,49 @@ const App = () => {
             
             <div className="space-y-4">
               <div>
-                <label className="block text-sm font-medium mb-2 text-gray-300">📧 Email</label>
+                <label className={`block text-sm font-medium mb-2 ${
+                  currentTheme === 'galaxy' ? 'text-gray-300' : 'text-gray-700'
+                }`}>📧 Email</label>
                 <input
                   type="email"
                   placeholder="your@email.com"
-                  className="w-full bg-gray-700/50 border border-gray-600 rounded-lg px-4 py-3 text-white placeholder-gray-400 focus:border-purple-500 focus:outline-none"
+                  className={`w-full ${
+                    currentTheme === 'galaxy' 
+                      ? 'bg-gray-700/50 border border-gray-600 text-white placeholder-gray-400' 
+                      : 'bg-gray-100/50 border border-gray-300 text-gray-800 placeholder-gray-500'
+                  } rounded-lg px-4 py-3 focus:border-purple-500 focus:outline-none`}
                 />
               </div>
               
               <div>
-                <label className="block text-sm font-medium mb-2 text-gray-300">🔑 Пароль</label>
+                <label className={`block text-sm font-medium mb-2 ${
+                  currentTheme === 'galaxy' ? 'text-gray-300' : 'text-gray-700'
+                }`}>🔑 Пароль</label>
                 <input
                   type="password"
                   placeholder="••••••••"
-                  className="w-full bg-gray-700/50 border border-gray-600 rounded-lg px-4 py-3 text-white placeholder-gray-400 focus:border-purple-500 focus:outline-none"
+                  className={`w-full ${
+                    currentTheme === 'galaxy' 
+                      ? 'bg-gray-700/50 border border-gray-600 text-white placeholder-gray-400' 
+                      : 'bg-gray-100/50 border border-gray-300 text-gray-800 placeholder-gray-500'
+                  } rounded-lg px-4 py-3 focus:border-purple-500 focus:outline-none`}
                 />
               </div>
               
               <div className="flex items-center">
                 <input type="checkbox" id="remember" className="mr-2" />
-                <label htmlFor="remember" className="text-sm text-gray-300">Запомнить меня</label>
+                <label htmlFor="remember" className={`text-sm ${
+                  currentTheme === 'galaxy' ? 'text-gray-300' : 'text-gray-700'
+                }`}>Запомнить меня</label>
               </div>
               
               <button className="w-full bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 py-3 rounded-lg font-semibold transition-all duration-300 transform hover:scale-105">
                 Войти
               </button>
               
-              <div className="text-center text-gray-400 text-sm my-4">────────── или ──────────</div>
+              <div className={`text-center ${
+                currentTheme === 'galaxy' ? 'text-gray-400' : 'text-gray-600'
+              } text-sm my-4`}>────────── или ──────────</div>
               
               <div className="flex space-x-4">
                 <button className="flex-1 bg-red-600 hover:bg-red-700 py-2 rounded-lg font-semibold transition-all duration-300">
@@ -1013,7 +1113,9 @@ const App = () => {
                 </button>
               </div>
               
-              <div className="text-center text-sm text-gray-400 space-y-2">
+              <div className={`text-center text-sm my-4 space-y-2 ${
+                currentTheme === 'galaxy' ? 'text-gray-400' : 'text-gray-600'
+              }`}>
                 <p><a href="#" className="text-purple-400 hover:text-purple-300">Забыли пароль?</a></p>
                 <p>Нет аккаунта? <a href="#" onClick={() => {setShowLogin(false); setShowRegister(true);}} className="text-purple-400 hover:text-purple-300">Зарегистрироваться</a></p>
               </div>
@@ -1025,10 +1127,16 @@ const App = () => {
       {/* Register Modal */}
       {showRegister && (
         <div className="fixed inset-0 bg-black/70 backdrop-blur-sm flex items-center justify-center z-50 p-4">
-          <div className="bg-gray-800/90 backdrop-blur-lg rounded-2xl p-8 border border-gray-700 max-w-md w-full relative">
+          <div className={`${
+            currentTheme === 'galaxy' 
+              ? 'bg-gray-800/90 backdrop-blur-lg border border-gray-700' 
+              : 'bg-white/90 backdrop-blur-lg border border-gray-300'
+          } rounded-2xl p-8 max-w-md w-full relative`}>
             <button
               onClick={() => setShowRegister(false)}
-              className="absolute top-4 right-4 text-gray-400 hover:text-white"
+              className={`absolute top-4 right-4 ${
+                currentTheme === 'galaxy' ? 'text-gray-400 hover:text-white' : 'text-gray-600 hover:text-gray-800'
+              }`}
             >
               <X className="w-6 h-6" />
             </button>
@@ -1040,51 +1148,79 @@ const App = () => {
             
             <div className="space-y-4">
               <div>
-                <label className="block text-sm font-medium mb-2 text-gray-300">👤 Имя</label>
+                <label className={`block text-sm font-medium mb-2 ${
+                  currentTheme === 'galaxy' ? 'text-gray-300' : 'text-gray-700'
+                }`}>👤 Имя</label>
                 <input
                   type="text"
                   placeholder="Ваше имя"
-                  className="w-full bg-gray-700/50 border border-gray-600 rounded-lg px-4 py-3 text-white placeholder-gray-400 focus:border-green-500 focus:outline-none"
+                  className={`w-full ${
+                    currentTheme === 'galaxy' 
+                      ? 'bg-gray-700/50 border border-gray-600 text-white placeholder-gray-400' 
+                      : 'bg-gray-100/50 border border-gray-300 text-gray-800 placeholder-gray-500'
+                  } rounded-lg px-4 py-3 focus:border-green-500 focus:outline-none`}
                 />
               </div>
               
               <div>
-                <label className="block text-sm font-medium mb-2 text-gray-300">📧 Email</label>
+                <label className={`block text-sm font-medium mb-2 ${
+                  currentTheme === 'galaxy' ? 'text-gray-300' : 'text-gray-700'
+                }`}>📧 Email</label>
                 <input
                   type="email"
                   placeholder="your@email.com"
-                  className="w-full bg-gray-700/50 border border-gray-600 rounded-lg px-4 py-3 text-white placeholder-gray-400 focus:border-green-500 focus:outline-none"
+                  className={`w-full ${
+                    currentTheme === 'galaxy' 
+                      ? 'bg-gray-700/50 border border-gray-600 text-white placeholder-gray-400' 
+                      : 'bg-gray-100/50 border border-gray-300 text-gray-800 placeholder-gray-500'
+                  } rounded-lg px-4 py-3 focus:border-green-500 focus:outline-none`}
                 />
               </div>
               
               <div>
-                <label className="block text-sm font-medium mb-2 text-gray-300">🔑 Пароль</label>
+                <label className={`block text-sm font-medium mb-2 ${
+                  currentTheme === 'galaxy' ? 'text-gray-300' : 'text-gray-700'
+                }`}>🔑 Пароль</label>
                 <input
                   type="password"
                   placeholder="••••••••"
-                  className="w-full bg-gray-700/50 border border-gray-600 rounded-lg px-4 py-3 text-white placeholder-gray-400 focus:border-green-500 focus:outline-none"
+                  className={`w-full ${
+                    currentTheme === 'galaxy' 
+                      ? 'bg-gray-700/50 border border-gray-600 text-white placeholder-gray-400' 
+                      : 'bg-gray-100/50 border border-gray-300 text-gray-800 placeholder-gray-500'
+                  } rounded-lg px-4 py-3 focus:border-green-500 focus:outline-none`}
                 />
               </div>
               
               <div>
-                <label className="block text-sm font-medium mb-2 text-gray-300">🔒 Подтвердите пароль</label>
+                <label className={`block text-sm font-medium mb-2 ${
+                  currentTheme === 'galaxy' ? 'text-gray-300' : 'text-gray-700'
+                }`}>🔒 Подтвердите пароль</label>
                 <input
                   type="password"
                   placeholder="••••••••"
-                  className="w-full bg-gray-700/50 border border-gray-600 rounded-lg px-4 py-3 text-white placeholder-gray-400 focus:border-green-500 focus:outline-none"
+                  className={`w-full ${
+                    currentTheme === 'galaxy' 
+                      ? 'bg-gray-700/50 border border-gray-600 text-white placeholder-gray-400' 
+                      : 'bg-gray-100/50 border border-gray-300 text-gray-800 placeholder-gray-500'
+                  } rounded-lg px-4 py-3 focus:border-green-500 focus:outline-none`}
                 />
               </div>
               
               <div className="flex items-center">
                 <input type="checkbox" id="terms" className="mr-2" />
-                <label htmlFor="terms" className="text-sm text-gray-300">Согласен с условиями использования</label>
+                <label htmlFor="terms" className={`text-sm ${
+                  currentTheme === 'galaxy' ? 'text-gray-300' : 'text-gray-700'
+                }`}>Согласен с условиями использования</label>
               </div>
               
               <button className="w-full bg-gradient-to-r from-green-600 to-blue-600 hover:from-green-700 hover:to-blue-700 py-3 rounded-lg font-semibold transition-all duration-300 transform hover:scale-105">
                 Зарегистрироваться
               </button>
               
-              <div className="text-center text-gray-400 text-sm my-4">────────── или ──────────</div>
+              <div className={`text-center ${
+                currentTheme === 'galaxy' ? 'text-gray-400' : 'text-gray-600'
+              } text-sm my-4`}>────────── или ──────────</div>
               
               <div className="flex space-x-4">
                 <button className="flex-1 bg-red-600 hover:bg-red-700 py-2 rounded-lg font-semibold transition-all duration-300">
@@ -1095,7 +1231,9 @@ const App = () => {
                 </button>
               </div>
               
-              <div className="text-center text-sm text-gray-400 space-y-2">
+              <div className={`text-center text-sm my-4 space-y-2 ${
+                currentTheme === 'galaxy' ? 'text-gray-400' : 'text-gray-600'
+              }`}>
                 <p>Уже есть аккаунт? <a href="#" onClick={() => {setShowRegister(false); setShowLogin(true);}} className="text-purple-400 hover:text-purple-300">Войти</a></p>
               </div>
             </div>
