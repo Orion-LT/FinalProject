@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Search, MapPin, Calendar, GraduationCap, Briefcase, BookOpen, User, Menu, X, ChevronRight, Star, Target, Zap, Bell, Users, BarChart3, Filter, Globe, Mail, Lock, UserPlus, Building2, Award, Users2, Globe2, AwardIcon, ArrowLeft, Settings, X as CloseIcon } from 'lucide-react';
 
 const App = () => {
@@ -10,7 +10,6 @@ const App = () => {
   const [showSettings, setShowSettings] = useState(false);
   const [selectedCareerField, setSelectedCareerField] = useState(null);
   const [currentTheme, setCurrentTheme] = useState('galaxy'); // 'galaxy' или 'light-steel'
-  
   // Состояния для фильтров
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedType, setSelectedType] = useState('Все типы');
@@ -23,21 +22,18 @@ const App = () => {
   const [showMapCategoryDropdown, setShowMapCategoryDropdown] = useState(false);
   const [showMapTypeDropdownMap, setShowMapTypeDropdownMap] = useState(false);
   const [showMapCategoryDropdownMap, setShowMapCategoryDropdownMap] = useState(false);
-
   const stats = [
     { value: '50+', label: 'Мероприятий' },
     { value: '25+', label: 'ВУЗов-партнеров' },
     { value: '100+', label: 'Направлений' },
     { value: '5000+', label: 'Участников' }
   ];
-
   const directions = [
     { icon: '💻', title: 'IT', subtitle: 'Python, JS' },
     { icon: '⚙️', title: 'Инженерия', subtitle: 'Роботы, CAD' },
     { icon: '🏥', title: 'Медицина', subtitle: 'Биохимия' },
     { icon: '📈', title: 'Бизнес', subtitle: 'Аналитика' }
   ];
-
   const features = [
     { icon: <Zap className="w-6 h-6" />, title: 'Экономия времени', desc: 'Все в одном месте' },
     { icon: <Target className="w-6 h-6" />, title: 'Умные фильтры', desc: 'Точный поиск' },
@@ -46,7 +42,6 @@ const App = () => {
     { icon: <Users className="w-6 h-6" />, title: 'Сообщество', desc: 'Общение с другими' },
     { icon: <BarChart3 className="w-6 h-6" />, title: 'Аналитика', desc: 'Статистика и тренды' }
   ];
-
   // Функции для переключения вкладок
   const goToMap = () => setActiveTab('map');
   const goToCareer = () => setActiveTab('career');
@@ -54,7 +49,6 @@ const App = () => {
     setActiveTab('universities');
     setSelectedUniversity(null);
   };
-
   const universities = [
     { id: 1, name: 'МГУ им. М.В. Ломоносова', location: 'Москва, Ленинские горы, д. 1', students: '40 000', rank: 'Топ-1 в России', type: 'Университет', specialties: ['IT', 'Инженерия', 'Медицина', 'Экономика', 'Право'] },
     { id: 2, name: 'МФТИ', location: 'Москва, Институтский пер., д. 9', students: '7 000', rank: 'Топ-1 в науке', type: 'Институт', specialties: ['IT', 'Инженерия', 'Физика'] },
@@ -71,7 +65,6 @@ const App = () => {
     { id: 13, name: 'Финансовый университет', location: 'Москва, ул. Ленинградский пр., д. 49', students: '14 000', rank: 'Топ-3 в экономике', type: 'Университет', specialties: ['Экономика', 'Финансы', 'Менеджмент'] },
     { id: 14, name: 'РХТУ им. Д.И. Менделеева', location: 'Москва, ул. Мира, д. 26', students: '6 000', rank: 'Топ-2 в химии', type: 'Университет', specialties: ['Химия', 'Технологии', 'Материаловедение'] }
   ];
-
   // Карьерные сферы
   const careerFields = [
     { id: 1, name: 'IT', icon: '💻', description: 'Информационные технологии, программирование, разработка ПО' },
@@ -81,19 +74,17 @@ const App = () => {
     { id: 5, name: 'Образование', icon: '📚', description: 'Педагогика, обучение, научная деятельность' },
     { id: 6, name: 'Юриспруденция', icon: '⚖️', description: 'Право, суд, юридические услуги' }
   ];
-
   // Направления в вузах
   const universityDirections = [
     { id: 1, university: 'МГУ им. М.В. Ломоносова', direction: 'Прикладная математика и информатика', faculty: 'Факультет вычислительной математики и кибернетики' },
     { id: 2, university: 'МФТИ', direction: 'Информатика и вычислительная техника', faculty: 'Факультет радиотехники и кибернетики' },
     { id: 3, university: 'НИЯУ МИФИ', direction: 'Ядерные физика и технологии', faculty: 'Физико-энергетический факультет' },
-    { id: 4, university: 'НИУ ВШЭ', direction: 'Бизнес-информатика', faculty: 'Факультет бизнеса и менеджента' },
+    { id: 4, university: 'НИУ ВШЭ', direction: 'Бизнес-информатика', faculty: 'Факультет бизнеса и менеджера' },
     { id: 5, university: 'МИСИС', direction: 'Материаловедение и технологии материалов', faculty: 'Институт новых материалов и нанотехнологий' },
     { id: 6, university: 'РНИМУ им. Н.И. Пирогова', direction: 'Лечебное дело', faculty: 'Лечебный факультет' },
     { id: 7, university: 'МГТУ им. Н.Э. Баумана', direction: 'Робототехника и мехатроника', faculty: 'Факультет robotics' },
     { id: 8, university: 'НИУ МЭИ', direction: 'Электроэнергетика и электротехника', faculty: 'Энергомашинное строение' }
   ];
-
   // Профессии
   const professions = [
     { id: 1, name: 'Программист', description: 'Разработка программного обеспечения, написание кода, тестирование' },
@@ -103,7 +94,6 @@ const App = () => {
     { id: 5, name: 'DevOps инженер', description: 'Автоматизация процессов разработки и эксплуатации' },
     { id: 6, name: 'UX/UI дизайнер', description: 'Проектирование интерфейсов, пользовательский опыт' }
   ];
-
   // Фильтрация вузов
   const filteredUniversities = universities.filter(uni => {
     const matchesSearch = uni.name.toLowerCase().includes(searchQuery.toLowerCase()) || 
@@ -111,10 +101,8 @@ const App = () => {
     const matchesType = selectedType === 'Все типы' || uni.type === selectedType;
     const matchesSpecialty = selectedSpecialty === 'Все специальности' || uni.specialties.includes(selectedSpecialty);
     const matchesCity = selectedCity === 'Все города' || uni.location.includes(selectedCity);
-    
     return matchesSearch && matchesType && matchesSpecialty && matchesCity;
   });
-
   // Функция для сброса фильтров
   const resetFilters = () => {
     setSearchQuery('');
@@ -123,13 +111,11 @@ const App = () => {
     setSelectedCity('Москва');
     setHasPartnership(false);
   };
-
   // Функция для смены темы
   const changeTheme = (theme) => {
     setCurrentTheme(theme);
     setShowSettings(false);
   };
-
   const renderContent = () => {
     if (selectedUniversity) {
       return (
@@ -174,7 +160,6 @@ const App = () => {
         </div>
       );
     }
-
     if (selectedCareerField) {
       return (
         <div className="py-8">
@@ -210,7 +195,6 @@ const App = () => {
         </div>
       );
     }
-
     switch (activeTab) {
       case 'home':
         return (
@@ -250,7 +234,6 @@ const App = () => {
                 </div>
               </div>
             </section>
-
             {/* Stats */}
             <section className="grid grid-cols-2 md:grid-cols-4 gap-6 mb-16">
               {stats.map((stat, index) => (
@@ -260,7 +243,6 @@ const App = () => {
                 </div>
               ))}
             </section>
-
             {/* How to Start */}
             <section className="mb-16">
               <h2 className="text-3xl font-bold mb-8 text-center">Как начать использовать платформу</h2>
@@ -281,7 +263,6 @@ const App = () => {
                   </div>
                   <p className="text-gray-300">Открой для себя интересные события в твоем городе</p>
                 </div>
-
                 {/* Запланировать участие */}
                 <div 
                   className="bg-gray-800/50 backdrop-blur-sm rounded-2xl p-6 border border-gray-700 hover:border-purple-500 transition-all duration-300 cursor-pointer"
@@ -298,7 +279,6 @@ const App = () => {
                   </div>
                   <p className="text-gray-300">Добавляй события в свой календарь</p>
                 </div>
-
                 {/* Изучить ВУЗы */}
                 <div 
                   className="bg-gray-800/50 backdrop-blur-sm rounded-2xl p-6 border border-gray-700 hover:border-purple-500 transition-all duration-300 cursor-pointer"
@@ -315,7 +295,6 @@ const App = () => {
                   </div>
                   <p className="text-gray-300">Найди подходящие учебные заведения</p>
                 </div>
-
                 {/* Построить карьеру */}
                 <div 
                   className="bg-gray-800/50 backdrop-blur-sm rounded-2xl p-6 border border-gray-700 hover:border-purple-500 transition-all duration-300 cursor-pointer"
@@ -334,7 +313,6 @@ const App = () => {
                 </div>
               </div>
             </section>
-
             {/* Directions */}
             <section className="mb-16">
               <h2 className="text-3xl font-bold mb-8 text-center">Самые востребованные направления</h2>
@@ -350,7 +328,6 @@ const App = () => {
                 ))}
               </div>
             </section>
-
             {/* Features */}
             <section className="mb-16">
               <h2 className="text-3xl font-bold mb-8 text-center">Преимущества платформы</h2>
@@ -364,7 +341,6 @@ const App = () => {
                 ))}
               </div>
             </section>
-
             {/* CTA */}
             <section className="text-center py-16">
               <h2 className="text-4xl font-bold mb-8">🚀 Начни строить свою карьеру сегодня!</h2>
@@ -385,13 +361,11 @@ const App = () => {
             </section>
           </div>
         );
-
       case 'map':
         return (
           <div className="py-8">
             <h1 className="text-4xl font-bold mb-8 text-center">🗺️ Карта профориентационных мероприятий Москвы</h1>
             <p className="text-xl text-gray-300 text-center mb-12">Найдите интересующие вас события на интерактивной карте</p>
-            
             <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
               <div className="lg:col-span-1">
                 <div className="bg-gray-800/50 backdrop-blur-sm rounded-2xl p-6 border border-gray-700">
@@ -404,7 +378,6 @@ const App = () => {
                       <label className="block text-sm font-medium mb-2">Поиск</label>
                       <input type="text" placeholder="Название мероприятия..." className="w-full bg-gray-700/50 border border-gray-600 rounded-lg px-3 py-2 text-white" />
                     </div>
-                    
                     {/* Custom Map Type Dropdown */}
                     <div className="relative">
                       <label className="block text-sm font-medium mb-2">Типы</label>
@@ -415,7 +388,6 @@ const App = () => {
                         Все типы
                         <ChevronRight className={`w-4 h-4 absolute right-2 top-1/2 transform -translate-y-1/2 transition-transform ${showMapTypeDropdownMap ? 'rotate-90' : ''}`} />
                       </div>
-                      
                       {showMapTypeDropdownMap && (
                         <div className="absolute z-20 mt-1 w-full bg-gradient-to-br from-black via-purple-900 to-cyan-500 border border-purple-700/50 rounded-lg shadow-lg max-h-60 overflow-y-auto">
                           {['Все типы', 'Мастер-класс', 'Вебинар', 'Конференция'].map((type) => (
@@ -432,7 +404,6 @@ const App = () => {
                         </div>
                       )}
                     </div>
-                    
                     {/* Custom Map Category Dropdown */}
                     <div className="relative">
                       <label className="block text-sm font-medium mb-2">Категории</label>
@@ -443,7 +414,6 @@ const App = () => {
                         Все категории
                         <ChevronRight className={`w-4 h-4 absolute right-2 top-1/2 transform -translate-y-1/2 transition-transform ${showMapCategoryDropdownMap ? 'rotate-90' : ''}`} />
                       </div>
-                      
                       {showMapCategoryDropdownMap && (
                         <div className="absolute z-20 mt-1 w-full bg-gradient-to-br from-black via-purple-900 to-cyan-500 border border-purple-700/50 rounded-lg shadow-lg max-h-60 overflow-y-auto">
                           {['Все категории', 'IT', 'Инженерия', 'Медицина', 'Бизнес'].map((category) => (
@@ -460,7 +430,6 @@ const App = () => {
                         </div>
                       )}
                     </div>
-                    
                     <div>
                       <label className="block text-sm font-medium mb-2">Дата</label>
                       <input type="date" className="w-full bg-gray-700/50 border border-gray-600 rounded-lg px-3 py-2 text-white" />
@@ -478,7 +447,6 @@ const App = () => {
                   </div>
                 </div>
               </div>
-              
               <div className="lg:col-span-3">
                 {/* Smart Search Bar */}
                 <div className="mb-6">
@@ -491,24 +459,23 @@ const App = () => {
                     />
                   </div>
                 </div>
-                
-                <div className="bg-gray-800/50 backdrop-blur-sm rounded-2xl p-6 border border-gray-700 h-96 flex items-center justify-center">
-                  <div className="text-center">
-                    <MapPin className="w-16 h-16 text-purple-400 mx-auto mb-4" />
-                    <h3 className="text-2xl font-semibold mb-2">Интерактивная карта</h3>
-                    <p className="text-gray-300">Здесь будет отображаться карта с метками мероприятий</p>
-                    <div className="mt-6 flex justify-center space-x-2">
-                      <div className="w-4 h-4 bg-purple-500 rounded-full animate-pulse"></div>
-                      <div className="w-4 h-4 bg-pink-500 rounded-full animate-pulse"></div>
-                      <div className="w-4 h-4 bg-blue-500 rounded-full animate-pulse"></div>
-                    </div>
-                  </div>
+                {/* Responsive Map Container */}
+                <div className="bg-gray-800/50 backdrop-blur-sm rounded-2xl border border-gray-700 overflow-hidden h-[500px] relative">
+                  {/* Яндекс.Карта через iframe */}
+                  <iframe
+                    src="https://yandex.ru/map-widget/v1/?um=constructor%3A1b5e8a3f0b5e8a3f0b5e8a3f0b5e8a3f0b5e8a3f0b5e8a3f0b5e8a3f0b5e8a3f&amp;source=constructor"
+                    width="100%"
+                    height="100%"
+                    className="border-0"
+                    frameBorder="0"
+                    style={{ minHeight: '500px' }}
+                    title="Карта профориентационных мероприятий"
+                  ></iframe>
                 </div>
               </div>
             </div>
           </div>
         );
-
       case 'events':
         return (
           <div className="py-20 text-center">
@@ -523,7 +490,6 @@ const App = () => {
             </div>
           </div>
         );
-
       case 'universities':
         return (
           <div className="py-8">
@@ -531,7 +497,6 @@ const App = () => {
               <h1 className="text-4xl font-bold mb-2">🎓 ВУЗы и колледжи</h1>
               <p className="text-xl text-gray-300">Найдите подходящее учебное заведение для вашего будущего</p>
             </div>
-            
             <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
               <div className="lg:col-span-1">
                 <div className="bg-gray-800/50 backdrop-blur-sm rounded-2xl p-6 border border-gray-700">
@@ -550,7 +515,6 @@ const App = () => {
                         onChange={(e) => setSearchQuery(e.target.value)}
                       />
                     </div>
-                    
                     {/* Custom Type Dropdown */}
                     <div className="relative">
                       <label className="block text-sm font-medium mb-2">Тип</label>
@@ -561,7 +525,6 @@ const App = () => {
                         {selectedType}
                         <ChevronRight className={`w-4 h-4 absolute right-2 top-1/2 transform -translate-y-1/2 transition-transform ${showTypeDropdown ? 'rotate-90' : ''}`} />
                       </div>
-                      
                       {showTypeDropdown && (
                         <div className="absolute z-20 mt-1 w-full bg-gradient-to-br from-black via-purple-900 to-cyan-500 border border-purple-700/50 rounded-lg shadow-lg max-h-44 overflow-y-auto">
                           {['Все типы', 'Университет', 'Институт', 'Колледж', 'Академия'].map((type) => (
@@ -579,7 +542,6 @@ const App = () => {
                         </div>
                       )}
                     </div>
-                    
                     {/* Custom Specialty Dropdown */}
                     <div className="relative">
                       <label className="block text-sm font-medium mb-2">Специальности</label>
@@ -590,7 +552,6 @@ const App = () => {
                         {selectedSpecialty}
                         <ChevronRight className={`w-4 h-4 absolute right-2 top-1/2 transform -translate-y-1/2 transition-transform ${showSpecialtyDropdown ? 'rotate-90' : ''}`} />
                       </div>
-                      
                       {showSpecialtyDropdown && (
                         <div className="absolute z-20 mt-1 w-full bg-gradient-to-br from-black via-purple-900 to-cyan-500 border border-purple-700/50 rounded-lg shadow-lg max-h-60 overflow-y-auto">
                           {['Все специальности', 'IT', 'Инженерия', 'Медицина', 'Экономика', 'Право', 'Физика', 'Химия', 'Материаловедение', 'Фармация', 'Психология', 'Лингвистика', 'Педагогика', 'Международные отношения'].map((specialty) => (
@@ -608,7 +569,6 @@ const App = () => {
                         </div>
                       )}
                     </div>
-                    
                     <div>
                       <label className="block text-sm font-medium mb-2">Город</label>
                       <select 
@@ -639,7 +599,6 @@ const App = () => {
                   </div>
                 </div>
               </div>
-              
               <div className="lg:col-span-3">
                 <div className="space-y-6">
                   {filteredUniversities.length > 0 ? (
@@ -699,7 +658,6 @@ const App = () => {
             </div>
           </div>
         );
-
       case 'career':
         return (
           <div className="py-8">
@@ -707,7 +665,6 @@ const App = () => {
               <h1 className="text-4xl font-bold mb-2">💼 Карьерные возможности</h1>
               <p className="text-xl text-gray-300">Исследуйте различные карьерные направления и выберите свой путь</p>
             </div>
-            
             {/* Описание вкладки */}
             <div className="bg-gray-800/50 backdrop-blur-sm rounded-2xl p-8 border border-gray-700 mb-12">
               <h2 className="text-2xl font-bold mb-4 text-purple-400">Добро пожаловать в раздел карьерных возможностей!</h2>
@@ -722,7 +679,6 @@ const App = () => {
                 <li>Познакомиться с различными профессиями</li>
               </ul>
             </div>
-
             {/* Карьерные сферы */}
             <section className="mb-12">
               <h2 className="text-3xl font-bold mb-8 text-center">Карьерные сферы</h2>
@@ -742,7 +698,6 @@ const App = () => {
                 ))}
               </div>
             </section>
-
             {/* Направления в вузах */}
             <section className="mb-12">
               <h2 className="text-3xl font-bold mb-8 text-center">Популярные направления в вузах</h2>
@@ -761,7 +716,6 @@ const App = () => {
                 ))}
               </div>
             </section>
-
             {/* Профессии */}
             <section className="mb-12">
               <h2 className="text-3xl font-bold mb-8 text-center">Популярные профессии</h2>
@@ -777,7 +731,6 @@ const App = () => {
                 ))}
               </div>
             </section>
-
             {/* CTA */}
             <section className="text-center py-16">
               <h2 className="text-4xl font-bold mb-8">🚀 Начни строить свою карьеру сегодня!</h2>
@@ -798,7 +751,6 @@ const App = () => {
             </section>
           </div>
         );
-
       case 'blog':
         return (
           <div className="py-20 text-center">
@@ -813,16 +765,13 @@ const App = () => {
             </div>
           </div>
         );
-
       default:
         return null;
     }
   };
-
   // Функции для переключения вкладок
   const goToEvents = () => setActiveTab('events');
   const goToBlog = () => setActiveTab('blog');
-
   return (
     <div className={`min-h-screen flex flex-col ${
       currentTheme === 'galaxy' 
@@ -881,7 +830,6 @@ const App = () => {
           </div>
         </>
       )}
-
       {/* Header with deep galaxy gradient */}
       <header className={
         currentTheme === 'galaxy' 
@@ -900,7 +848,6 @@ const App = () => {
                 ПрофНавигатор
               </h1>
             </div>
-            
             {/* Desktop Navigation */}
             <nav className="hidden md:flex items-center space-x-8">
               {[
@@ -932,7 +879,6 @@ const App = () => {
                 );
               })}
             </nav>
-
             <div className="flex items-center space-x-4">
               <button
                 onClick={() => setShowRegister(true)}
@@ -964,7 +910,6 @@ const App = () => {
               </button>
             </div>
           </div>
-
           {/* Mobile Navigation */}
           {isMenuOpen && (
             <nav className="md:hidden mt-4 pb-4">
@@ -1003,12 +948,10 @@ const App = () => {
           )}
         </div>
       </header>
-
       {/* Main Content */}
       <main className="flex-grow container mx-auto px-4 py-8">
         {renderContent()}
       </main>
-
       {/* Footer with deep galaxy gradient */}
       <footer className={
         currentTheme === 'galaxy' 
@@ -1035,7 +978,6 @@ const App = () => {
           </div>
         </div>
       </footer>
-
       {/* Login Modal */}
       {showLogin && (
         <div className="fixed inset-0 bg-black/70 backdrop-blur-sm flex items-center justify-center z-50 p-4">
@@ -1052,12 +994,10 @@ const App = () => {
             >
               <X className="w-6 h-6" />
             </button>
-            
             <h2 className="text-2xl font-bold mb-6 flex items-center">
               <User className="w-6 h-6 mr-2 text-purple-400" />
               Вход в аккаунт
             </h2>
-            
             <div className="space-y-4">
               <div>
                 <label className={`block text-sm font-medium mb-2 ${
@@ -1073,7 +1013,6 @@ const App = () => {
                   } rounded-lg px-4 py-3 focus:border-purple-500 focus:outline-none`}
                 />
               </div>
-              
               <div>
                 <label className={`block text-sm font-medium mb-2 ${
                   currentTheme === 'galaxy' ? 'text-gray-300' : 'text-gray-700'
@@ -1088,22 +1027,18 @@ const App = () => {
                   } rounded-lg px-4 py-3 focus:border-purple-500 focus:outline-none`}
                 />
               </div>
-              
               <div className="flex items-center">
                 <input type="checkbox" id="remember" className="mr-2" />
                 <label htmlFor="remember" className={`text-sm ${
                   currentTheme === 'galaxy' ? 'text-gray-300' : 'text-gray-700'
                 }`}>Запомнить меня</label>
               </div>
-              
               <button className="w-full bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 py-3 rounded-lg font-semibold transition-all duration-300 transform hover:scale-105">
                 Войти
               </button>
-              
               <div className={`text-center ${
                 currentTheme === 'galaxy' ? 'text-gray-400' : 'text-gray-600'
               } text-sm my-4`}>────────── или ──────────</div>
-              
               <div className="flex space-x-4">
                 <button className="flex-1 bg-red-600 hover:bg-red-700 py-2 rounded-lg font-semibold transition-all duration-300">
                   Google
@@ -1112,7 +1047,6 @@ const App = () => {
                   VK
                 </button>
               </div>
-              
               <div className={`text-center text-sm my-4 space-y-2 ${
                 currentTheme === 'galaxy' ? 'text-gray-400' : 'text-gray-600'
               }`}>
@@ -1123,7 +1057,6 @@ const App = () => {
           </div>
         </div>
       )}
-
       {/* Register Modal */}
       {showRegister && (
         <div className="fixed inset-0 bg-black/70 backdrop-blur-sm flex items-center justify-center z-50 p-4">
@@ -1140,12 +1073,10 @@ const App = () => {
             >
               <X className="w-6 h-6" />
             </button>
-            
             <h2 className="text-2xl font-bold mb-6 flex items-center">
               <UserPlus className="w-6 h-6 mr-2 text-green-400" />
               Создать аккаунт
             </h2>
-            
             <div className="space-y-4">
               <div>
                 <label className={`block text-sm font-medium mb-2 ${
@@ -1161,7 +1092,6 @@ const App = () => {
                   } rounded-lg px-4 py-3 focus:border-green-500 focus:outline-none`}
                 />
               </div>
-              
               <div>
                 <label className={`block text-sm font-medium mb-2 ${
                   currentTheme === 'galaxy' ? 'text-gray-300' : 'text-gray-700'
@@ -1176,7 +1106,6 @@ const App = () => {
                   } rounded-lg px-4 py-3 focus:border-green-500 focus:outline-none`}
                 />
               </div>
-              
               <div>
                 <label className={`block text-sm font-medium mb-2 ${
                   currentTheme === 'galaxy' ? 'text-gray-300' : 'text-gray-700'
@@ -1191,7 +1120,6 @@ const App = () => {
                   } rounded-lg px-4 py-3 focus:border-green-500 focus:outline-none`}
                 />
               </div>
-              
               <div>
                 <label className={`block text-sm font-medium mb-2 ${
                   currentTheme === 'galaxy' ? 'text-gray-300' : 'text-gray-700'
@@ -1206,22 +1134,18 @@ const App = () => {
                   } rounded-lg px-4 py-3 focus:border-green-500 focus:outline-none`}
                 />
               </div>
-              
               <div className="flex items-center">
                 <input type="checkbox" id="terms" className="mr-2" />
                 <label htmlFor="terms" className={`text-sm ${
                   currentTheme === 'galaxy' ? 'text-gray-300' : 'text-gray-700'
                 }`}>Согласен с условиями использования</label>
               </div>
-              
               <button className="w-full bg-gradient-to-r from-green-600 to-blue-600 hover:from-green-700 hover:to-blue-700 py-3 rounded-lg font-semibold transition-all duration-300 transform hover:scale-105">
                 Зарегистрироваться
               </button>
-              
               <div className={`text-center ${
                 currentTheme === 'galaxy' ? 'text-gray-400' : 'text-gray-600'
               } text-sm my-4`}>────────── или ──────────</div>
-              
               <div className="flex space-x-4">
                 <button className="flex-1 bg-red-600 hover:bg-red-700 py-2 rounded-lg font-semibold transition-all duration-300">
                   Google
@@ -1230,7 +1154,6 @@ const App = () => {
                   VK
                 </button>
               </div>
-              
               <div className={`text-center text-sm my-4 space-y-2 ${
                 currentTheme === 'galaxy' ? 'text-gray-400' : 'text-gray-600'
               }`}>
