@@ -1,6 +1,5 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Search, MapPin, Calendar, GraduationCap, Briefcase, BookOpen, User, Menu, X, ChevronRight, Star, Target, Zap, Bell, Users, BarChart3, Filter, Globe, Mail, Lock, UserPlus, Building2, Award, Users2, Globe2, AwardIcon, ArrowLeft, Settings, X as CloseIcon } from 'lucide-react';
-
 const App = () => {
   const [activeTab, setActiveTab] = useState('home');
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -22,6 +21,15 @@ const App = () => {
   const [showMapCategoryDropdown, setShowMapCategoryDropdown] = useState(false);
   const [showMapTypeDropdownMap, setShowMapTypeDropdownMap] = useState(false);
   const [showMapCategoryDropdownMap, setShowMapCategoryDropdownMap] = useState(false);
+  // Состояния для дат на карте
+  const [startDate, setStartDate] = useState('');
+  const [endDate, setEndDate] = useState('');
+  // Состояния для поиска по карте
+  const [mapSearchQuery, setMapSearchQuery] = useState('');
+  const [mapSearchResults, setMapSearchResults] = useState([]);
+  const [showMapSearchResults, setShowMapSearchResults] = useState(false);
+  const [selectedLocation, setSelectedLocation] = useState(null);
+  const mapSearchRef = useRef(null);
   const stats = [
     { value: '50+', label: 'Мероприятий' },
     { value: '25+', label: 'ВУЗов-партнеров' },
@@ -96,7 +104,9 @@ const App = () => {
   ];
   // Фильтрация вузов
   const filteredUniversities = universities.filter(uni => {
-    const matchesSearch = uni.name.toLowerCase().includes(searchQuery.toLowerCase()) || 
+    const matchesSearch = searchQuery === '' || 
+                          uni.name.toLowerCase().includes(searchQuery.toLowerCase()) || 
+                          uni.type.toLowerCase().includes(searchQuery.toLowerCase()) ||
                           uni.specialties.some(spec => spec.toLowerCase().includes(searchQuery.toLowerCase()));
     const matchesType = selectedType === 'Все типы' || uni.type === selectedType;
     const matchesSpecialty = selectedSpecialty === 'Все специальности' || uni.specialties.includes(selectedSpecialty);
@@ -116,6 +126,59 @@ const App = () => {
     setCurrentTheme(theme);
     setShowSettings(false);
   };
+  // Функция для поиска по карте
+  const searchMap = async (query) => {
+    if (query.length < 2) {
+      setMapSearchResults([]);
+      setShowMapSearchResults(false);
+      return;
+    }
+    
+    // Моковые данные для демонстрации
+    const mockResults = [
+      { id: 1, name: 'Кремль', address: 'Москва, Красная площадь, 1', lat: 55.75222, lng: 37.61556 },
+      { id: 2, name: 'МГУ', address: 'Москва, Ленинские горы, 1', lat: 55.70289, lng: 37.53119 },
+      { id: 3, name: 'ВДНХ', address: 'Москва, проспект Мира, 154', lat: 55.82857, lng: 37.64253 },
+      { id: 4, name: 'ГУМ', address: 'Москва, Красная площадь, 3', lat: 55.75667, lng: 37.61819 },
+      { id: 5, name: 'Парк Победы', address: 'Москва, Поклонная гора, 3', lat: 55.73417, lng: 37.54556 },
+      { id: 6, name: 'Москва-Сити', address: 'Москва, Пресненская набережная, 2', lat: 55.74833, lng: 37.53667 },
+      { id: 7, name: 'Храм Христа Спасителя', address: 'Москва, Волхонка, 15', lat: 55.74472, lng: 37.59639 },
+      { id: 8, name: 'ЦУМ', address: 'Москва, Петровка, 2', lat: 55.75889, lng: 37.61917 }
+    ];
+    
+    const filtered = mockResults.filter(item => 
+      item.name.toLowerCase().includes(query.toLowerCase()) || 
+      item.address.toLowerCase().includes(query.toLowerCase())
+    );
+    
+    setMapSearchResults(filtered);
+    setShowMapSearchResults(true);
+  };
+  // Обработчик ввода в поисковое поле карты
+  const handleMapSearchChange = (e) => {
+    const value = e.target.value;
+    setMapSearchQuery(value);
+    searchMap(value);
+  };
+  // Обработчик выбора результата поиска
+  const handleSelectLocation = (location) => {
+    setSelectedLocation(location);
+    setMapSearchQuery(location.name);
+    setShowMapSearchResults(false);
+  };
+  // Обработчик клика вне поискового поля
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (mapSearchRef.current && !mapSearchRef.current.contains(event.target)) {
+        setShowMapSearchResults(false);
+      }
+    };
+    
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, []);
   const renderContent = () => {
     if (selectedUniversity) {
       return (
@@ -200,36 +263,38 @@ const App = () => {
         return (
           <div className="space-y-16">
             {/* Hero Section */}
-            <section className="text-center py-20">
-              <h1 className="text-6xl font-bold mb-6 bg-gradient-to-r from-purple-400 via-pink-500 to-orange-500 bg-clip-text text-transparent leading-tight">
-                ПрофНавигатор
-              </h1>
-              <p className="text-xl text-gray-300 mb-12 max-w-2xl mx-auto">
-                Найди свой путь в IT, инженерии, медицине...
-              </p>
-              <div className="flex justify-center gap-6 mb-16">
-                <div className="relative">
-                  <button 
-                    onClick={goToMap}
-                    className="bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 px-8 py-4 rounded-2xl font-semibold transition-all duration-300 transform hover:scale-105"
-                  >
-                    <Search className="w-5 h-5 inline mr-2" />
-                    Найти мероприятия рядом
-                  </button>
-                  <div className="absolute -top-4 -right-4 bg-purple-600 text-white px-3 py-1 rounded-full text-sm font-semibold">
-                    50+
+            <section className="text-center py-16">
+              <div className="max-w-4xl mx-auto px-4">
+                <h1 className="text-6xl font-bold mb-6 bg-gradient-to-r from-purple-400 via-pink-500 to-orange-500 bg-clip-text text-transparent leading-tight">
+                  ПрофНавигатор
+                </h1>
+                <p className="text-xl text-gray-300 mb-12 max-w-2xl mx-auto">
+                  Найди свой путь в IT, инженерии, медицине...
+                </p>
+                <div className="flex flex-col sm:flex-row justify-center gap-8 mb-16">
+                  <div className="relative">
+                    <button 
+                      onClick={goToMap}
+                      className="bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 px-8 py-4 rounded-2xl font-semibold transition-all duration-300 transform hover:scale-105 flex items-center"
+                    >
+                      <Search className="w-5 h-5 inline mr-2" />
+                      Найти мероприятия рядом
+                    </button>
+                    <div className="absolute -top-4 -right-4 bg-purple-600 text-white px-3 py-1 rounded-full text-sm font-semibold">
+                      50+
+                    </div>
                   </div>
-                </div>
-                <div className="relative">
-                  <button 
-                    onClick={goToUniversities}
-                    className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 px-8 py-4 rounded-2xl font-semibold transition-all duration-300 transform hover:scale-105"
-                  >
-                    <GraduationCap className="w-5 h-5 inline mr-2" />
-                    Изучить ВУЗы
-                  </button>
-                  <div className="absolute -top-4 -right-4 bg-blue-600 text-white px-3 py-1 rounded-full text-sm font-semibold">
-                    25+
+                  <div className="relative">
+                    <button 
+                      onClick={goToUniversities}
+                      className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 px-8 py-4 rounded-2xl font-semibold transition-all duration-300 transform hover:scale-105 flex items-center"
+                    >
+                      <GraduationCap className="w-5 h-5 inline mr-2" />
+                      Изучить ВУЗы
+                    </button>
+                    <div className="absolute -top-4 -right-4 bg-blue-600 text-white px-3 py-1 rounded-full text-sm font-semibold">
+                      25+
+                    </div>
                   </div>
                 </div>
               </div>
@@ -349,13 +414,7 @@ const App = () => {
                   onClick={goToMap}
                   className="bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 px-12 py-4 rounded-2xl font-semibold transition-all duration-300 transform hover:scale-105"
                 >
-                  ▶ Начать поиск
-                </button>
-                <button 
-                  onClick={goToCareer}
-                  className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 px-12 py-4 rounded-2xl font-semibold transition-all duration-300 transform hover:scale-105"
-                >
-                  🧭 Исследовать пути
+                  ▶ Найти мероприятия рядом
                 </button>
               </div>
             </section>
@@ -374,10 +433,6 @@ const App = () => {
                     ФИЛЬТРЫ
                   </h3>
                   <div className="space-y-4">
-                    <div>
-                      <label className="block text-sm font-medium mb-2">Поиск</label>
-                      <input type="text" placeholder="Название мероприятия..." className="w-full bg-gray-700/50 border border-gray-600 rounded-lg px-3 py-2 text-white" />
-                    </div>
                     {/* Custom Map Type Dropdown */}
                     <div className="relative">
                       <label className="block text-sm font-medium mb-2">Типы</label>
@@ -430,9 +485,28 @@ const App = () => {
                         </div>
                       )}
                     </div>
+                    {/* Date Range Inputs */}
                     <div>
-                      <label className="block text-sm font-medium mb-2">Дата</label>
-                      <input type="date" className="w-full bg-gray-700/50 border border-gray-600 rounded-lg px-3 py-2 text-white" />
+                      <label className="block text-sm font-medium mb-2">Дата начала</label>
+                      <input 
+                        type="date" 
+                        className="w-full bg-gray-700/50 border border-gray-600 rounded-lg px-3 py-2 text-white"
+                        value={startDate}
+                        onChange={(e) => setStartDate(e.target.value)}
+                        min="2025-01-01"
+                        max="2026-12-31"
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-sm font-medium mb-2">Дата окончания</label>
+                      <input 
+                        type="date" 
+                        className="w-full bg-gray-700/50 border border-gray-600 rounded-lg px-3 py-2 text-white"
+                        value={endDate}
+                        onChange={(e) => setEndDate(e.target.value)}
+                        min={startDate || "2025-01-01"}
+                        max="2026-12-31"
+                      />
                     </div>
                     <div className="flex items-center">
                       <input type="checkbox" id="reg" className="mr-2" />
@@ -449,21 +523,44 @@ const App = () => {
               </div>
               <div className="lg:col-span-3">
                 {/* Smart Search Bar */}
-                <div className="mb-6">
+                <div className="mb-6" ref={mapSearchRef}>
                   <div className="relative">
                     <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
                     <input
                       type="text"
                       placeholder="Найдите интересующие события и мероприятия..."
                       className="w-full bg-gray-700/50 border border-gray-600 rounded-2xl pl-12 pr-4 py-4 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                      value={mapSearchQuery}
+                      onChange={handleMapSearchChange}
                     />
+                    {showMapSearchResults && mapSearchResults.length > 0 && (
+                      <div className="absolute z-10 w-full bg-gray-800/90 backdrop-blur-lg border border-gray-600 rounded-xl shadow-2xl mt-2 max-h-60 overflow-y-auto">
+                        {mapSearchResults.map((result) => (
+                          <div
+                            key={result.id}
+                            className="px-4 py-3 text-white hover:bg-gradient-to-r hover:from-purple-600 hover:to-pink-600 cursor-pointer transition-all duration-200 border-b border-gray-700 last:border-b-0"
+                            onClick={() => handleSelectLocation(result)}
+                          >
+                            <div className="flex items-center">
+                              <MapPin className="w-4 h-4 mr-3 text-purple-400" />
+                              <div>
+                                <div className="font-medium">{result.name}</div>
+                                <div className="text-sm text-gray-400">{result.address}</div>
+                              </div>
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                    )}
                   </div>
                 </div>
                 {/* Responsive Map Container */}
                 <div className="bg-gray-800/50 backdrop-blur-sm rounded-2xl border border-gray-700 overflow-hidden h-[500px] relative">
                   {/* Яндекс.Карта через iframe */}
                   <iframe
-                    src="https://yandex.ru/map-widget/v1/?um=constructor%3A1b5e8a3f0b5e8a3f0b5e8a3f0b5e8a3f0b5e8a3f0b5e8a3f0b5e8a3f0b5e8a3f&amp;source=constructor"
+                    src={selectedLocation 
+                      ? `https://yandex.ru/map-widget/v1/?ll=${selectedLocation.lng}%2C${selectedLocation.lat}&z=16&l=map` 
+                      : "https://yandex.ru/map-widget/v1/?um=constructor%3A1b5e8a3f0b5e8a3f0b5e8a3f0b5e8a3f0b5e8a3f0b5e8a3f0b5e8a3f0b5e8a3f&amp;source=constructor"}
                     width="100%"
                     height="100%"
                     className="border-0"
@@ -497,6 +594,19 @@ const App = () => {
               <h1 className="text-4xl font-bold mb-2">🎓 ВУЗы и колледжи</h1>
               <p className="text-xl text-gray-300">Найдите подходящее учебное заведение для вашего будущего</p>
             </div>
+            {/* Smart Search Bar for Universities */}
+            <div className="mb-8">
+              <div className="relative">
+                <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
+                <input
+                  type="text"
+                  placeholder="Поиск по названию, типу или специальности..."
+                  className="w-full bg-gray-700/50 border border-gray-600 rounded-2xl pl-12 pr-4 py-4 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                />
+              </div>
+            </div>
             <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
               <div className="lg:col-span-1">
                 <div className="bg-gray-800/50 backdrop-blur-sm rounded-2xl p-6 border border-gray-700">
@@ -505,16 +615,6 @@ const App = () => {
                     ФИЛЬТРЫ
                   </h3>
                   <div className="space-y-4">
-                    <div>
-                      <label className="block text-sm font-medium mb-2">Поиск</label>
-                      <input 
-                        type="text" 
-                        placeholder="Название ВУЗа..." 
-                        className="w-full bg-gray-700/50 border border-gray-600 rounded-lg px-3 py-2 text-white placeholder-gray-400 focus:border-purple-500 focus:outline-none"
-                        value={searchQuery}
-                        onChange={(e) => setSearchQuery(e.target.value)}
-                      />
-                    </div>
                     {/* Custom Type Dropdown */}
                     <div className="relative">
                       <label className="block text-sm font-medium mb-2">Тип</label>
@@ -739,13 +839,7 @@ const App = () => {
                   onClick={goToMap}
                   className="bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 px-12 py-4 rounded-2xl font-semibold transition-all duration-300 transform hover:scale-105"
                 >
-                  ▶ Начать поиск
-                </button>
-                <button 
-                  onClick={goToUniversities}
-                  className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 px-12 py-4 rounded-2xl font-semibold transition-all duration-300 transform hover:scale-105"
-                >
-                  🧭 Исследовать пути
+                  ▶ Найти мероприятия рядом
                 </button>
               </div>
             </section>
@@ -1166,5 +1260,4 @@ const App = () => {
     </div>
   );
 };
-
 export default App;
