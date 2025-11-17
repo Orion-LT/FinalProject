@@ -51,11 +51,18 @@ const App = () => {
     { icon: <BarChart3 className="w-6 h-6" />, title: 'Аналитика', desc: 'Статистика и тренды' }
   ];
   // Функции для переключения вкладок
-  const goToMap = () => setActiveTab('map');
-  const goToCareer = () => setActiveTab('career');
+  const goToMap = () => {
+    setActiveTab('map');
+    window.scrollTo(0, 0);
+  };
+  const goToCareer = () => {
+    setActiveTab('career');
+    window.scrollTo(0, 0);
+  };
   const goToUniversities = () => {
     setActiveTab('universities');
     setSelectedUniversity(null);
+    window.scrollTo(0, 0);
   };
   const universities = [
     { id: 1, name: 'МГУ им. М.В. Ломоносова', location: 'Москва, Ленинские горы, д. 1', students: '40 000', rank: 'Топ-1 в России', type: 'Университет', specialties: ['IT', 'Инженерия', 'Медицина', 'Экономика', 'Право'] },
@@ -184,7 +191,10 @@ const App = () => {
       return (
         <div className="py-8">
           <button 
-            onClick={() => setSelectedUniversity(null)}
+            onClick={() => {
+              setSelectedUniversity(null);
+              window.scrollTo(0, 0);
+            }}
             className="flex items-center text-white mb-8 bg-gradient-to-r from-black via-purple-900 to-cyan-500 hover:from-black hover:via-purple-800 hover:to-cyan-400 px-6 py-3 rounded-full font-semibold transition-all duration-300 transform hover:scale-105"
           >
             <ArrowLeft className="w-5 h-5 mr-2" />
@@ -227,7 +237,10 @@ const App = () => {
       return (
         <div className="py-8">
           <button 
-            onClick={() => setSelectedCareerField(null)}
+            onClick={() => {
+              setSelectedCareerField(null);
+              window.scrollTo(0, 0);
+            }}
             className="flex items-center text-white mb-8 bg-gradient-to-r from-black via-purple-900 to-cyan-500 hover:from-black hover:via-purple-800 hover:to-cyan-400 px-6 py-3 rounded-full font-semibold transition-all duration-300 transform hover:scale-105"
           >
             <ArrowLeft className="w-5 h-5 mr-2" />
@@ -383,7 +396,19 @@ const App = () => {
               <h2 className="text-3xl font-bold mb-8 text-center">Самые востребованные направления</h2>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 {directions.map((dir, index) => (
-                  <div key={index} className="bg-gray-800/50 backdrop-blur-sm rounded-2xl p-6 border border-gray-700 hover:border-purple-500 transition-all duration-300">
+                  <div 
+                    key={index} 
+                    className="bg-gray-800/50 backdrop-blur-sm rounded-2xl p-6 border border-gray-700 hover:border-purple-500 transition-all duration-300 cursor-pointer"
+                    onClick={() => {
+                      // Найти соответствующую карьерную сферу по названию
+                      const field = careerFields.find(f => f.name === dir.title);
+                      if (field) {
+                        setSelectedCareerField(field);
+                        setActiveTab('career');
+                        window.scrollTo(0, 0);
+                      }
+                    }}
+                  >
                     <div className="flex items-center mb-3">
                       <span className="text-2xl mr-3">{dir.icon}</span>
                       <h3 className="text-xl font-semibold">{dir.title}</h3>
@@ -575,14 +600,18 @@ const App = () => {
         );
       case 'events':
         return (
-          <div className="py-20 text-center">
-            <div className="bg-gray-800/50 backdrop-blur-sm rounded-2xl p-12 border border-gray-700 max-w-4xl mx-auto">
-              <Calendar className="w-16 h-16 text-purple-400 mx-auto mb-6" />
-              <h1 className="text-4xl font-bold mb-6">📅 Календарь мероприятий</h1>
-              <div className="text-2xl font-semibold text-purple-400 mb-4">Раздел в разработке</div>
-              <p className="text-gray-300 mb-8">Скоро здесь появится полный календарь всех запланированных событий</p>
-              <div className="bg-gray-700/50 rounded-xl p-6">
-                <p className="text-gray-300">Информация о предстоящих мероприятиях, вебинарах и мастер-классах</p>
+          <div className="py-8">
+            <h1 className="text-4xl font-bold mb-8 text-center">📅 Календарь мероприятий</h1>
+            <p className="text-xl text-gray-300 text-center mb-12">Найдите интересующие вас события на интерактивной карте</p>
+            <div className="text-center py-20">
+              <div className="bg-gray-800/50 backdrop-blur-sm rounded-2xl p-12 border border-gray-700 max-w-4xl mx-auto">
+                <Calendar className="w-16 h-16 text-purple-400 mx-auto mb-6" />
+                <h1 className="text-4xl font-bold mb-6">📅 Календарь мероприятий</h1>
+                <div className="text-2xl font-semibold text-purple-400 mb-4">Раздел в разработке</div>
+                <p className="text-gray-300 mb-8">Скоро здесь появится полный календарь всех запланированных событий</p>
+                <div className="bg-gray-700/50 rounded-xl p-6">
+                  <p className="text-gray-300">Информация о предстоящих мероприятиях, вебинарах и мастер-классах</p>
+                </div>
               </div>
             </div>
           </div>
@@ -705,7 +734,10 @@ const App = () => {
                     filteredUniversities.map((uni) => (
                       <div 
                         key={uni.id}
-                        onClick={() => setSelectedUniversity(uni)}
+                        onClick={() => {
+                          setSelectedUniversity(uni);
+                          window.scrollTo(0, 0);
+                        }}
                         className="bg-gray-800/50 backdrop-blur-sm rounded-2xl p-6 border border-gray-700 hover:border-purple-500 transition-all duration-300 cursor-pointer"
                       >
                         <div className="flex items-start justify-between">
@@ -786,7 +818,10 @@ const App = () => {
                 {careerFields.map((field) => (
                   <div 
                     key={field.id}
-                    onClick={() => setSelectedCareerField(field)}
+                    onClick={() => {
+                      setSelectedCareerField(field);
+                      window.scrollTo(0, 0);
+                    }}
                     className="bg-gray-800/50 backdrop-blur-sm rounded-2xl p-6 border border-gray-700 hover:border-purple-500 transition-all duration-300 cursor-pointer group"
                   >
                     <div className="flex items-center mb-4">
@@ -847,14 +882,18 @@ const App = () => {
         );
       case 'blog':
         return (
-          <div className="py-20 text-center">
-            <div className="bg-gray-800/50 backdrop-blur-sm rounded-2xl p-12 border border-gray-700 max-w-4xl mx-auto">
-              <BookOpen className="w-16 h-16 text-purple-400 mx-auto mb-6" />
-              <h1 className="text-4xl font-bold mb-6">📰 Блог и полезные материалы</h1>
-              <div className="text-2xl font-semibold text-purple-400 mb-4">Раздел в разработке</div>
-              <p className="text-gray-300 mb-8">Статьи, советы и интервью с профессионалами для помощи в выборе карьерного пути</p>
-              <div className="bg-gray-700/50 rounded-xl p-6">
-                <p className="text-gray-300">Полезные материалы для профориентации и карьерного планирования</p>
+          <div className="py-8">
+            <h1 className="text-4xl font-bold mb-8 text-center">📰 Блог и полезные материалы</h1>
+            <p className="text-xl text-gray-300 text-center mb-12">Найдите интересующие вас события на интерактивной карте</p>
+            <div className="py-20 text-center">
+              <div className="bg-gray-800/50 backdrop-blur-sm rounded-2xl p-12 border border-gray-700 max-w-4xl mx-auto">
+                <BookOpen className="w-16 h-16 text-purple-400 mx-auto mb-6" />
+                <h1 className="text-4xl font-bold mb-6">📰 Блог и полезные материалы</h1>
+                <div className="text-2xl font-semibold text-purple-400 mb-4">Раздел в разработке</div>
+                <p className="text-gray-300 mb-8">Статьи, советы и интервью с профессионалами для помощи в выборе карьерного пути</p>
+                <div className="bg-gray-700/50 rounded-xl p-6">
+                  <p className="text-gray-300">Полезные материалы для профориентации и карьерного планирования</p>
+                </div>
               </div>
             </div>
           </div>
@@ -864,8 +903,18 @@ const App = () => {
     }
   };
   // Функции для переключения вкладок
-  const goToEvents = () => setActiveTab('events');
-  const goToBlog = () => setActiveTab('blog');
+  const goToEvents = () => {
+    setActiveTab('events');
+    window.scrollTo(0, 0);
+  };
+  const goToBlog = () => {
+    setActiveTab('blog');
+    window.scrollTo(0, 0);
+  };
+  // Эффект для прокрутки к началу при изменении активной вкладки
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [activeTab]);
   return (
     <div className={`min-h-screen flex flex-col ${
       currentTheme === 'galaxy' 
@@ -960,6 +1009,7 @@ const App = () => {
                       setActiveTab(item.id);
                       setSelectedUniversity(null);
                       setSelectedCareerField(null);
+                      window.scrollTo(0, 0);
                     }}
                     className={`flex items-center space-x-2 px-4 py-2 rounded-xl transition-all duration-300 ${
                       activeTab === item.id || (selectedUniversity && item.id === 'universities') || (selectedCareerField && item.id === 'career')
@@ -1025,6 +1075,7 @@ const App = () => {
                         setSelectedUniversity(null);
                         setSelectedCareerField(null);
                         setIsMenuOpen(false);
+                        window.scrollTo(0, 0);
                       }}
                       className={`flex items-center space-x-2 px-4 py-3 rounded-xl transition-all duration-300 ${
                         activeTab === item.id || (selectedUniversity && item.id === 'universities') || (selectedCareerField && item.id === 'career')
