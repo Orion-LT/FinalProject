@@ -86,32 +86,40 @@ const App = () => {
   ];
   // Карьерные сферы
   const careerFields = [
-    { id: 1, name: 'IT', icon: '💻', description: 'Информационные технологии, программирование, разработка ПО' },
-    { id: 2, name: 'Инженерия', icon: '⚙️', description: 'Технические специальности, проектирование, конструирование' },
-    { id: 3, name: 'Медицина', icon: '🏥', description: 'Здравоохранение, лечение, медицинские исследования' },
-    { id: 4, name: 'Бизнес', icon: '📈', description: 'Предпринимательство, управление, финансы' },
-    { id: 5, name: 'Образование', icon: '📚', description: 'Педагогика, обучение, научная деятельность' },
-    { id: 6, name: 'Юриспруденция', icon: '⚖️', description: 'Право, суд, юридические услуги' }
+  { id: 1, name: 'IT и технологии', description: 'Разработка программного обеспечения, анализ данных, кибербезопасность', icon: '💻', universityIds: [1, 2, 5], professionIds: [1, 2, 3] }, // Пример ID
+  { id: 2, name: 'Инженерия', description: 'Машиностроение, робототехника, строительство', icon: '⚙️', universityIds: [1, 3, 4], professionIds: [4, 5, 6] },
+  { id: 3, name: 'Медицина', description: 'Терапия, хирургия, фармация', icon: '🏥', universityIds: [4, 6], professionIds: [7, 8, 9] },
+  { id: 4, name: 'Экономика и бизнес', description: 'Финансы, маркетинг, менеджмент', icon: '📈', universityIds: [2, 7], professionIds: [10, 11, 12] },
+  { id: 5, name: 'Право', description: 'Юриспруденция, международное право', icon: '⚖️', universityIds: [8], professionIds: [13, 14] },
+  { id: 6, name: 'Наука', description: 'Физика, химия, биология', icon: '🔬', universityIds: [1, 4, 6], professionIds: [15, 16] }
   ];
   // Направления в вузах
   const universityDirections = [
-    { id: 1, university: 'МГУ им. М.В. Ломоносова', direction: 'Прикладная математика и информатика', faculty: 'Факультет вычислительной математики и кибернетики' },
-    { id: 2, university: 'МФТИ', direction: 'Информатика и вычислительная техника', faculty: 'Факультет радиотехники и кибернетики' },
-    { id: 3, university: 'НИЯУ МИФИ', direction: 'Ядерные физика и технологии', faculty: 'Физико-энергетический факультет' },
-    { id: 4, university: 'НИУ ВШЭ', direction: 'Бизнес-информатика', faculty: 'Факультет бизнеса и менеджера' },
-    { id: 5, university: 'МИСИС', direction: 'Материаловедение и технологии материалов', faculty: 'Институт новых материалов и нанотехнологий' },
-    { id: 6, university: 'РНИМУ им. Н.И. Пирогова', direction: 'Лечебное дело', faculty: 'Лечебный факультет' },
-    { id: 7, university: 'МГТУ им. Н.Э. Баумана', direction: 'Робототехника и мехатроника', faculty: 'Факультет robotics' },
-    { id: 8, university: 'НИУ МЭИ', direction: 'Электроэнергетика и электротехника', faculty: 'Энергомашинное строение' }
+  { id: 1, university: 'МГУ', direction: 'Программная инженерия', faculty: 'ФИВТ', careerFieldId: 1, relatedProfessions: ['Программист', 'Архитектор ПО'] },
+  { id: 2, university: 'НИУ ВШЭ', direction: 'Бизнес-информатика', faculty: 'Факультет компьютерных наук', careerFieldId: 1, relatedProfessions: ['Аналитик данных', 'IT-консультант'] },
+  { id: 3, university: 'МФТИ', direction: 'Прикладная математика', faculty: 'ФИВТ', careerFieldId: 1, relatedProfessions: ['Аналитик данных', 'Исследователь ИИ'] },
+  { id: 4, university: 'МГТУ им. Баумана', direction: 'Информационные системы', faculty: 'ИУ5', careerFieldId: 1, relatedProfessions: ['Системный аналитик', 'Разработчик ПО'] },
+  { id: 5, university: 'НИЯУ МИФИ', direction: 'Компьютерная безопасность', faculty: 'ИИКС', careerFieldId: 1, relatedProfessions: ['Специалист по ИБ', 'Пентестер'] },
+  { id: 6, university: 'МГИМО', direction: 'Мировая экономика', faculty: 'Экономический факультет', careerFieldId: 4, relatedProfessions: ['Экономист', 'Аналитик'] }
   ];
   // Профессии
   const professions = [
-    { id: 1, name: 'Программист', description: 'Разработка программного обеспечения, написание кода, тестирование' },
-    { id: 2, name: 'Инженер-программист', description: 'Разработка программ для технических систем, встраиваемые системы' },
-    { id: 3, name: 'Data Scientist', description: 'Анализ больших данных, машинное обучение, искусственный интеллект' },
-    { id: 4, name: 'Системный аналитик', description: 'Анализ бизнес-процессов, оптимизация систем' },
-    { id: 5, name: 'DevOps инженер', description: 'Автоматизация процессов разработки и эксплуатации' },
-    { id: 6, name: 'UX/UI дизайнер', description: 'Проектирование интерфейсов, пользовательский опыт' }
+  { id: 1, name: 'Программист', description: 'Разработка и поддержка программного обеспечения', careerFieldId: 1, requiredSkills: ['Python', 'JavaScript', 'Алгоритмы'], relatedDirections: ['Программная инженерия', 'Прикладная математика'] },
+  { id: 2, name: 'Системный аналитик', description: 'Анализ бизнес-требований и проектирование ИТ-решений', careerFieldId: 1, requiredSkills: ['UML', 'SQL', 'Анализ требований'], relatedDirections: ['Бизнес-информатика', 'Информационные системы'] },
+  { id: 3, name: 'Data Scientist', description: 'Анализ и интерпретация сложных наборов данных', careerFieldId: 1, requiredSkills: ['Python', 'R', 'Статистика'], relatedDirections: ['Бизнес-информатика', 'Прикладная математика'] },
+  { id: 4, name: 'Инженер-механик', description: 'Проектирование и анализ механических систем', careerFieldId: 2, requiredSkills: ['CAD', 'Материаловедение', 'Термодинамика'], relatedDirections: ['Машиностроение'] },
+  { id: 5, name: 'Робототехник', description: 'Разработка и программирование роботов', careerFieldId: 2, requiredSkills: ['C++', 'ROS', 'Электроника'], relatedDirections: ['Робототехника', 'Мехатроника'] },
+  { id: 6, name: 'Строитель', description: 'Организация и выполнение строительных работ', careerFieldId: 2, requiredSkills: ['Проектное дело', 'Строительные материалы', 'Сметы'], relatedDirections: ['Промышленное и гражданское строительство'] },
+  { id: 7, name: 'Врач-терапевт', description: 'Первичный осмотр и диагностика пациентов', careerFieldId: 3, requiredSkills: ['Анатомия', 'Физиология', 'Диагностика'], relatedDirections: ['Лечебное дело'] },
+  { id: 8, name: 'Хирург', description: 'Выполнение хирургических операций', careerFieldId: 3, requiredSkills: ['Анатомия', 'Хирургия', 'Первая помощь'], relatedDirections: ['Лечебное дело'] },
+  { id: 9, name: 'Фармацевт', description: 'Консультации по лекарственным препаратам', careerFieldId: 3, requiredSkills: ['Фармакология', 'Химия', 'Токсикология'], relatedDirections: ['Фармация'] },
+  { id: 10, name: 'Финансист', description: 'Управление финансами компании или клиента', careerFieldId: 4, requiredSkills: ['Финансовый анализ', 'Excel', 'Бухгалтерия'], relatedDirections: ['Финансы и кредит'] },
+  { id: 11, name: 'Маркетолог', description: 'Продвижение товаров и услуг', careerFieldId: 4, requiredSkills: ['Анализ рынка', 'Контент-маркетинг', 'SMM'], relatedDirections: ['Маркетинг'] },
+  { id: 12, name: 'Менеджер проектов', description: 'Планирование и реализация проектов', careerFieldId: 4, requiredSkills: ['Управление проектами', 'Коммуникации', 'Scrum'], relatedDirections: ['Управление проектами'] },
+  { id: 13, name: 'Юрист', description: 'Правовая защита интересов клиентов', careerFieldId: 5, requiredSkills: ['Гражданское право', 'Уголовное право', 'Процессуальные нормы'], relatedDirections: ['Юриспруденция'] },
+  { id: 14, name: 'Нотариус', description: 'Совершение нотариальных действий', careerFieldId: 5, requiredSkills: ['Нотариат', 'Право собственности', 'Наследственное право'], relatedDirections: ['Юриспруденция'] },
+  { id: 15, name: 'Физик', description: 'Исследование физических явлений и законов природы', careerFieldId: 6, requiredSkills: ['Математика', 'Классическая механика', 'Квантовая физика'], relatedDirections: ['Физика'] },
+  { id: 16, name: 'Химик', description: 'Исследование свойств веществ и химических процессов', careerFieldId: 6, requiredSkills: ['Органическая химия', 'Аналитическая химия', 'Физическая химия'], relatedDirections: ['Химия'] }
   ];
   // Ближайшие мероприятия для МГУ
   const mguEvents = [
@@ -675,16 +683,21 @@ const App = () => {
       );
     }
     if (selectedCareerField) {
+      // Фильтруем вузы, направления и профессии по ID сферы
+      const relatedUniversities = universities.filter(uni => selectedCareerField.universityIds.includes(uni.id));
+      const relatedDirections = universityDirections.filter(dir => dir.careerFieldId === selectedCareerField.id);
+      const relatedProfessions = professions.filter(prof => prof.careerFieldId === selectedCareerField.id);
+
       return (
         <div className="py-8">
-          <button 
+          <button
             onClick={() => setSelectedCareerField(null)}
             className="flex items-center text-white mb-8 bg-gradient-to-r from-black via-purple-900 to-cyan-500 hover:from-black hover:via-purple-800 hover:to-cyan-400 px-6 py-3 rounded-full font-semibold transition-all duration-300 transform hover:scale-105"
           >
             <ArrowLeft className="w-5 h-5 mr-2" />
             Назад к карьерным направлениям
           </button>
-          <div className="text-center py-20">
+          <div className="text-center mb-12">
             <div className="relative inline-block">
               <div className="absolute -inset-4 bg-gradient-to-r from-purple-600 to-pink-600 rounded-3xl blur-lg opacity-30"></div>
               <h1 className="text-5xl font-bold relative z-10 bg-gradient-to-r from-purple-400 via-pink-400 to-orange-400 bg-clip-text text-transparent">
@@ -694,29 +707,101 @@ const App = () => {
             <p className="text-xl text-gray-300 mt-6 max-w-2xl mx-auto">
               {selectedCareerField.description}
             </p>
-            <div className="mt-12 grid grid-cols-3 gap-8">
-              <div className="w-32 h-32 bg-gradient-to-br from-purple-600 to-pink-600 rounded-2xl flex items-center justify-center transform rotate-12">
-                <div className="w-24 h-24 bg-gradient-to-br from-blue-500 to-purple-500 rounded-xl"></div>
-              </div>
-              <div className="w-32 h-32 bg-gradient-to-br from-blue-600 to-cyan-600 rounded-2xl flex items-center justify-center transform -rotate-6">
-                <div className="w-24 h-24 bg-gradient-to-br from-green-500 to-blue-500 rounded-full"></div>
-              </div>
-              <div className="w-32 h-32 bg-gradient-to-br from-green-600 to-teal-600 rounded-2xl flex items-center justify-center transform rotate-12">
-                <div className="w-24 h-24 bg-gradient-to-br from-yellow-500 to-green-500 rounded-lg"></div>
-              </div>
-            </div>
-            <div className="mt-12 grid grid-cols-3 gap-8">
-              <div className="w-40 h-40 bg-gradient-to-br from-red-600 to-orange-600 rounded-3xl flex items-center justify-center transform rotate-6">
-                <div className="w-32 h-32 bg-gradient-to-br from-pink-500 to-red-500 rounded-2xl"></div>
-              </div>
-              <div className="w-40 h-40 bg-gradient-to-br from-indigo-600 to-purple-600 rounded-3xl flex items-center justify-center transform -rotate-12">
-                <div className="w-32 h-32 bg-gradient-to-br from-teal-500 to-cyan-500 rounded-full"></div>
-              </div>
-              <div className="w-40 h-40 bg-gradient-to-br from-yellow-600 to-red-600 rounded-3xl flex items-center justify-center transform rotate-6">
-                <div className="w-32 h-32 bg-gradient-to-br from-purple-500 to-pink-500 rounded-lg"></div>
-              </div>
-            </div>
           </div>
+
+          {/* Связанные ВУЗы */}
+          <section className="mb-12">
+            <h2 className="text-3xl font-bold mb-8 text-center">Подходящие ВУЗы</h2>
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+              {relatedUniversities.length > 0 ? (
+                relatedUniversities.map(uni => (
+                  <div
+                    key={uni.id}
+                    onClick={() => {
+                      setActiveTab('universities');
+                      setSelectedUniversity(uni);
+                      setSelectedCareerField(null);
+                      window.scrollTo(0, 0);
+                    }}
+                    className="bg-gray-800/50 backdrop-blur-sm rounded-2xl p-6 border border-gray-700 hover:border-purple-500 transition-all duration-300 cursor-pointer"
+                  >
+                    <div className="flex items-center mb-3">
+                      <Building2 className="w-8 h-8 text-purple-400 mr-3" />
+                      <h3 className="text-xl font-bold">{uni.name}</h3>
+                    </div>
+                    <p className="text-gray-300 text-sm mb-2">{uni.location}</p>
+                    <p className="text-gray-400 text-xs">{uni.rank}</p>
+                  </div>
+                ))
+              ) : (
+                <p className="text-gray-500 text-center col-span-full">Вузы не найдены для этой сферы.</p>
+              )}
+            </div>
+          </section>
+
+          {/* Связанные Направления */}
+          <section className="mb-12">
+            <h2 className="text-3xl font-bold mb-8 text-center">Подходящие Направления</h2>
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+              {relatedDirections.length > 0 ? (
+                relatedDirections.map(dir => (
+                  <div
+                    key={dir.id}
+                    onClick={() => {
+                      setActiveTab('universities');
+                      setSelectedUniversity(null);
+                      setSelectedCareerField(null);
+                      setSearchQuery(dir.direction); // Устанавливаем поиск по направлению
+                      window.scrollTo(0, 0);
+                    }}
+                    className="bg-gray-800/50 backdrop-blur-sm rounded-2xl p-6 border border-gray-700 hover:border-purple-500 transition-all duration-300 cursor-pointer"
+                  >
+                    <div className="flex items-start">
+                      <Building2 className="w-8 h-8 text-purple-400 mr-4 mt-1" />
+                      <div>
+                        <h3 className="text-xl font-bold mb-2 text-purple-400">{dir.university}</h3>
+                        <h4 className="text-lg font-semibold mb-1">{dir.direction}</h4>
+                        <p className="text-gray-300 text-sm">{dir.faculty}</p>
+                      </div>
+                    </div>
+                  </div>
+                ))
+              ) : (
+                <p className="text-gray-500 text-center col-span-full">Направления не найдены для этой сферы.</p>
+              )}
+            </div>
+          </section>
+
+          {/* Связанные Профессии */}
+          <section className="mb-12">
+            <h2 className="text-3xl font-bold mb-8 text-center">Подходящие Профессии</h2>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {relatedProfessions.length > 0 ? (
+                relatedProfessions.map(prof => (
+                  <div
+                    key={prof.id}
+                    onClick={() => {
+                      setActiveTab('universities');
+                      setSelectedUniversity(null);
+                      setSelectedCareerField(null);
+                      setSearchQuery(prof.name); // Устанавливаем поиск по профессии
+                      window.scrollTo(0, 0);
+                    }}
+                    className="bg-gray-800/50 backdrop-blur-sm rounded-2xl p-6 border border-gray-700 hover:border-purple-500 transition-all duration-300 cursor-pointer"
+                  >
+                    <div className="flex items-start mb-3">
+                      <Briefcase className="w-6 h-6 text-purple-400 mr-3 mt-1" />
+                      <h3 className="text-xl font-bold">{prof.name}</h3>
+                    </div>
+                    <p className="text-gray-300">{prof.description}</p>
+                  </div>
+                ))
+              ) : (
+                <p className="text-gray-500 text-center col-span-full">Профессии не найдены для этой сферы.</p>
+              )}
+            </div>
+          </section>
+
         </div>
       );
     }
@@ -1281,33 +1366,98 @@ const App = () => {
             <section className="mb-12">
               <h2 className="text-3xl font-bold mb-8 text-center">Популярные направления в вузах</h2>
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                {universityDirections.map((direction) => (
-                  <div key={direction.id} className="bg-gray-800/50 backdrop-blur-sm rounded-2xl p-6 border border-gray-700 hover:border-purple-500 transition-all duration-300">
-                    <div className="flex items-start">
-                      <Building2 className="w-8 h-8 text-purple-400 mr-4 mt-1" />
-                      <div>
-                        <h3 className="text-xl font-bold mb-2 text-purple-400">{direction.university}</h3>
-                        <h4 className="text-lg font-semibold mb-1">{direction.direction}</h4>
-                        <p className="text-gray-300 text-sm">{direction.faculty}</p>
+                {universityDirections.map((direction) => {
+                  // Находим соответствующую сферу для направления
+                  const relatedField = careerFields.find(field => field.id === direction.careerFieldId);
+                  return (
+                    <div
+                      key={direction.id}
+                      onClick={() => {
+                        if (relatedField) {
+                          // Устанавливаем выбранную сферу (это вызовет отображение детализированной информации)
+                          setSelectedCareerField(relatedField);
+                          // Прокручиваем наверх
+                          window.scrollTo(0, 0);
+                        } else {
+                          console.warn(`Не найдена сферa для направления ID: ${direction.id}`);
+                        }
+                      }}
+                      className="bg-gray-800/50 backdrop-blur-sm rounded-2xl p-6 border border-gray-700 hover:border-purple-500 transition-all duration-300 cursor-pointer" // Добавлен cursor-pointer
+                    >
+                      <div className="flex items-start">
+                        <Building2 className="w-8 h-8 text-purple-400 mr-4 mt-1" />
+                        <div>
+                          <h3 className="text-xl font-bold mb-2 text-purple-400">{direction.university}</h3>
+                          <h4 className="text-lg font-semibold mb-1">{direction.direction}</h4>
+                          <p className="text-gray-300 text-sm">{direction.faculty}</p>
+                          {direction.relatedProfessions && direction.relatedProfessions.length > 0 && (
+                            <div className="mt-2 flex flex-wrap gap-1">
+                              {direction.relatedProfessions.slice(0, 2).map((prof, idx) => (
+                                <span key={idx} className="px-2 py-1 bg-purple-600/20 text-purple-300 rounded-full text-xs">
+                                  {prof}
+                                </span>
+                              ))}
+                              {direction.relatedProfessions.length > 2 && (
+                                <span className="px-2 py-1 bg-gray-600/20 text-gray-400 rounded-full text-xs">
+                                  +{direction.relatedProfessions.length - 2}
+                                </span>
+                              )}
+                            </div>
+                          )}
+                        </div>
                       </div>
                     </div>
-                  </div>
-                ))}
+                  );
+                })}
               </div>
             </section>
             {/* Профессии */}
             <section className="mb-12">
               <h2 className="text-3xl font-bold mb-8 text-center">Популярные профессии</h2>
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                {professions.map((profession) => (
-                  <div key={profession.id} className="bg-gray-800/50 backdrop-blur-sm rounded-2xl p-6 border border-gray-700 hover:border-purple-500 transition-all duration-300">
-                    <div className="flex items-start mb-3">
-                      <Briefcase className="w-6 h-6 text-purple-400 mr-3 mt-1" />
-                      <h3 className="text-xl font-bold">{profession.name}</h3>
+                {professions.map((profession) => {
+                  // Находим соответствующую сферу для профессии
+                  const relatedField = careerFields.find(field => field.id === profession.careerFieldId);
+                  return (
+                    <div
+                      key={profession.id}
+                      onClick={() => {
+                        if (relatedField) {
+                          // Устанавливаем выбранную сферу (это вызовет отображение детализированной информации)
+                          setSelectedCareerField(relatedField);
+                          // Прокручиваем наверх
+                          window.scrollTo(0, 0);
+                        } else {
+                          console.warn(`Не найдена сферa для профессии ID: ${profession.id}`);
+                        }
+                      }}
+                      className="bg-gray-800/50 backdrop-blur-sm rounded-2xl p-6 border border-gray-700 hover:border-purple-500 transition-all duration-300 cursor-pointer" // Добавлен cursor-pointer
+                    >
+                      <div className="flex items-start mb-3">
+                        <Briefcase className="w-6 h-6 text-purple-400 mr-3 mt-1" />
+                        <h3 className="text-xl font-bold">{profession.name}</h3>
+                      </div>
+                      <p className="text-gray-300">{profession.description}</p>
+                      {profession.requiredSkills && profession.requiredSkills.length > 0 && (
+                        <div className="mt-2">
+                          <p className="text-xs text-gray-400">Нужные навыки:</p>
+                          <div className="flex flex-wrap gap-1 mt-1">
+                            {profession.requiredSkills.slice(0, 3).map((skill, idx) => (
+                              <span key={idx} className="px-2 py-1 bg-blue-600/20 text-blue-300 rounded-full text-xs">
+                                {skill}
+                              </span>
+                            ))}
+                            {profession.requiredSkills.length > 3 && (
+                              <span className="px-2 py-1 bg-gray-600/20 text-gray-400 rounded-full text-xs">
+                                +{profession.requiredSkills.length - 3}
+                              </span>
+                            )}
+                          </div>
+                        </div>
+                      )}
                     </div>
-                    <p className="text-gray-300">{profession.description}</p>
-                  </div>
-                ))}
+                  );
+                })}
               </div>
             </section>
             {/* CTA */}
