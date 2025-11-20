@@ -1069,8 +1069,21 @@ const App = () => {
         return (
           <div className="py-8">
             <div className="mb-8">
-              <h1 className="text-4xl font-bold mb-2">🎓 ВУЗы и колледжи</h1>
+              <h1 className="text-4xl font-bold mb-2">🎓 ВУЗы</h1> {/* <-- Переименован заголовок --> */}
               <p className="text-xl text-gray-300">Найдите подходящее учебное заведение для вашего будущего</p>
+            </div>
+            {/* Smart Search Bar - перемещена сюда, перед сеткой фильтров и вузов */}
+            <div className="mb-6">
+              <div className="relative">
+                <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
+                <input
+                  type="text"
+                  placeholder="Найдите интересующие ВУЗы..."
+                  className="w-full bg-gray-700/50 border border-gray-600 rounded-2xl pl-12 pr-4 py-4 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                  value={searchQuery} // Используем существующее состояние searchQuery
+                  onChange={(e) => setSearchQuery(e.target.value)} // Используем существующий обработчик
+                />
+              </div>
             </div>
             <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
               <div className="lg:col-span-1">
@@ -1080,16 +1093,7 @@ const App = () => {
                     ФИЛЬТРЫ
                   </h3>
                   <div className="space-y-4">
-                    <div>
-                      <label className="block text-sm font-medium mb-2">Поиск</label>
-                      <input 
-                        type="text" 
-                        placeholder="Название ВУЗа..." 
-                        className="w-full bg-gray-700/50 border border-gray-600 rounded-lg px-3 py-2 text-white placeholder-gray-400 focus:border-purple-500 focus:outline-none"
-                        value={searchQuery}
-                        onChange={(e) => setSearchQuery(e.target.value)}
-                      />
-                    </div>
+                    {/* Убрана строка поиска из фильтров */}
                     {/* Custom Type Dropdown */}
                     <div className="relative">
                       <label className="block text-sm font-medium mb-2">Тип</label>
@@ -1102,7 +1106,7 @@ const App = () => {
                       </div>
                       {showTypeDropdown && (
                         <div className="absolute z-20 mt-1 w-full bg-gradient-to-br from-black via-purple-900 to-cyan-500 border border-purple-700/50 rounded-lg shadow-lg max-h-44 overflow-y-auto">
-                          {['Все типы', 'Университет', 'Институт', 'Колледж', 'Академия'].map((type) => (
+                          {['Все типы', 'Университет', 'Институт'].map((type) => ( // <-- Обновленный список типов -->
                             <div
                               key={type}
                               className="px-4 py-3 text-white hover:bg-gradient-to-r hover:from-orange-600 hover:to-purple-600 hover:text-transparent hover:bg-clip-text hover:bg-clip-text cursor-pointer transition-all duration-200"
