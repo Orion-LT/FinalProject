@@ -1770,7 +1770,7 @@ const App = () => {
                   VK
                 </button>
               </div>
-              <div className={`text-center text-sm my-4 space-y-2 ${
+              <div className={`text-center text-sm my-4 space-y -2 ${
                 currentTheme === 'galaxy' ? 'text-gray-400' : 'text-gray-600'
               }`}>
                 <p><a href="#" className="text-purple-400 hover:text-purple-300">Забыли пароль?</a></p>
@@ -1889,4 +1889,5 @@ const App = () => {
     </div>
   );
 };
+
 export default App;
