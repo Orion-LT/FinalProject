@@ -51,11 +51,27 @@ const App = () => {
     { icon: <BarChart3 className="w-6 h-6" />, title: 'Аналитика', desc: 'Статистика и тренды' }
   ];
   // Функции для переключения вкладок
-  const goToMap = () => setActiveTab('map');
-  const goToCareer = () => setActiveTab('career');
+  // Функции для переключения вкладок
+  const goToMap = () => {
+    setActiveTab('map');
+    window.scrollTo(0, 0);
+  };
+  const goToCareer = () => {
+    setActiveTab('career');
+    window.scrollTo(0, 0);
+  };
   const goToUniversities = () => {
     setActiveTab('universities');
     setSelectedUniversity(null);
+    window.scrollTo(0, 0);
+  };
+  const goToEvents = () => {
+    setActiveTab('events');
+   window.scrollTo(0, 0);
+  };
+  const goToBlog = () => {
+    setActiveTab('blog');
+    window.scrollTo(0, 0);
   };
   const universities = [
     { id: 1, name: 'Московский государственный университет им. М.В. Ломоносова', location: 'Москва, Ленинские горы, д. 1', students: '40 000', rank: 'Топ-1 в России', type: 'Университет', specialties: ['IT', 'Инженерия', 'Медицина', 'Экономика', 'Право'], shortName: 'МГУ' },
@@ -1492,9 +1508,7 @@ const App = () => {
         return null;
     }
   };
-  // Функции для переключения вкладок
-  const goToEvents = () => setActiveTab('events');
-  const goToBlog = () => setActiveTab('blog');
+  
   return (
     <div className={`min-h-screen flex flex-col ${
       currentTheme === 'galaxy' 
