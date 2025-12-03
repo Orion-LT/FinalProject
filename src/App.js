@@ -1063,10 +1063,6 @@ const App = () => {
                     ФИЛЬТРЫ
                   </h3>
                   <div className="space-y-4">
-                    <div>
-                      <label className="block text-sm font-medium mb-2">Поиск</label>
-                      <input type="text" placeholder="Название мероприятия..." className="w-full bg-gray-700/50 border border-gray-600 rounded-lg px-3 py-2 text-white" />
-                    </div>
                     {/* Custom Map Type Dropdown */}
                     <div className="relative">
                       <label className="block text-sm font-medium mb-2">Типы</label>
@@ -1141,12 +1137,7 @@ const App = () => {
                         min={startDate || "2025-01-01"}
                         max="2026-12-31"
                       />
-                    </div>
-                    <div className="flex items-center">
-                      <input type="checkbox" id="reg" className="mr-2" />
-                      <label htmlFor="reg" className="text-sm">Требуется регистрация</label>
-                    </div>
-                    
+                    </div>            
                     <button className="w-full bg-gradient-to-r from-black via-purple-900 to-cyan-500 hover:from-black hover:via-purple-800 hover:to-cyan-400 px-4 py-2 rounded-lg font-semibold transition-all duration-300 text-white">
                       Сбросить
                     </button>
