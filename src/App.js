@@ -1146,9 +1146,7 @@ const App = () => {
                       <input type="checkbox" id="reg" className="mr-2" />
                       <label htmlFor="reg" className="text-sm">Требуется регистрация</label>
                     </div>
-                    <button className="w-full bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 px-4 py-2 rounded-lg font-semibold transition-all duration-300">
-                      Применить
-                    </button>
+                    
                     <button className="w-full bg-gradient-to-r from-black via-purple-900 to-cyan-500 hover:from-black hover:via-purple-800 hover:to-cyan-400 px-4 py-2 rounded-lg font-semibold transition-all duration-300 text-white">
                       Сбросить
                     </button>
