@@ -50,28 +50,79 @@ const App = () => {
     { icon: <Users className="w-6 h-6" />, title: 'Сообщество', desc: 'Общение с другими' },
     { icon: <BarChart3 className="w-6 h-6" />, title: 'Аналитика', desc: 'Статистика и тренды' }
   ];
-  // Функции для переключения вкладок
-  // Функции для переключения вкладок
+  
+    // Функции для переключения вкладок
   const goToMap = () => {
     setActiveTab('map');
-    window.scrollTo(0, 0);
+    // Сбрасываем, если нужно уйти с детализированного вида
+    setSelectedUniversity(null);
+    setSelectedCareerField(null);
+    // window.scrollTo(0, 0); // Теперь в useEffect
   };
   const goToCareer = () => {
     setActiveTab('career');
-    window.scrollTo(0, 0);
+    // Сбрасываем, если нужно уйти с детализированного вида
+    setSelectedUniversity(null);
+    setSelectedCareerField(null);
+    // window.scrollTo(0, 0); // Теперь в useEffect
   };
   const goToUniversities = () => {
     setActiveTab('universities');
+    // Сбрасываем, если нужно уйти с детализированного вида
     setSelectedUniversity(null);
-    window.scrollTo(0, 0);
+    setSelectedCareerField(null);
+    // window.scrollTo(0, 0); // Теперь в useEffect
   };
   const goToEvents = () => {
     setActiveTab('events');
-   window.scrollTo(0, 0);
+    // Сбрасываем, если нужно уйти с детализированного вида
+    setSelectedUniversity(null);
+    setSelectedCareerField(null);
+    // window.scrollTo(0, 0); // Теперь в useEffect
   };
   const goToBlog = () => {
     setActiveTab('blog');
-    window.scrollTo(0, 0);
+    // Сбрасываем, если нужно уйти с детализированного вида
+    setSelectedUniversity(null);
+    setSelectedCareerField(null);
+    // window.scrollTo(0, 0); // Теперь в useEffect
+  };
+
+  // Функции для навигации к конкретным сущностям
+  const navigateToUniversity = (universityId) => {
+    // Предполагаем, что здесь нужно перейти на вкладку 'universities' и выбрать университет
+    // Но возможно, у вас есть отдельная "страница" для университета, тогда activeTab может остаться 'universities'
+    // или может быть введен новый тип состояния. Пока оставим как есть, но активная вкладка - universities.
+    setActiveTab('universities'); // Переключаемся на вкладку вузов
+    setSelectedUniversity(universityId); // Выбираем конкретный вуз
+    // setSelectedCareerField(null); // Сбрасываем карьеру, если перешли к вузу
+    // window.scrollTo(0, 0); // Теперь в useEffect
+  };
+
+  const navigateToCareerField = (careerFieldId) => {
+    // Переключаемся на вкладку карьеры и устанавливаем выбранную сферу
+    setActiveTab('career');
+    setSelectedCareerField(careerFieldId);
+    // setSelectedUniversity(null); // Сбрасываем вуз, если перешли к карьере
+    // window.scrollTo(0, 0); // Теперь в useEffect
+  };
+
+  const navigateToUniversitiesByDirection = (directionName) => {
+    // Переключаемся на вкладку вузов, устанавливаем поисковый запрос (фильтр по направлению),
+    // сбрасываем выбор конкретного вуза.
+    setActiveTab('universities');
+    setSearchQuery(directionName); // Устанавливаем фильтр по направлению
+    setSelectedUniversity(null); // Сбрасываем выбор конкретного вуза
+    setSelectedCareerField(null); // Сбрасываем карьеру
+    // window.scrollTo(0, 0); // Теперь в useEffect
+  };
+
+  const navigateToCareerByDirection = (careerFieldId) => {
+    // Переключаемся на вкладку карьеры и устанавливаем выбранную сферу
+    setActiveTab('career');
+    setSelectedCareerField(careerFieldId);
+    setSelectedUniversity(null); // Сбрасываем вуз
+    // window.scrollTo(0, 0); // Теперь в useEffect
   };
   const universities = [
     { id: 1, name: 'Московский государственный университет им. М.В. Ломоносова', location: 'Москва, Ленинские горы, д. 1', students: '40 000', rank: 'Топ-1 в России', type: 'Университет', specialties: ['IT', 'Инженерия', 'Медицина', 'Экономика', 'Право'], shortName: 'МГУ' },
@@ -415,6 +466,10 @@ const App = () => {
     setMapSearchQuery(location.name);
     setShowMapSearchResults(false);
   };
+    // Эффект для прокрутки наверх при изменении ключевых состояний
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [activeTab, selectedUniversity, selectedCareerField]);
   // Обработчик клика вне поискового поля
   useEffect(() => {
     const handleClickOutside = (event) => {
@@ -1588,23 +1643,25 @@ const App = () => {
             {/* Desktop Navigation */}
             <nav className="hidden md:flex items-center space-x-8">
               {[
-                { id: 'home', label: 'Главная', icon: Star },
-                { id: 'map', label: 'Карта', icon: MapPin },
-                { id: 'events', label: 'Мероприятия', icon: Calendar },
-                { id: 'universities', label: 'Вузы и колледжи', icon: GraduationCap },
-                { id: 'career', label: 'Карьера', icon: Briefcase },
-                { id: 'blog', label: 'Блог', icon: BookOpen }
+              { id: 'home', label: 'Главная', icon: Star },
+              { id: 'map', label: 'Карта', icon: MapPin },
+              { id: 'events', label: 'Мероприятия', icon: Calendar },
+              { id: 'universities', label: 'Вузы и колледжи', icon: GraduationCap },
+              { id: 'career', label: 'Карьера', icon: Briefcase },
+              { id: 'blog', label: 'Блог', icon: BookOpen }
               ].map((item) => {
-                const Icon = item.icon;
-                return (
-                  <button
-                    key={item.id}
-                    onClick={() => {
-                      setActiveTab(item.id);
-                      setSelectedUniversity(null);
-                      setSelectedCareerField(null);
-                    }}
-                    className={`flex items-center space-x-2 px-4 py-2 rounded-xl transition-all duration-300 ${
+              const Icon = item.icon;
+              return (
+                <button
+                  key={item.id}
+                  onClick={() => {
+                    setActiveTab(item.id);
+                    setSelectedUniversity(null); // Сбрасываем выбранный вуз при переходе по вкладкам
+                    setSelectedCareerField(null); // Сбрасываем выбранную сферу карьеры
+                    setIsMenuOpen(false); // Закрываем мобильное меню
+                    window.scrollTo(0, 0); // Добавлено: прокрутка вверх при клике на вкладку
+                  }}
+                    className={`flex items-center space-x-2 px-4 py-3 rounded-xl transition-all duration-300 ${
                       activeTab === item.id || (selectedUniversity && item.id === 'universities') || (selectedCareerField && item.id === 'career')
                         ? 'bg-purple-600 text-white'
                         : 'text-gray-300 hover:text-white hover:bg-purple-600/20'
