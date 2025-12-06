@@ -9,7 +9,7 @@ const App = () => {
   const [selectedUniversity, setSelectedUniversity] = useState(null);
   const [showSettings, setShowSettings] = useState(false);
   const [selectedCareerField, setSelectedCareerField] = useState(null);
-  const [currentTheme, setCurrentTheme] = useState('galaxy'); // 'galaxy' или 'light-steel'
+  const [currentTheme, setCurrentTheme] = useState('galaxy'); // Теперь всегда 'galaxy'
   // Состояния для фильтров
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedType, setSelectedType] = useState('Все типы');
@@ -424,11 +424,6 @@ const App = () => {
     setSelectedSpecialty('Все специальности');
     setSelectedCity('Москва');
     setHasPartnership(false);
-  };
-  // Функция для смены темы
-  const changeTheme = (theme) => {
-    setCurrentTheme(theme);
-    setShowSettings(false);
   };
   // Функция для поиска по карте с использованием моковых данных (достопримечательности + вузы)
   const searchMap = async (query) => {
@@ -972,16 +967,7 @@ const App = () => {
                 </div>
               </div>
             </section>
-            {/* Stats */}
-            <section className="grid grid-cols-2 md:grid-cols-4 gap-6 mb-16">
-              {stats.map((stat, index) => (
-                <div key={index} className="bg-gray-800/50 backdrop-blur-sm rounded-2xl p-6 text-center border border-gray-700 hover:border-purple-500 transition-all duration-300">
-                  <div className="text-3xl font-bold text-purple-400 mb-2">{stat.value}</div>
-                  <div className="text-gray-300">{stat.label}</div>
-                </div>
-              ))}
-            </section>
-            {/* How to Start */}
+            {/* How to Start - Теперь содержит статистику */}
             <section className="mb-16">
               <h2 className="text-3xl font-bold mb-8 text-center">Как начать использовать платформу</h2>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -1609,45 +1595,19 @@ const App = () => {
             onClick={() => setShowSettings(false)}
           ></div>
           <div className={`absolute right-4 top-20 w-64 ${
-            currentTheme === 'galaxy' 
-              ? 'bg-gray-800/90 backdrop-blur-lg border border-gray-700' 
-              : 'bg-white/90 backdrop-blur-lg border border-gray-300'
+            // currentTheme === 'galaxy' // Убрано, так как тема теперь фиксирована
+            'bg-gray-800/90 backdrop-blur-lg border border-gray-700' // Применяем стили для 'galaxy' по умолчанию
           } rounded-xl shadow-xl z-40`}>
             <div className="p-4">
               <h3 className={`text-lg font-semibold mb-3 ${
-                currentTheme === 'galaxy' ? 'text-white' : 'text-gray-800'
-              }`}>Настройки темы</h3>
+                // currentTheme === 'galaxy' ? 'text-white' : 'text-gray-800' // Убрано
+                'text-white' // Применяем цвет текста для 'galaxy' по умолчанию
+              }`}>Тема</h3>
               <div className="space-y-2">
-                <button 
-                  onClick={() => changeTheme('galaxy')}
-                  className={`w-full text-left px-3 py-2 rounded-lg ${
-                    currentTheme === 'galaxy' 
-                      ? 'bg-gradient-to-r from-black to-purple-900 text-white border border-purple-700/50' 
-                      : 'bg-gradient-to-r from-gray-700 to-gray-800 text-white border border-gray-600'
-                  } hover:from-purple-900 hover:to-purple-800 transition-all duration-200`}
-                >
-                  🌌 Galaxy (Default)
-                </button>
-                <button 
-                  onClick={() => changeTheme('light-steel')}
-                  className={`w-full text-left px-3 py-2 rounded-lg ${
-                    currentTheme === 'light-steel' 
-                      ? 'bg-gradient-to-r from-gray-400 to-gray-500 text-gray-800 border border-gray-400' 
-                      : 'bg-gradient-to-r from-gray-200 to-gray-300 text-gray-800 border border-gray-300'
-                  } hover:from-gray-300 hover:to-gray-400 transition-all duration-200`}
-                >
-                  ☀️ Light Steel
-                </button>
-                <button 
-                  onClick={() => changeTheme('dark-gold')}
-                  className={`w-full text-left px-3 py-2 rounded-lg ${
-                    currentTheme === 'dark-gold' 
-                      ? 'bg-gradient-to-r from-gray-800 to-gray-900 text-white border border-gray-600' 
-                      : 'bg-gradient-to-r from-gray-600 to-gray-700 text-white border border-gray-500'
-                  } hover:from-gray-700 hover:to-gray-800 transition-all duration-200`}
-                >
-                  ⚫ Dark gold
-                </button>
+                {/* Все кнопки выбора темы убраны */}
+                <div className="px-3 py-2 text-sm text-gray-300">
+                  🌌 Galaxy (Текущая тема)
+                </div>
               </div>
             </div>
           </div>
