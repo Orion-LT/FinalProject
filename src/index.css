@@ -1,33 +1,39 @@
+/* src/index.css */
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 /* --- Фикс масштаба --- */
-/* Определяем базовую ширину, относительно которой будет рассчитываться масштаб */
 :root {
-  --base-width: 1920; /* Базовая ширина в пикселях */
-  --scale-factor: calc((100vw / var(--base-width)) * 100); /* Масштабный множитель в процентах */
-  --min-scale: 0.8; /* Минимальный масштаб (например, для очень узких экранов) */
-  --max-scale: 1.5; /* Максимальный масштаб (например, для очень широких экранов) */
+  --base-width: 1920;
+  --scale-factor: calc((100vw / var(--base-width)) * 100);
+  --min-scale: 0.8;
+  --max-scale: 1.5;
 }
 
-/* Применяем масштабирование к корню документа */
+/* Применяем масштабирование к корневому элементу html */
 html {
-  /* Используем transform: scale для масштабирования всего содержимого */
-  /* clamp ограничивает масштаб между min и max значениями */
   transform: scale(clamp(var(--min-scale), calc(var(--scale-factor) / 100), var(--max-scale)));
   transform-origin: 0 0; /* Масштабируем от верхнего левого угла */
-  width: calc(100% / clamp(var(--min-scale), calc(var(--scale-factor) / 100), var(--max-scale))); /* Компенсируем ширину для scroll */
-  height: calc(100% / clamp(var(--min-scale), calc(var(--scale-factor) / 100), var(--max-scale))); /* Компенсируем высоту */
-  /* Альтернатива: можно использовать overflow: hidden на html/body, но это может скрыть scrollbars */
+  /* Компенсируем размеры, чтобы избежать скролла */
+  width: calc(100% / clamp(var(--min-scale), calc(var(--scale-factor) / 100), var(--max-scale)));
+  height: calc(100% / clamp(var(--min-scale), calc(var(--scale-factor) / 100), var(--max-scale)));
+  /* Убедитесь, что фон html соответствует фону body */
+  background-color: inherit; /* Наследует фон от body или задайте явно */
+  overflow-x: hidden; /* Скрываем горизонтальный скролл, если он появляется */
+  /* overflow-y: auto; /* Оставляем вертикальный скролл по умолчанию */
 }
 
-/* ВАЖНО: Убедитесь, что body не имеет padding/margin, которые могут исказить масштаб */
+/* Убираем трансформацию с body, если она была */
 body {
   margin: 0;
   padding: 0;
-  overflow-x: hidden; /* Рекомендуется, так как масштабирование может изменить воспринимаемую ширину */
-  /* overflow-y: auto; /* Оставьте по умолчанию для вертикального скролла */
+  /* document.body.style.transform = ... УДАЛЯЕТСЯ ИЗ App.js */
+  /* Убедитесь, что фон body установлен */
+  /* background-color: #...; или используйте Tailwind классы на div.root */
+  /* overflow-x: hidden; УДАЛЯЕТСЯ ИЗ App.js */
+  /* overflow-y: auto; по умолчанию */
 }
 
 /* --- Конец фикса масштаба --- */

@@ -10,44 +10,6 @@ const App = () => {
   const [showSettings, setShowSettings] = useState(false);
   const [selectedCareerField, setSelectedCareerField] = useState(null);
   const [currentTheme, setCurrentTheme] = useState('galaxy'); // 'galaxy' или 'light-steel'
-
-  // Эффект для установки масштаба при загрузке
-  useEffect(() => {
-    const setInitialScale = () => {
-      const referenceWidth = 1920; // Эталонная ширина
-      const currentScreenWidth = window.screen.width; // Физическая ширина экрана
-
-      // Рассчитываем масштаб
-      let scale = currentScreenWidth / referenceWidth;
-
-      // Устанавливаем ограничения на масштаб (например, от 0.8 до 1.5)
-      const minScale = 0.8;
-      const maxScale = 1.5;
-      scale = Math.max(minScale, Math.min(maxScale, scale));
-
-      // Применяем масштаб к корневому элементу (body)
-      // Используем document.body.style.transform
-      document.body.style.transform = `scale(${scale})`;
-      document.body.style.transformOrigin = '0 0'; // Масштабируем от левого верхнего угла
-      // Компенсируем ширину, чтобы избежать горизонтального скролла из-за масштаба
-      document.body.style.width = `${100 / scale}%`;
-      document.body.style.height = `${100 / scale}%`;
-      // Рекомендуется скрыть горизонтальный скролл, если он появляется из-за масштаба
-      document.body.style.overflowX = 'hidden';
-      // document.body.style.overflowY = 'auto'; // Оставьте вертикальный скролл по умолчанию
-    };
-
-    // Вызываем функцию при загрузке
-    setInitialScale();
-
-    // При необходимости, можно добавить обработчик resize
-    // window.addEventListener('resize', setInitialScale); // ВНИМАНИЕ: срабатывает часто!
-
-    // Функция очистки (необязательно, если не добавляете resize listener)
-    // return () => {
-    //   window.removeEventListener('resize', setInitialScale);
-    // };
-  }, []);
   // Состояния для фильтров
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedType, setSelectedType] = useState('Все типы');
