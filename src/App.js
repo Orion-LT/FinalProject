@@ -31,6 +31,7 @@ const App = () => {
   const [showMapSearchResults, setShowMapSearchResults] = useState(false);
   const [selectedLocation, setSelectedLocation] = useState(null);
   const mapSearchRef = useRef(null);
+
   const stats = [
     { value: '50+', label: 'Мероприятий' },
     { value: '25+', label: 'ВУЗов-партнеров' },
@@ -279,6 +280,7 @@ const App = () => {
     { id: 5, title: 'Хакатон "Эконом-код"', date: '2025-02-10', time: '12:00', location: 'НИУ ВШЭ, главный корпус', participants: '200' },
     { id: 6, title: 'Воркшоп по социологии', date: '2025-02-14', time: '18:00', location: 'НИУ ВШЭ, лаборатория социологии', participants: '55' }
   ];
+  
   // Ближайшие мероприятия для НИУ МГСУ
   const mgsuEvents = [
     { id: 1, title: 'Мастер-класс по архитектуре', date: '2025-01-25', time: '17:30', location: 'НИУ МГСУ, главный корпус, ауд. 301', participants: '70' },
@@ -425,7 +427,7 @@ const App = () => {
     setSelectedCity('Москва');
     setHasPartnership(false);
   };
-  // Функция для поиска по карте с использованием моковых данных (достопримечательности + вузы)
+   // --- НОВАЯ ФУНКЦИЯ УМНОГО ПОИСКА ДЛЯ КАРТЫ ---
   const searchMap = async (query) => {
     if (query.length < 2) {
       setMapSearchResults([]);
@@ -433,93 +435,50 @@ const App = () => {
       return;
     }
 
-    // Список 25 популярных достопримечательностей Москвы (с приблизительными координатами)
-    const landmarks = [
-      { id: 'kremlin', name: 'Московский Кремль', address: 'Москва, Красная площадь, 1', lat: 55.75222, lng: 37.61556 },
-      { id: 'red_square', name: 'Красная площадь', address: 'Москва, Красная площадь', lat: 55.75363, lng: 37.61946 },
-      { id: 'stbasil', name: 'Храм Василия Блаженного', address: 'Москва, Красная площадь', lat: 55.75363, lng: 37.61946 },
-      { id: 'spas', name: 'Храм Христа Спасителя', address: 'Москва, Волхонка, 15', lat: 55.74472, lng: 37.59639 },
-      { id: 'vdnh', name: 'ВДНХ', address: 'Москва, проспект Мира, 154', lat: 55.82857, lng: 37.64253 },
-      { id: 'gum', name: 'ГУМ', address: 'Москва, Красная площадь, 3', lat: 55.75667, lng: 37.61819 },
-      { id: 'tsm', name: 'ЦУМ', address: 'Москва, Петровка, 2', lat: 55.75889, lng: 37.61917 },
-      { id: 'mskcity', name: 'Москва-Сити', address: 'Москва, Пресненская набережная, 2', lat: 55.74833, lng: 37.53667 },
-      { id: 'parkpobedy', name: 'Парк Победы', address: 'Москва, Поклонная гора, 3', lat: 55.73417, lng: 37.54556 },
-      { id: 'izmailovo', name: 'Парк Измайловский', address: 'Москва, Измайловский проспект', lat: 55.78500, lng: 37.78333 },
-      { id: 'kolomenskoe', name: 'Музей-заповедник "Коломенское"', address: 'Москва, Андреевка, 1', lat: 55.68583, lng: 37.65833 },
-      { id: 'novodevichy', name: 'Новодевичий монастырь', address: 'Москва, Ленинский проспект, 1', lat: 55.72917, lng: 37.56111 },
-      { id: 'tretyakov', name: 'Государственная Третьяковская галерея', address: 'Москва, Лаврушинский переулок, 10', lat: 55.74306, lng: 37.62222 },
-      { id: 'pushkin', name: 'Государственный музей изобразительных искусств имени А.С. Пушкина', address: 'Москва, Волхонка, 12', lat: 55.74583, lng: 37.60389 },
-      { id: 'zoopark', name: 'Московский зоопарк', address: 'Москва, Ленинградский проспект, 1', lat: 55.76167, lng: 37.55944 },
-      { id: 'bk', name: 'Ботанический сад МГУ', address: 'Москва, Профсоюзная улица, 65', lat: 55.69917, lng: 37.53917 },
-      { id: 'cathedral_christ_saviour', name: 'Собор Христа Спасителя', address: 'Москва, Волхонка, 15', lat: 55.74472, lng: 37.59639 },
-      { id: 'izmailovsky_market', name: 'Измайловский рынок (Голицыно)', address: 'Москва, Измайловский проспект', lat: 55.78500, lng: 37.78333 },
-      { id: 'gorky_park', name: 'Парк Горького', address: 'Москва, Крымский вал, 9', lat: 55.72917, lng: 37.59333 },
-      { id: 'sokolniki', name: 'Парк Сокольники', address: 'Москва, ул. Сокольнический Вал', lat: 55.77500, lng: 37.66667 },
-      { id: 'safonovskaya_gora', name: 'Сафоновская гора', address: 'Москва, ул. Сафоновская', lat: 55.74306, lng: 37.58611 },
-      { id: 'kolomenskoye_park', name: 'Коломенское', address: 'Москва, Андреевка, 1', lat: 55.68583, lng: 37.65833 },
-      { id: 'zaryadye', name: 'Парк Зарядье', address: 'Москва, Варварка, 2', lat: 55.75417, lng: 37.62250 },
-      { id: 'patriarch_ponds', name: 'Патриаршие пруды', address: 'Москва, ул. Патриарший пруд, 4', lat: 55.75889, lng: 37.59500 },
-      { id: 'chistye_prudy', name: 'Чистые пруды', address: 'Москва, ул. Бармалеева', lat: 55.76111, lng: 37.63000 },
-    ];
+    try {
+      // Используем публичный Nominatim для демонстрации
+      // Для реального проекта с Яндекс Картами нужно использовать Яндекс Geocoder API
+      const response = await fetch(`https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(query)}&format=json&limit=5`);
+      const data = await response.json();
 
-    // Список вузов (с условными координатами на основе адреса)
-    // Важно: эти координаты нужно уточнить вручную или через API
-      const universitiesForSearch = [
-    { id: `uni-1`, name: 'Московский государственный университет им. М.В. Ломоносова', address: 'Москва, Ленинские горы, д. 1', lat: 55.70289, lng: 37.53119, shortName: 'МГУ' },
-    { id: `uni-2`, name: 'Московский физико-технический институт', address: 'Москва, Институтский пер., д. 9', lat: 55.91778, lng: 37.55833, shortName: 'МФТИ' },
-    { id: `uni-3`, name: 'Национальный исследовательский ядерный университет "МИФИ"', address: 'Москва, Каширское ш., д. 31', lat: 55.62417, lng: 37.67500, shortName: 'НИЯУ МИФИ' },
-    { id: `uni-4`, name: 'Университет науки и технологий МИСИС', address: 'Москва, Ленинский пр., д. 65', lat: 55.67611, lng: 37.56361, shortName: 'МИСИС' },
-    { id: `uni-5`, name: 'Российский национальный исследовательский медицинский университет им. Н.И. Пирогова', address: 'Москва, ул. Островитянова, д. 1', lat: 55.64222, lng: 37.49500, shortName: 'РНИМУ им. Пирогова' },
-    { id: `uni-6`, name: 'Московский авиационный институт', address: 'Москва, Волоколамское ш., д. 4', lat: 55.81250, lng: 37.46333, shortName: 'МАИ' },
-    { id: `uni-7`, name: 'Национальный исследовательский университет «Московский институт электронной техники»', address: 'Москва, Зеленоград, площадь Шокина, д. 1', lat: 56.00833, lng: 37.20000, shortName: 'НИУ МЭИ' },
-    { id: `uni-8`, name: 'Московский государственный технический университет им. Н.Э. Баумана', address: 'Москва, 2-я Бауманская ул., д. 5', lat: 55.78056, lng: 37.67639, shortName: 'МГТУ им. Баумана' },
-    { id: `uni-9`, name: 'Российский государственный университет нефти и газа (национальный исследовательский университет) им. И.М. Губкина', address: 'Москва, Ленинский пр., д. 65', lat: 55.67611, lng: 37.56361, shortName: 'РГУНГ им. Губкина' },
-    { id: `uni-10`, name: 'Национальный исследовательский университет "МЭИ"', address: 'Москва, ул. Красноказарменная, д. 14', lat: 55.70722, lng: 37.66389, shortName: 'НИУ МЭИ' },
-    { id: `uni-11`, name: 'Национальный исследовательский университет "Высшая школа экономики"', address: 'Москва, ул. Мясницкая, д. 20', lat: 55.76111, lng: 37.63000, shortName: 'НИУ ВШЭ' },
-    { id: `uni-12`, name: 'Национальный исследовательский Московский государственный строительный университет', address: 'Москва, Ярославское ш., д. 26', lat: 55.83056, lng: 37.67889, shortName: 'НИУ МГСУ' },
-    { id: `uni-13`, name: 'Московский государственный институт международных отношений Министерства иностранных дел РФ', address: 'Москва, ул. Пречистенка, д. 29', lat: 55.74417, lng: 37.59667, shortName: 'МГИМО' },
-    { id: `uni-14`, name: 'Первый Московский государственный медицинский университет им. И.М. Сеченова', address: 'Москва, ул. Трубецкая, д. 8, стр. 2', lat: 55.75389, lng: 37.62139, shortName: 'Первый МГМУ им. Сеченова' },
-    { id: `uni-15`, name: 'Московский городской педагогический университет', address: 'Москва, 2-й Сельскохозяйственный проезд, д. 4', lat: 55.79167, lng: 37.53333, shortName: 'МГППУ' },
-    { id: `uni-16`, name: 'Московский государственный лингвистический университет', address: 'Москва, ул. Остоженка, д. 38', lat: 55.74028, lng: 37.60139, shortName: 'МГЛУ' },
-    { id: `uni-17`, name: 'Московский государственный юридический университет им. О.Е. Кутафина', address: 'Москва, ул. Садовая-Кудринская, д. 9', lat: 55.75833, lng: 37.59500, shortName: 'МГЮА им. Кутафина' },
-    { id: `uni-18`, name: 'Финансовый университет при Правительстве Российской Федерации', address: 'Москва, ул. Ленинградский пр., д. 49', lat: 55.80167, lng: 37.44611, shortName: 'Финансовый университет' },
-    { id: `uni-19`, name: 'Российский химико-технологический университет им. Д.И. Менделеева', address: 'Москва, ул. Мира, д. 26', lat: 55.79583, lng: 37.60833, shortName: 'РХТУ им. Менделеева' },
-    { id: `uni-20`, name: 'Российский университет медицины', address: 'Москва, ул. Делегатская, д. 20, стр. 1', lat: 55.73278, lng: 37.56139, shortName: 'РУМ' },
-    { id: `uni-21`, name: 'Всероссийский государственный университет кинематографии им. С.А. Герасимова', address: 'Москва, ул. Вильгельма Пика, д. 3', lat: 55.72500, lng: 37.47667, shortName: 'ВГУК им. Герасимова' },
-    { id: `uni-22`, name: 'Московский государственный психолого-педагогический университет', address: 'Москва, ул. Сретенка, д. 29', lat: 55.75833, lng: 37.63000, shortName: 'МГППУ' },
-    { id: `uni-23`, name: 'Российский экономический университет им. Г.В. Плеханова', address: 'Москва, ул. Стремянный пер., д. 36', lat: 55.74833, lng: 37.62500, shortName: 'РЭУ им. Плеханова' },
-    { id: `uni-24`, name: 'Государственный академический университет гуманитарных наук', address: 'Москва, Мароновский переулок, д. 26', lat: 55.75833, lng: 37.60500, shortName: 'ГАУГН' },
-    { id: `uni-25`, name: 'Московский политехнический университет', address: 'Москва, ул. Большая Семёновская, д. 38', lat: 55.77667, lng: 37.70333, shortName: 'Московский политех' },
-  ];
+      // Преобразуем полученные данные в нужный формат
+      const results = data.map((place, index) => ({
+        id: place.osm_id || index,
+        name: place.display_name,
+        address: place.display_name,
+        lat: parseFloat(place.lat),
+        lng: parseFloat(place.lon)
+      }));
 
-    // Объединяем достопримечательности и вузы
-    const allSearchableItems = [...landmarks, ...universitiesForSearch];
+      setMapSearchResults(results);
+      setShowMapSearchResults(true);
 
-    // Фильтруем по названию и адресу
-    const filtered = allSearchableItems.filter(item =>
-      item.name.toLowerCase().includes(query.toLowerCase()) ||
-      item.address.toLowerCase().includes(query.toLowerCase())
-    );
-
-    setMapSearchResults(filtered);
-    setShowMapSearchResults(true);
+    } catch (error) {
+      console.error('Ошибка поиска на карте:', error);
+      // В случае ошибки API, можно показать сообщение пользователю или использовать моковые данные
+      // setMapSearchResults([
+      //   { id: 1, name: `Mock Result for: ${query}`, address: 'Mock Address', lat: 55.7558, lng: 37.6176 }
+      // ]);
+      setMapSearchResults([]); // Или очистить результаты
+      setShowMapSearchResults(true); // Или false, если не хотите показывать пустой список при ошибке
+    }
   };
+  // --- КОНЕЦ НОВОЙ ФУНКЦИИ ---
+
   // Обработчик ввода в поисковое поле карты
   const handleMapSearchChange = (e) => {
     const value = e.target.value;
     setMapSearchQuery(value);
-    searchMap(value);
+    searchMap(value); // Вызываем функцию поиска
   };
+
   // Обработчик выбора результата поиска
   const handleSelectLocation = (location) => {
     setSelectedLocation(location);
-    setMapSearchQuery(location.name);
-    setShowMapSearchResults(false);
+    setMapSearchQuery(location.name); // Обновляем поле ввода
+    setShowMapSearchResults(false); // Скрываем результаты
   };
-    // Эффект для прокрутки наверх при изменении ключевых состояний
-  useEffect(() => {
-    window.scrollTo(0, 0);
-  }, [activeTab, selectedUniversity, selectedCareerField]);
+
   // Обработчик клика вне поискового поля
   useEffect(() => {
     const handleClickOutside = (event) => {
@@ -527,6 +486,7 @@ const App = () => {
         setShowMapSearchResults(false);
       }
     };
+
     document.addEventListener('mousedown', handleClickOutside);
     return () => {
       document.removeEventListener('mousedown', handleClickOutside);
@@ -1091,7 +1051,7 @@ const App = () => {
             </section>
           </div>
         );
-            case 'map':
+        case 'map':
         return (
           <div className="py-8">
             <h1 className="text-4xl font-bold mb-8 text-center">🗺️ Карта профориентационных мероприятий Москвы</h1>
@@ -1223,8 +1183,8 @@ const App = () => {
                   {/* Яндекс.Карта через iframe */}
                   <iframe
                     src={selectedLocation 
-                      ? `https://yandex.ru/map-widget/v1/?ll=  ${selectedLocation.lng}%2C${selectedLocation.lat}&z=16&l=map` 
-                      : "https://yandex.ru/map-widget/v1/?um=constructor%3A1b5e8a3f0b5e8a3f0b5e8a3f0b5e8a3f0b5e8a3f0b5e8a3f0b5e8a3f0b5e8a3f&amp  ;source=constructor"}
+                      ? `https://yandex.ru/map-widget/v1/?ll=${selectedLocation.lng}%2C${selectedLocation.lat}&z=16&l=map` 
+                      : "https://yandex.ru/map-widget/v1/?um=constructor%3A1b5e8a3f0b5e8a3f0b5e8a3f0b5e8a3f0b5e8a3f0b5e8a3f0b5e8a3f0b5e8a3f&source=constructor"}
                     width="100%"
                     height="100%"
                     className="border-0"
