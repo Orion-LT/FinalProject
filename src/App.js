@@ -427,43 +427,43 @@ const App = () => {
     setSelectedCity('Москва');
     setHasPartnership(false);
   };
-   // --- НОВАЯ ФУНКЦИЯ УМНОГО ПОИСКА ДЛЯ КАРТЫ ---
-  const searchMap = async (query) => {
-    if (query.length < 2) {
-      setMapSearchResults([]);
-      setShowMapSearchResults(false);
-      return;
-    }
+   // --- НОВАЯ ФУНКЦИЯ УМНОГО ПОИСКА ДЛЯ КАРТЫ (только Москва и МО) ---
+const searchMap = async (query) => {
+  if (query.length < 2) {
+    setMapSearchResults([]);
+    setShowMapSearchResults(false);
+    return;
+  }
 
-    try {
-      // Используем публичный Nominatim для демонстрации
-      // Для реального проекта с Яндекс Картами нужно использовать Яндекс Geocoder API
-      const response = await fetch(`https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(query)}&format=json&limit=5`);
-      const data = await response.json();
+  try {
+    // Определяем границы Московской области (примерные координаты)
+    // viewbox: left, bottom, right, top (minLon, minLat, maxLon, maxLat)
+    const moscowMOViewBox = "36.8955,54.6477,38.5299,56.0093"; 
 
-      // Преобразуем полученные данные в нужный формат
-      const results = data.map((place, index) => ({
-        id: place.osm_id || index,
-        name: place.display_name,
-        address: place.display_name,
-        lat: parseFloat(place.lat),
-        lng: parseFloat(place.lon)
-      }));
+    const response = await fetch(
+      `https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(query)}&format=json&limit=5&viewbox=${moscowMOViewBox}&bounded=1`
+    );
+    const data = await response.json();
 
-      setMapSearchResults(results);
-      setShowMapSearchResults(true);
+    // Преобразуем полученные данные в нужный формат
+    const results = data.map((place, index) => ({
+      id: place.osm_id || index,
+      name: place.display_name,
+      address: place.display_name,
+      lat: parseFloat(place.lat),
+      lng: parseFloat(place.lon)
+    }));
 
-    } catch (error) {
-      console.error('Ошибка поиска на карте:', error);
-      // В случае ошибки API, можно показать сообщение пользователю или использовать моковые данные
-      // setMapSearchResults([
-      //   { id: 1, name: `Mock Result for: ${query}`, address: 'Mock Address', lat: 55.7558, lng: 37.6176 }
-      // ]);
-      setMapSearchResults([]); // Или очистить результаты
-      setShowMapSearchResults(true); // Или false, если не хотите показывать пустой список при ошибке
-    }
-  };
-  // --- КОНЕЦ НОВОЙ ФУНКЦИИ ---
+    setMapSearchResults(results);
+    setShowMapSearchResults(true);
+
+  } catch (error) {
+    console.error('Ошибка поиска на карте:', error);
+    setMapSearchResults([]);
+    setShowMapSearchResults(true); // Показываем, что запрос был, даже если ошибка
+  }
+};
+// --- КОНЕЦ НОВОЙ ФУНКЦИИ ---
 
   // Обработчик ввода в поисковое поле карты
   const handleMapSearchChange = (e) => {
