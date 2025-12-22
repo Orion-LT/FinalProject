@@ -427,72 +427,97 @@
       setSelectedCity('Москва');
       setHasPartnership(false);
     };
-    // --- ОПТИМИЗИРОВАННАЯ ФУНКЦИЯ УМНОГО ПОИСКА С КЕШИРОВАНИЕМ ---
-  const searchMap = async (query) => {
-    if (query.length < 2) {
-      setMapSearchResults([]);
-      setShowMapSearchResults(false);
-      return;
+    // --- ОПТИМИЗИРОВАННАЯ ФУНКЦИЯ УМНОГО ПОИСКА С КЕШИРОВАНИЕМ И УЛУЧШЕННЫМ ВЫВОДОМ ---
+const searchMap = async (query) => {
+  if (query.length < 2) {
+    setMapSearchResults([]);
+    setShowMapSearchResults(false);
+    return;
+  }
+
+  // Проверяем кеш
+  if (searchCache.has(query)) {
+    // Если результат уже есть в кеше, используем его
+    const cachedResults = searchCache.get(query);
+    setMapSearchResults(cachedResults);
+    setShowMapSearchResults(true);
+    return; // Выходим, не делая запрос
+  }
+
+  try {
+    // Определяем границы Московской области (примерные координаты)
+    // viewbox: left, bottom, right, top (minLon, minLat, maxLon, maxLat)
+    const moscowMOViewBox = "36.8955,54.6477,38.5299,56.0093";
+
+    // Добавляем addressdetails=1 для получения структурированных данных
+    const response = await fetch(
+      `https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(query)}&format=json&limit=5&viewbox=${moscowMOViewBox}&bounded=1&addressdetails=1`
+    );
+
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
     }
 
-    // Проверяем кеш
-    if (searchCache.has(query)) {
-      // Если результат уже есть в кеше, используем его
-      const cachedResults = searchCache.get(query);
-      setMapSearchResults(cachedResults);
-      setShowMapSearchResults(true);
-      return; // Выходим, не делая запрос
-    }
+    const data = await response.json();
 
-    try {
-      // Определяем границы Московской области (примерные координаты)
-      // viewbox: left, bottom, right, top (minLon, minLat, maxLon, maxLat)
-      const moscowMOViewBox = "36.8955,54.6477,38.5299,56.0093";
+    // Преобразуем полученные данные в нужный формат
+    const results = data.map((place, index) => {
+      // Извлекаем название места (name) и адрес (city, street, house_number)
+      const addressDetails = place.address || {};
+      const name = place.display_name.split(',')[0].trim(); // Берем первую часть до запятой как название
 
-      const response = await fetch(
-        `https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(query)}&format=json&limit=5&viewbox=${moscowMOViewBox}&bounded=1`
-      );
-
-      if (!response.ok) {
-        // Обработка ошибок HTTP (например, 429 Too Many Requests)
-        throw new Error(`HTTP error! status: ${response.status}`);
+      // Формируем короткий адрес: город, улица, номер дома
+      let shortAddress = '';
+      if (addressDetails.city) {
+        shortAddress += addressDetails.city;
+      } else if (addressDetails.town) {
+        shortAddress += addressDetails.town;
+      } else if (addressDetails.village) {
+        shortAddress += addressDetails.village;
       }
 
-      const data = await response.json();
+      if (addressDetails.road) {
+        if (shortAddress) shortAddress += ', ';
+        shortAddress += addressDetails.road;
+      }
 
-      // Преобразуем полученные данные в нужный формат
-      const results = data.map((place, index) => ({
+      if (addressDetails.house_number) {
+        shortAddress += ' ' + addressDetails.house_number;
+      }
+
+      // Если не удалось сформировать короткий адрес, используем display_name
+      if (!shortAddress) {
+        shortAddress = place.display_name;
+      }
+
+      return {
         id: place.osm_id || index,
-        name: place.display_name,
-        address: place.display_name,
+        name: name,
+        address: shortAddress, // Используем короткий адрес
         lat: parseFloat(place.lat),
         lng: parseFloat(place.lon)
-      }));
+      };
+    });
 
-      // Сохраняем результат в кеш перед обновлением состояния
-      searchCache.set(query, results);
+    // Сохраняем результат в кеш перед обновлением состояния
+    searchCache.set(query, results);
 
-      // Управляем размером кеша (например, ограничим 100 записями)
-      if (searchCache.size > 100) {
-        // Удаляем первую (самую старую) запись
-        const firstKey = searchCache.keys().next().value;
-        searchCache.delete(firstKey);
-      }
-
-      setMapSearchResults(results);
-      setShowMapSearchResults(true);
-
-    } catch (error) {
-      console.error('Ошибка поиска на карте:', error);
-      // В случае ошибки API, можно показать сообщение пользователю или использовать моковые данные
-      // setMapSearchResults([
-      //   { id: 1, name: `Mock Result for: ${query}`, address: 'Mock Address', lat: 55.7558, lng: 37.6176 }
-      // ]);
-      setMapSearchResults([]); // Или очистить результаты
-      setShowMapSearchResults(true); // Или false, если не хотите показывать пустой список при ошибке
+    // Управляем размером кеша
+    if (searchCache.size > 100) {
+      const firstKey = searchCache.keys().next().value;
+      searchCache.delete(firstKey);
     }
-  };
-  // --- КОНЕЦ ОПТИМИЗИРОВАННОЙ ФУНКЦИИ ---
+
+    setMapSearchResults(results);
+    setShowMapSearchResults(true);
+
+  } catch (error) {
+    console.error('Ошибка поиска на карте:', error);
+    setMapSearchResults([]);
+    setShowMapSearchResults(true);
+  }
+};
+// --- КОНЕЦ ОПТИМИЗИРОВАННОЙ ФУНКЦИИ ---
 
     // Обработчик ввода в поисковое поле карты
     const handleMapSearchChange = (e) => {
