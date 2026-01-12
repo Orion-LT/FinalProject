@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { Star, MapPin, Calendar, GraduationCap, Briefcase, BookOpen, UserPlus, User, X, Filter, Search, Building2, Users2, Globe2, ArrowLeft, Settings, Sun, Moon, Award, ChevronRight, Mail, Phone, Globe, Shield, FileText, Instagram, Youtube, Linkedin, Twitter, Facebook, MapPin as MapPinIcon } from 'lucide-react';
+import { Star, MapPin, Calendar, GraduationCap, Briefcase, BookOpen, UserPlus, User, X, Filter, Search, Building2, Users2, Globe2, ArrowLeft, Settings, Sun, Moon, Award, ChevronRight, Mail, Phone, Globe, Shield, FileText, Instagram, Youtube, Linkedin, Twitter, Facebook, MapPin as MapPinIcon, ChevronLeft } from 'lucide-react';
 
 const App = () => {
   const [activeTab, setActiveTab] = useState('home');
@@ -23,6 +23,8 @@ const App = () => {
   const [showMapSearchResults, setShowMapSearchResults] = useState(false);
   const [selectedLocation, setSelectedLocation] = useState(null);
   const mapSearchRef = useRef(null);
+  const [currentDate, setCurrentDate] = useState(new Date());
+  const [selectedDate, setSelectedDate] = useState(new Date());
 
   const universities = [
     { id: 1, name: 'Московский государственный университет имени М.В. Ломоносова', location: 'Москва, Ленинские горы, д. 1', students: '40 000', rank: 'Топ-1 в России', type: 'Университет', specialties: ['IT', 'Инженерия', 'Медицина', 'Экономика', 'Право'], shortName: 'МГУ', website: 'https://msu.ru/', aliases: ['МГУ', 'Ломоносовский университет', 'Московский университет', 'университет Ломоносова'] },
@@ -85,26 +87,6 @@ const App = () => {
     { id: 8, name: 'Финансист', description: 'Анализ финансовых показателей и инвестиционных проектов.', careerFieldId: 4, requiredSkills: ['Excel', 'Финансовый анализ', 'Бухгалтерия', 'МСФО'] },
     { id: 9, name: 'Юрист', description: 'Правовое сопровождение, консультации, составление документов.', careerFieldId: 5, requiredSkills: ['Гражданское право', 'Уголовное право', 'Договорное право', 'Судебная практика'] },
     { id: 10, name: 'Психолог', description: 'Диагностика, консультирование, психотерапия.', careerFieldId: 6, requiredSkills: ['Психодиагностика', 'Психотерапия', 'Консультирование', 'Психология развития'] },
-  ];
-
-  const events = [
-    { id: 1, title: 'Хакатон "Технологии будущего"', date: '2025-01-15', time: '10:00', location: 'Москва, Технопарк', participants: 150 },
-    { id: 2, title: 'Карьерная ярмарка IT', date: '2025-01-20', time: '14:00', location: 'Москва, ВДНХ', participants: 300 },
-    { id: 3, title: 'Медицинский форум', date: '2025-01-25', time: '09:00', location: 'Москва, Центральный зал', participants: 200 },
-    { id: 4, title: 'Бизнес-лига', date: '2025-02-01', time: '18:00', location: 'Москва, БЦ "Сити"', participants: 120 },
-    { id: 5, title: 'Конференция "Право будущего"', date: '2025-02-06', time: '16:00', location: 'МГЮА им. Кутафина, конференц-зал', participants: 125 },
-    { id: 6, title: 'Вебинар по юриспруденции', date: '2025-02-02', time: '22:00', location: 'Онлайн', participants: 145 },
-    { id: 7, title: 'Мастер-класс по политологии', date: '2025-02-09', time: '19:00', location: 'МГЮА им. Кутафина, политологический факультет', participants: 70 },
-    { id: 8, title: 'Хакатон "Право-код"', date: '2025-02-16', time: '15:00', location: 'МГЮА им. Кутафина, главный корпус', participants: 230 },
-    { id: 9, title: 'Воркшоп по международному праву', date: '2025-02-20', time: '21:00', location: 'МГЮА им. Кутафина, международный факультет', participants: 85 },
-    { id: 10, title: 'Мастер-класс по экономике', date: '2025-01-31', time: '20:30', location: 'Финансовый университет, главный корпус, ауд. 301', participants: 100 },
-    { id: 11, title: 'Вебинар по финансам', date: '2025-02-03', time: '22:30', location: 'Онлайн', participants: 150 },
-    { id: 12, title: 'Конференция "Финансы будущего"', date: '2025-02-07', time: '16:30', location: 'Финансовый университет, конференц-зал', participants: 130 },
-    { id: 13, title: 'Мастер-класс по менеджменту', date: '2025-02-10', time: '19:30', location: 'Финансовый университет, менеджмент факультет', participants: 75 },
-    { id: 14, title: 'Хакатон "Фин-код"', date: '2025-02-17', time: '15:30', location: 'Финансовый университет, главный корпус', participants: 235 },
-    { id: 15, title: 'Мастер-класс по машиностроению', date: '2025-02-17', time: '23:00', location: 'Московский политех, машиностроительный факультет', participants: 110 },
-    { id: 16, title: 'Хакатон "Политех-код"', date: '2025-02-24', time: '19:00', location: 'Московский политех, главный корпус', participants: 270 },
-    { id: 17, title: 'Воркшоп по робототехнике', date: '2025-02-28', time: '01:00', location: 'Московский политех, робототехническая лаборатория', participants: 125 },
   ];
 
   const features = [
@@ -191,6 +173,74 @@ const App = () => {
     document.addEventListener('mousedown', handleClickOutside);
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []);
+
+  // Функции для работы с календарем
+  const getDaysInMonth = (date) => {
+    const year = date.getFullYear();
+    const month = date.getMonth();
+    const firstDay = new Date(year, month, 1);
+    const lastDay = new Date(year, month + 1, 0);
+    const daysInMonth = lastDay.getDate();
+    const startingDayOfWeek = firstDay.getDay(); // 0 = воскресенье, 1 = понедельник, ...
+    
+    const days = [];
+    
+    // Добавляем пустые ячейки для дней до начала месяца
+    for (let i = 0; i < startingDayOfWeek; i++) {
+      days.push(null);
+    }
+    
+    // Добавляем дни месяца
+    for (let day = 1; day <= daysInMonth; day++) {
+      days.push(new Date(year, month, day));
+    }
+    
+    return days;
+  };
+
+  const prevMonth = () => {
+    setCurrentDate(new Date(currentDate.getFullYear(), currentDate.getMonth() - 1, 1));
+  };
+
+  const nextMonth = () => {
+    setCurrentDate(new Date(currentDate.getFullYear(), currentDate.getMonth() + 1, 1));
+  };
+
+  const formatDate = (date) => {
+    return date.toLocaleDateString('ru-RU', { 
+      day: 'numeric', 
+      month: 'long', 
+      year: 'numeric' 
+    });
+  };
+
+  const formatMonthYear = (date) => {
+    return date.toLocaleDateString('ru-RU', { 
+      month: 'long', 
+      year: 'numeric' 
+    });
+  };
+
+  const isToday = (date) => {
+    const today = new Date();
+    return date && 
+           date.getDate() === today.getDate() &&
+           date.getMonth() === today.getMonth() &&
+           date.getFullYear() === today.getFullYear();
+  };
+
+  const isSelected = (date) => {
+    return date && 
+           date.getDate() === selectedDate.getDate() &&
+           date.getMonth() === selectedDate.getMonth() &&
+           date.getFullYear() === selectedDate.getFullYear();
+  };
+
+  const handleDateClick = (date) => {
+    if (date) {
+      setSelectedDate(date);
+    }
+  };
 
   const renderContent = () => {
     if (selectedUniversity) {
@@ -649,36 +699,73 @@ const App = () => {
       case 'events':
         return (
           <div className="py-8">
-            <h1 className="text-4xl font-bold mb-8 text-center text-gray-800">📅 Мероприятия</h1>
-            <p className="text-xl text-gray-600 text-center mb-12">Присоединяйтесь к профориентационным событиям</p>
+            <h1 className="text-4xl font-bold mb-8 text-center text-gray-800">📅 Календарь мероприятий</h1>
             
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-              {events.map(event => (
-                <div key={event.id} className="bg-white/90 backdrop-blur-sm rounded-2xl p-6 border border-gray-200 hover:border-blue-500 transition-all duration-300 shadow-md">
-                  <div className="flex items-start mb-4">
-                    <div className="bg-gradient-to-r from-blue-600 to-cyan-600 rounded-xl p-3 mr-4">
-                      <Calendar className="w-6 h-6 text-white" />
-                    </div>
-                    <div className="flex-1">
-                      <h3 className="text-2xl font-bold text-gray-800 mb-2">{event.title}</h3>
-                      <div className="space-y-2 text-gray-600 mb-4">
-                        <p><strong>Дата:</strong> {new Date(event.date).toLocaleDateString('ru-RU')}</p>
-                        <p><strong>Время:</strong> {event.time}</p>
-                        <p><strong>Место:</strong> {event.location}</p>
-                      </div>
-                      <div className="flex items-center justify-between">
-                        <div className="flex items-center text-gray-600">
-                          <Users2 className="w-4 h-4 mr-2" />
-                          {event.participants} участников
-                        </div>
-                        <button className="bg-gradient-to-r from-blue-600 to-cyan-600 hover:from-blue-700 hover:to-cyan-700 px-4 py-2 rounded-lg text-sm font-semibold text-white transition-all duration-300">
-                          Участвовать
-                        </button>
-                      </div>
-                    </div>
-                  </div>
+            <div className="max-w-4xl mx-auto">
+              {/* Заголовок с выбранной датой */}
+              <div className="text-center mb-8">
+                <h2 className="text-2xl font-semibold text-gray-800">
+                  Мероприятия на {formatDate(selectedDate)}
+                </h2>
+              </div>
+              
+              {/* Календарь */}
+              <div className="bg-white/90 backdrop-blur-sm rounded-2xl p-6 border border-gray-200 shadow-lg">
+                <div className="flex items-center justify-between mb-6">
+                  <button 
+                    onClick={prevMonth}
+                    className="p-2 rounded-lg bg-gray-100 hover:bg-gray-200 transition-colors"
+                  >
+                    <ChevronLeft className="w-5 h-5 text-gray-600" />
+                  </button>
+                  
+                  <h2 className="text-xl font-bold text-gray-800">
+                    {formatMonthYear(currentDate)}
+                  </h2>
+                  
+                  <button 
+                    onClick={nextMonth}
+                    className="p-2 rounded-lg bg-gray-100 hover:bg-gray-200 transition-colors"
+                  >
+                    <ChevronRight className="w-5 h-5 text-gray-600" />
+                  </button>
                 </div>
-              ))}
+                
+                <div className="grid grid-cols-7 gap-1 mb-2">
+                  {['Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб', 'Вс'].map(day => (
+                    <div key={day} className="text-center text-sm font-semibold text-gray-600 py-2">
+                      {day}
+                    </div>
+                  ))}
+                </div>
+                
+                <div className="grid grid-cols-7 gap-1">
+                  {getDaysInMonth(currentDate).map((date, index) => (
+                    <div 
+                      key={index}
+                      onClick={() => handleDateClick(date)}
+                      className={`
+                        h-16 flex items-center justify-center cursor-pointer rounded-lg transition-all duration-300
+                        ${date ? 'hover:bg-blue-100' : ''}
+                        ${isSelected(date) ? 'bg-blue-600 text-white' : ''}
+                        ${isToday(date) ? 'border-2 border-blue-500' : ''}
+                        ${!date ? 'invisible' : ''}
+                      `}
+                    >
+                      {date ? date.getDate() : ''}
+                    </div>
+                  ))}
+                </div>
+              </div>
+              
+              {/* Пустое пространство для мероприятий */}
+              <div className="mt-8 bg-white/90 backdrop-blur-sm rounded-2xl p-8 border border-gray-200 shadow-md">
+                <div className="text-center py-12">
+                  <Calendar className="w-16 h-16 text-blue-600 mx-auto mb-4" />
+                  <h3 className="text-2xl font-semibold text-gray-800 mb-2">Мероприятия на {formatDate(selectedDate)}</h3>
+                  <p className="text-gray-600">На выбранную дату пока нет запланированных мероприятий</p>
+                </div>
+              </div>
             </div>
           </div>
         );
@@ -1439,7 +1526,7 @@ const App = () => {
             </div>
           </div>
         </div>
-      )}  
+      )}
     </div>
   );
 };
