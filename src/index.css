@@ -11,7 +11,7 @@
   --min-scale: 0.8;
   --max-scale: 1.5;
 }
-
+  
 /* Применяем масштабирование к корневому элементу html */
 html {
   transform: scale(clamp(var(--min-scale), calc(var(--scale-factor) / 100), var(--max-scale)));
