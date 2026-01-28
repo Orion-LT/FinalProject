@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { Star, MapPin, Calendar, GraduationCap, Briefcase, BookOpen, UserPlus, User, X, Filter, Search, Building2, Users2, Globe2, ArrowLeft, Settings, Sun, Moon, Award, ChevronRight, Mail, Phone, Globe, Shield, FileText, Instagram, Youtube, Linkedin, Twitter, Facebook, MapPin as MapPinIcon, ChevronLeft } from 'lucide-react';
+import { Star, MapPin, Calendar, GraduationCap, Briefcase, BookOpen, UserPlus, User, X, Filter, Search, Building2, Users2, Globe2, ArrowLeft, Settings, Sun, Moon, Award, ChevronRight, Mail, Phone, Globe, Shield, FileText, Instagram, Youtube, Linkedin, Twitter, Facebook, MapPin as MapPinIcon, ChevronLeft, MessageSquare, AtSign, Hash } from 'lucide-react';
 
 const App = () => {
   const [activeTab, setActiveTab] = useState('home');
@@ -87,6 +87,106 @@ const App = () => {
     { id: 8, name: 'Финансист', description: 'Анализ финансовых показателей и инвестиционных проектов.', careerFieldId: 4, requiredSkills: ['Excel', 'Финансовый анализ', 'Бухгалтерия', 'МСФО'] },
     { id: 9, name: 'Юрист', description: 'Правовое сопровождение, консультации, составление документов.', careerFieldId: 5, requiredSkills: ['Гражданское право', 'Уголовное право', 'Договорное право', 'Судебная практика'] },
     { id: 10, name: 'Психолог', description: 'Диагностика, консультирование, психотерапия.', careerFieldId: 6, requiredSkills: ['Психодиагностика', 'Психотерапия', 'Консультирование', 'Психология развития'] },
+  ];
+
+  // Реальные мероприятия из МГУ
+  const events = [
+    {
+      id: 1,
+      title: 'Всероссийская научная конференция студентов и аспирантов',
+      date: '2025-01-20',
+      time: '10:00',
+      location: 'МГУ, Главный корпус, ауд. 301',
+      description: 'Ежегодная конференция для молодых ученых, представителей разных научных направлений',
+      category: 'Наука',
+      participants: 200,
+      organizer: 'МГУ',
+      registrationLink: 'https://msu.ru/science/allevents.html'
+    },
+    {
+      id: 2,
+      title: 'Международная конференция по физике твердого тела',
+      date: '2025-01-22',
+      time: '14:00',
+      location: 'МГУ, Физический факультет, конференц-зал',
+      description: 'Научная конференция с участием ведущих физиков из России и зарубежья',
+      category: 'Наука',
+      participants: 150,
+      organizer: 'МГУ',
+      registrationLink: 'https://msu.ru/science/allevents.html'
+    },
+    {
+      id: 3,
+      title: 'Мастер-класс по машинному обучению',
+      date: '2025-01-25',
+      time: '16:00',
+      location: 'МГУ, Факультет вычислительной математики и кибернетики',
+      description: 'Практический мастер-класс для студентов IT-направлений',
+      category: 'Образование',
+      participants: 80,
+      organizer: 'МГУ',
+      registrationLink: 'https://msu.ru/science/allevents.html'
+    },
+    {
+      id: 4,
+      title: 'Семинар по биохимии и молекулярной биологии',
+      date: '2025-01-28',
+      time: '11:00',
+      location: 'МГУ, Биологический факультет, лаборатория молекулярной биологии',
+      description: 'Научный семинар с презентациями последних исследований',
+      category: 'Наука',
+      participants: 60,
+      organizer: 'МГУ',
+      registrationLink: 'https://msu.ru/science/allevents.html'
+    },
+    {
+      id: 5,
+      title: 'Конференция по международным отношениям',
+      date: '2025-02-01',
+      time: '13:00',
+      location: 'МГУ, Исторический факультет, конференц-зал',
+      description: 'Международная конференция с участием экспертов из разных стран',
+      category: 'Образование',
+      participants: 120,
+      organizer: 'МГУ',
+      registrationLink: 'https://msu.ru/science/allevents.html'
+    },
+    {
+      id: 6,
+      title: 'Научная школа по математическому моделированию',
+      date: '2025-02-05',
+      time: '10:00',
+      location: 'МГУ, Вычислительный центр',
+      description: 'Обучающая научная школа для аспирантов и молодых ученых',
+      category: 'Образование',
+      participants: 75,
+      organizer: 'МГУ',
+      registrationLink: 'https://msu.ru/science/allevents.html'
+    },
+    {
+      id: 7,
+      title: 'Семинар по физике высоких энергий',
+      date: '2025-02-10',
+      time: '15:00',
+      location: 'МГУ, Физический факультет, лаборатория физики частиц',
+      description: 'Ежемесячный семинар с докладами ведущих ученых',
+      category: 'Наука',
+      participants: 50,
+      organizer: 'МГУ',
+      registrationLink: 'https://msu.ru/science/allevents.html'
+    },
+    {
+      id: 8,
+      title: 'Международная конференция по нанотехнологиям',
+      date: '2025-02-15',
+      time: '12:00',
+      location: 'МГУ, Химический факультет, конференц-зал',
+      description: 'Конференция с участием ведущих специалистов в области нанотехнологий',
+      category: 'Наука',
+      participants: 180,
+      organizer: 'МГУ',
+      registrationLink: 'https://msu.ru/science/allevents.html'
+    }
   ];
 
   const features = [
@@ -240,6 +340,13 @@ const App = () => {
     if (date) {
       setSelectedDate(date);
     }
+  };
+
+  // Получаем мероприятия для выбранной даты
+  const getEventsForDate = (date) => {
+    if (!date) return [];
+    const dateString = date.toISOString().split('T')[0]; // Преобразуем в формат YYYY-MM-DD
+    return events.filter(event => event.date === dateString);
   };
 
   const renderContent = () => {
@@ -758,13 +865,48 @@ const App = () => {
                 </div>
               </div>
               
-              {/* Пустое пространство для мероприятий */}
+              {/* Список мероприятий на выбранную дату */}
               <div className="mt-8 bg-white/90 backdrop-blur-sm rounded-2xl p-8 border border-gray-200 shadow-md">
-                <div className="text-center py-12">
-                  <Calendar className="w-16 h-16 text-blue-600 mx-auto mb-4" />
-                  <h3 className="text-2xl font-semibold text-gray-800 mb-2">Мероприятия на {formatDate(selectedDate)}</h3>
-                  <p className="text-gray-600">На выбранную дату пока нет запланированных мероприятий</p>
-                </div>
+                <h3 className="text-xl font-bold mb-6 text-gray-800">Мероприятия на {formatDate(selectedDate)}</h3>
+                
+                {getEventsForDate(selectedDate).length > 0 ? (
+                  <div className="space-y-6">
+                    {getEventsForDate(selectedDate).map(event => (
+                      <div 
+                        key={event.id}
+                        className="bg-gradient-to-r from-blue-50 to-cyan-50 rounded-xl p-6 border border-blue-200 shadow-sm"
+                      >
+                        <div className="flex items-start justify-between">
+                          <div className="flex-1">
+                            <h4 className="text-xl font-bold text-gray-800 mb-2">{event.title}</h4>
+                            <div className="space-y-2 text-gray-600">
+                              <p><strong>Время:</strong> {event.time}</p>
+                              <p><strong>Место:</strong> {event.location}</p>
+                              <p><strong>Организатор:</strong> {event.organizer}</p>
+                              <p><strong>Участники:</strong> {event.participants}</p>
+                              <p><strong>Категория:</strong> {event.category}</p>
+                            </div>
+                            <p className="mt-3 text-gray-700">{event.description}</p>
+                          </div>
+                          <a 
+                            href={event.registrationLink}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="bg-gradient-to-r from-blue-600 to-cyan-600 hover:from-blue-700 hover:to-cyan-700 px-4 py-2 rounded-lg font-semibold text-white transition-all duration-300 transform hover:scale-105 ml-4"
+                          >
+                            Зарегистрироваться
+                          </a>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                ) : (
+                  <div className="text-center py-12">
+                    <Calendar className="w-16 h-16 text-blue-600 mx-auto mb-4" />
+                    <h3 className="text-2xl font-semibold text-gray-800 mb-2">Мероприятия на {formatDate(selectedDate)}</h3>
+                    <p className="text-gray-600">На выбранную дату пока нет запланированных мероприятий</p>
+                  </div>
+                )}
               </div>
             </div>
           </div>
@@ -1157,7 +1299,7 @@ const App = () => {
                       ? 'bg-purple-600 text-white' 
                       : currentTheme === 'light' 
                         ? 'text-gray-600 hover:bg-blue-100' 
-                        : 'text-gray-300 hover:bg-purple-600/20'
+                        : 'text-gray-300 hover:bg-purple-600/20'  
                   }`}
                 >
                   <Moon className="w-4 h-4 inline mr-2" />
@@ -1273,16 +1415,13 @@ const App = () => {
               </p>
               <div className="flex space-x-4">
                 <a href="#" className="text-gray-600 hover:text-blue-600 transition-colors">
-                  <Instagram className="w-5 h-5" />
+                  <MessageSquare className="w-5 h-5" />
                 </a>
                 <a href="#" className="text-gray-600 hover:text-red-600 transition-colors">
-                  <Youtube className="w-5 h-5" />
+                  <Hash className="w-5 h-5" />
                 </a>
                 <a href="#" className="text-gray-600 hover:text-blue-400 transition-colors">
-                  <Linkedin className="w-5 h-5" />
-                </a>
-                <a href="#" className="text-gray-600 hover:text-blue-500 transition-colors">
-                  <Twitter className="w-5 h-5" />
+                  <AtSign className="w-5 h-5" />
                 </a>
               </div>
             </div>
@@ -1292,15 +1431,15 @@ const App = () => {
               <div className="space-y-2">
                 <div className="flex items-center text-gray-600">
                   <Mail className="w-4 h-4 mr-2" />
-                  info@profnavigator.ru
+                  matldev92@gmail.com
                 </div>
                 <div className="flex items-center text-gray-600">
                   <Phone className="w-4 h-4 mr-2" />
-                  +7 (495) 123-45-67
+                  +7 (985) 739-5088
                 </div>
                 <div className="flex items-center text-gray-600">
                   <MapPinIcon className="w-4 h-4 mr-2" />
-                  Москва, ул. Тверская, д. 1
+                  Долгопрудненское ш., 3, Москва
                 </div>
               </div>
             </div>
