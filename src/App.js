@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { Star, MapPin, Calendar, GraduationCap, Briefcase, BookOpen, UserPlus, User, X, Filter, Search, Building2, Users2, Globe2, ArrowLeft, Settings, Sun, Moon, Award, ChevronRight, Mail, Phone, Globe, Shield, FileText, Instagram, Youtube, Linkedin, Twitter, Facebook, MapPin as MapPinIcon, ChevronLeft, MessageSquare, AtSign, Hash } from 'lucide-react';
+import { Star, MapPin, Calendar, GraduationCap, Briefcase, BookOpen, UserPlus, User, X, Filter, Search, Building2, Users2, Globe2, ArrowLeft, Settings, Sun, Moon, Award, Mail, Phone, Globe, Shield, FileText, MessageSquare, Hash, AtSign, MapPin as MapPinIcon, ChevronLeft, ChevronRight } from 'lucide-react';
 
 const App = () => {
   const [activeTab, setActiveTab] = useState('home');
@@ -89,103 +89,64 @@ const App = () => {
     { id: 10, name: 'Психолог', description: 'Диагностика, консультирование, психотерапия.', careerFieldId: 6, requiredSkills: ['Психодиагностика', 'Психотерапия', 'Консультирование', 'Психология развития'] },
   ];
 
-  // Реальные мероприятия из МГУ
+  // Новые мероприятия
   const events = [
     {
       id: 1,
-      title: 'Всероссийская научная конференция студентов и аспирантов',
-      date: '2025-01-20',
-      time: '10:00',
-      location: 'МГУ, Главный корпус, ауд. 301',
-      description: 'Ежегодная конференция для молодых ученых, представителей разных научных направлений',
-      category: 'Наука',
-      participants: 200,
-      organizer: 'МГУ',
-      registrationLink: 'https://msu.ru/science/allevents.html'
+      title: "VI Международная научно–практическая конференция «Лингвистика дистанцирования. Язык в контексте мультимодальной коммуникации XXI века»",
+      date: "2025-01-26",
+      endDate: "2025-01-28",
+      time: "09:00",
+      location: "Москва",
+      description: "Международная конференция по лингвистике",  
+      category: "Наука",
+      organizer: "МГУ",
+      registrationLink: "https://conf.msu.ru/rus/event/10212/"
     },
     {
       id: 2,
-      title: 'Международная конференция по физике твердого тела',
-      date: '2025-01-22',
-      time: '14:00',
-      location: 'МГУ, Физический факультет, конференц-зал',
-      description: 'Научная конференция с участием ведущих физиков из России и зарубежья',
-      category: 'Наука',
-      participants: 150,
-      organizer: 'МГУ',
-      registrationLink: 'https://msu.ru/science/allevents.html'
+      title: "Забытые слова: новые подходы к изучению биографии и творчества М. Е. Салтыкова–Щедрина",
+      date: "2025-01-27",
+      time: "10:00",
+      location: "Москва",
+      description: "Научная конференция по литературе",
+      category: "Культура",
+      organizer: "МГУ",
+      registrationLink: "https://conf.msu.ru/rus/event/10223/"
     },
     {
       id: 3,
-      title: 'Мастер-класс по машинному обучению',
-      date: '2025-01-25',
-      time: '16:00',
-      location: 'МГУ, Факультет вычислительной математики и кибернетики',
-      description: 'Практический мастер-класс для студентов IT-направлений',
-      category: 'Образование',
-      participants: 80,
-      organizer: 'МГУ',
-      registrationLink: 'https://msu.ru/science/allevents.html'
+      title: "XX Международная научная конференция «Сорокинские чтения»: «Российская социология: связь времен и горизонты будущего»",
+      date: "2025-02-19",
+      time: "11:00",
+      location: "Москва",
+      description: "Международная конференция по социологии",
+      category: "Наука",
+      organizer: "МГУ",
+      registrationLink: "https://conf.msu.ru/rus/event/10097/"
     },
     {
       id: 4,
-      title: 'Семинар по биохимии и молекулярной биологии',
-      date: '2025-01-28',
-      time: '11:00',
-      location: 'МГУ, Биологический факультет, лаборатория молекулярной биологии',
-      description: 'Научный семинар с презентациями последних исследований',
-      category: 'Наука',
-      participants: 60,
-      organizer: 'МГУ',
-      registrationLink: 'https://msu.ru/science/allevents.html'
+      title: "Международная научно–практическая конференция «Новые геополитические горизонты: эволюция международных отношений и интеграционных процессов в современном мире»",
+      date: "2025-02-25",
+      time: "12:00",
+      location: "Москва",
+      description: "Конференция по международным отношениям",
+      category: "Образование",
+      organizer: "МГУ",
+      registrationLink: "https://conf.msu.ru/rus/event/10144/"
     },
     {
       id: 5,
-      title: 'Конференция по международным отношениям',
-      date: '2025-02-01',
-      time: '13:00',
-      location: 'МГУ, Исторический факультет, конференц-зал',
-      description: 'Международная конференция с участием экспертов из разных стран',
-      category: 'Образование',
-      participants: 120,
-      organizer: 'МГУ',
-      registrationLink: 'https://msu.ru/science/allevents.html'
-    },
-    {
-      id: 6,
-      title: 'Научная школа по математическому моделированию',
-      date: '2025-02-05',
-      time: '10:00',
-      location: 'МГУ, Вычислительный центр',
-      description: 'Обучающая научная школа для аспирантов и молодых ученых',
-      category: 'Образование',
-      participants: 75,
-      organizer: 'МГУ',
-      registrationLink: 'https://msu.ru/science/allevents.html'
-    },
-    {
-      id: 7,
-      title: 'Семинар по физике высоких энергий',
-      date: '2025-02-10',
-      time: '15:00',
-      location: 'МГУ, Физический факультет, лаборатория физики частиц',
-      description: 'Ежемесячный семинар с докладами ведущих ученых',
-      category: 'Наука',
-      participants: 50,
-      organizer: 'МГУ',
-      registrationLink: 'https://msu.ru/science/allevents.html'
-    },
-    {
-      id: 8,
-      title: 'Международная конференция по нанотехнологиям',
-      date: '2025-02-15',
-      time: '12:00',
-      location: 'МГУ, Химический факультет, конференц-зал',
-      description: 'Конференция с участием ведущих специалистов в области нанотехнологий',
-      category: 'Наука',
-      participants: 180,
-      organizer: 'МГУ',
-      registrationLink: 'https://msu.ru/science/allevents.html'
+      title: "Ежегодный Фестиваль школьных средств массовой информации на факультете журналистики МГУ",
+      date: "2025-04-01",
+      endDate: "2025-04-30",
+      time: "09:00",
+      location: "Москва",
+      description: "Фестиваль для школьников",
+      category: "Образование",
+      organizer: "МГУ",
+      registrationLink: "https://conf.msu.ru/rus/event/10115/"
     }
   ];
 
@@ -346,7 +307,18 @@ const App = () => {
   const getEventsForDate = (date) => {
     if (!date) return [];
     const dateString = date.toISOString().split('T')[0]; // Преобразуем в формат YYYY-MM-DD
-    return events.filter(event => event.date === dateString);
+    
+    // Проверяем, попадает ли дата в диапазон мероприятия (если есть endDate)
+    return events.filter(event => {
+      if (event.endDate) {
+        const eventStart = new Date(event.date).getTime();
+        const eventEnd = new Date(event.endDate).getTime();
+        const selectedTime = new Date(dateString).getTime();
+        return selectedTime >= eventStart && selectedTime <= eventEnd;
+      }
+      // Если нет endDate, просто сравниваем даты
+      return event.date === dateString;
+    });
   };
 
   const renderContent = () => {
@@ -543,6 +515,18 @@ const App = () => {
               ) : (
                 <p className="text-gray-500 text-center col-span-full">Профессии не найдены для этой сферы.</p>
               )}
+            </div>
+          </section>
+
+          <section className="text-center py-16">
+            <h2 className="text-4xl font-bold mb-8 text-gray-800">🚀 Начни строить свою карьеру сегодня!</h2>
+            <div className="flex justify-center gap-6">
+              <button 
+                onClick={goToMap}
+                className="bg-gradient-to-r from-blue-600 to-cyan-600 hover:from-blue-700 hover:to-cyan-700 px-12 py-4 rounded-2xl font-semibold transition-all duration-300 transform hover:scale-105 text-white"
+              >
+                ▶ Найти мероприятия рядом
+              </button>
             </div>
           </section>
         </div>
@@ -776,7 +760,7 @@ const App = () => {
                         setStartDate('');
                         setEndDate('');
                       }}
-                      className="w-full bg-gradient-to-r from-gray-600 to-gray-700 hover:from-gray-700 hover:to-gray-800 px-4 py-3 rounded-lg font-semibold text-white transition-all duration-300"
+                      className="w-full bg-gradient-to-r from-gray-600 to-gray-700 hover:from-gray-700 hover:to-gray-800 px-4 py-3 rounded-lg font-semibold transition-all duration-300 text-white"
                     >
                       Сбросить фильтры
                     </button>
@@ -812,12 +796,12 @@ const App = () => {
               {/* Заголовок с выбранной датой */}
               <div className="text-center mb-8">
                 <h2 className="text-2xl font-semibold text-gray-800">
-                  Мероприятия на {formatDate(selectedDate)}
+                  Мероприятия на {selectedDate.toLocaleDateString('ru-RU', { day: 'numeric', month: 'long', year: 'numeric' })}
                 </h2>
               </div>
               
               {/* Календарь */}
-              <div className="bg-white/90 backdrop-blur-sm rounded-2xl p-6 border border-gray-200 shadow-lg">
+              <div className="bg-white/90 backdrop-blur-sm rounded-2xl p-6 border border-gray-200 shadow-lg mb-8">
                 <div className="flex items-center justify-between mb-6">
                   <button 
                     onClick={prevMonth}
@@ -827,7 +811,7 @@ const App = () => {
                   </button>
                   
                   <h2 className="text-xl font-bold text-gray-800">
-                    {formatMonthYear(currentDate)}
+                    {currentDate.toLocaleDateString('ru-RU', { month: 'long', year: 'numeric' })}
                   </h2>
                   
                   <button 
@@ -866,33 +850,29 @@ const App = () => {
               </div>
               
               {/* Список мероприятий на выбранную дату */}
-              <div className="mt-8 bg-white/90 backdrop-blur-sm rounded-2xl p-8 border border-gray-200 shadow-md">
-                <h3 className="text-xl font-bold mb-6 text-gray-800">Мероприятия на {formatDate(selectedDate)}</h3>
+              <div className="bg-white/90 backdrop-blur-sm rounded-2xl p-8 border border-gray-200 shadow-md">
+                <h3 className="text-xl font-bold mb-6 text-gray-800">Мероприятия на {selectedDate.toLocaleDateString('ru-RU', { day: 'numeric', month: 'long', year: 'numeric' })}</h3>
                 
                 {getEventsForDate(selectedDate).length > 0 ? (
                   <div className="space-y-6">
                     {getEventsForDate(selectedDate).map(event => (
-                      <div 
-                        key={event.id}
-                        className="bg-gradient-to-r from-blue-50 to-cyan-50 rounded-xl p-6 border border-blue-200 shadow-sm"
-                      >
+                      <div key={event.id} className="bg-gradient-to-r from-blue-50 to-cyan-50 rounded-xl p-6 border border-blue-200 shadow-sm">
                         <div className="flex items-start justify-between">
                           <div className="flex-1">
                             <h4 className="text-xl font-bold text-gray-800 mb-2">{event.title}</h4>
-                            <div className="space-y-2 text-gray-600">
+                            <div className="space-y-2 text-gray-600 mb-4">
                               <p><strong>Время:</strong> {event.time}</p>
                               <p><strong>Место:</strong> {event.location}</p>
                               <p><strong>Организатор:</strong> {event.organizer}</p>
-                              <p><strong>Участники:</strong> {event.participants}</p>
                               <p><strong>Категория:</strong> {event.category}</p>
                             </div>
-                            <p className="mt-3 text-gray-700">{event.description}</p>
+                            <p className="text-gray-700">{event.description}</p>
                           </div>
                           <a 
                             href={event.registrationLink}
                             target="_blank"
                             rel="noopener noreferrer"
-                            className="bg-gradient-to-r from-blue-600 to-cyan-600 hover:from-blue-700 hover:to-cyan-700 px-4 py-2 rounded-lg font-semibold text-white transition-all duration-300 transform hover:scale-105 ml-4"
+                            className="bg-gradient-to-r from-blue-600 to-cyan-600 hover:from-blue-700 hover:to-cyan-700 px-4 py-2 rounded-lg font-semibold text-white transition-all duration-300 transform hover:scale-105 ml-4 whitespace-nowrap"
                           >
                             Зарегистрироваться
                           </a>
@@ -902,8 +882,8 @@ const App = () => {
                   </div>
                 ) : (
                   <div className="text-center py-12">
-                    <Calendar className="w-16 h-16 text-blue-600 mx-auto mb-4" />
-                    <h3 className="text-2xl font-semibold text-gray-800 mb-2">Мероприятия на {formatDate(selectedDate)}</h3>
+                    <Calendar className="w-16 h-16 text-gray-400 mx-auto mb-4" />
+                    <h3 className="text-2xl font-semibold text-gray-600 mb-2">Мероприятия на {formatDate(selectedDate)}</h3>
                     <p className="text-gray-600">На выбранную дату пока нет запланированных мероприятий</p>
                   </div>
                 )}
@@ -1058,12 +1038,12 @@ const App = () => {
                             </div>
                             <div className="mt-3 flex flex-wrap gap-2">
                               {uni.specialties.slice(0, 3).map((spec, idx) => (
-                                <span key={idx} className="px-3 py-1 bg-blue-100 text-blue-800 rounded-full text-xs">
+                                <span key={idx} className="px-3 py-1 bg-blue-100 text-blue-800 rounded-full text-sm">
                                   {spec}
                                 </span>
                               ))}
                               {uni.specialties.length > 3 && (
-                                <span className="px-3 py-1 bg-gray-200 text-gray-600 rounded-full text-xs">
+                                <span className="px-3 py-1 bg-gray-200 text-gray-600 rounded-full text-sm">
                                   +{uni.specialties.length - 3} еще
                                 </span>
                               )}
@@ -1299,7 +1279,7 @@ const App = () => {
                       ? 'bg-purple-600 text-white' 
                       : currentTheme === 'light' 
                         ? 'text-gray-600 hover:bg-blue-100' 
-                        : 'text-gray-300 hover:bg-purple-600/20'  
+                        : 'text-gray-300 hover:bg-purple-600/20'
                   }`}
                 >
                   <Moon className="w-4 h-4 inline mr-2" />
