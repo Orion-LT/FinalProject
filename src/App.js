@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { Star, MapPin, Calendar, GraduationCap, Briefcase, BookOpen, UserPlus, User, X, Filter, Search, Building2, Users2, Globe2, ArrowLeft, Settings, Sun, Moon, Award, Mail, Phone, Globe, Shield, FileText, MessageSquare, Hash, AtSign, MapPin as MapPinIcon, ChevronLeft, ChevronRight } from 'lucide-react';
+import { Star, MapPin, Calendar, GraduationCap, Briefcase, BookOpen, UserPlus, User, X, Filter, Search, Building2, Users2, Globe2, ArrowLeft, Settings, Sun, Moon, Award, ChevronRight, Mail, Phone, Globe, Shield, FileText, Instagram, Youtube, Linkedin, MessageSquare, AtSign, Hash, MapPin as MapPinIcon, ChevronLeft } from 'lucide-react';
 
 const App = () => {
   const [activeTab, setActiveTab] = useState('home');
@@ -89,65 +89,13 @@ const App = () => {
     { id: 10, name: 'Психолог', description: 'Диагностика, консультирование, психотерапия.', careerFieldId: 6, requiredSkills: ['Психодиагностика', 'Психотерапия', 'Консультирование', 'Психология развития'] },
   ];
 
-  // Новые мероприятия
-  const events = [
-    {
-      id: 1,
-      title: "VI Международная научно–практическая конференция «Лингвистика дистанцирования. Язык в контексте мультимодальной коммуникации XXI века»",
-      date: "2025-01-26",
-      endDate: "2025-01-28",
-      time: "09:00",
-      location: "Москва",
-      description: "Международная конференция по лингвистике",  
-      category: "Наука",
-      organizer: "МГУ",
-      registrationLink: "https://conf.msu.ru/rus/event/10212/"
-    },
-    {
-      id: 2,
-      title: "Забытые слова: новые подходы к изучению биографии и творчества М. Е. Салтыкова–Щедрина",
-      date: "2025-01-27",
-      time: "10:00",
-      location: "Москва",
-      description: "Научная конференция по литературе",
-      category: "Культура",
-      organizer: "МГУ",
-      registrationLink: "https://conf.msu.ru/rus/event/10223/"
-    },
-    {
-      id: 3,
-      title: "XX Международная научная конференция «Сорокинские чтения»: «Российская социология: связь времен и горизонты будущего»",
-      date: "2025-02-19",
-      time: "11:00",
-      location: "Москва",
-      description: "Международная конференция по социологии",
-      category: "Наука",
-      organizer: "МГУ",
-      registrationLink: "https://conf.msu.ru/rus/event/10097/"
-    },
-    {
-      id: 4,
-      title: "Международная научно–практическая конференция «Новые геополитические горизонты: эволюция международных отношений и интеграционных процессов в современном мире»",
-      date: "2025-02-25",
-      time: "12:00",
-      location: "Москва",
-      description: "Конференция по международным отношениям",
-      category: "Образование",
-      organizer: "МГУ",
-      registrationLink: "https://conf.msu.ru/rus/event/10144/"
-    },
-    {
-      id: 5,
-      title: "Ежегодный Фестиваль школьных средств массовой информации на факультете журналистики МГУ",
-      date: "2025-04-01",
-      endDate: "2025-04-30",
-      time: "09:00",
-      location: "Москва",
-      description: "Фестиваль для школьников",
-      category: "Образование",
-      organizer: "МГУ",
-      registrationLink: "https://conf.msu.ru/rus/event/10115/"
-    }
+  // События МГУ
+  const msuEvents = [
+    { id: 1, title: 'VI Международная научно–практическая конференция «Лингвистика дистанцирования. Язык в контексте мультимодальной коммуникации XXI века»', date: '2026-01-26', time: '10:00', location: 'Москва', link: 'https://conf.msu.ru/rus/event/10212/', category: 'Конференция', participants: '150' },
+    { id: 2, title: 'Забытые слова: новые подходы к изучению биографии и творчества М. Е. Салтыкова–Щедрина', date: '2026-01-27', time: '14:00', location: 'Москва', link: 'https://conf.msu.ru/rus/event/10223/', category: 'Конференция', participants: '80' },
+    { id: 3, title: 'XX Международная научная конференция «Сорокинские чтения»: «Российская социология: связь времен и горизонты будущего»', date: '2026-02-19', time: '09:00', location: 'Москва', link: 'https://conf.msu.ru/rus/event/10097/', category: 'Конференция', participants: '200' },
+    { id: 4, title: 'Международная научно–практическая конференция «Новые геополитические горизонты: эволюция международных отношений и интеграционных процессов в современном мире»', date: '2026-02-25', time: '10:00', location: 'Москва', link: 'https://conf.msu.ru/rus/event/10144/', category: 'Конференция', participants: '180' },
+    { id: 5, title: 'Ежегодный Фестиваль школьных средств массовой информации на факультете журналистики МГУ', date: '2026-04-01', time: '10:00', location: 'Москва', link: 'https://conf.msu.ru/rus/event/10115/', category: 'Фестиваль', participants: '300' },
   ];
 
   const features = [
@@ -307,18 +255,7 @@ const App = () => {
   const getEventsForDate = (date) => {
     if (!date) return [];
     const dateString = date.toISOString().split('T')[0]; // Преобразуем в формат YYYY-MM-DD
-    
-    // Проверяем, попадает ли дата в диапазон мероприятия (если есть endDate)
-    return events.filter(event => {
-      if (event.endDate) {
-        const eventStart = new Date(event.date).getTime();
-        const eventEnd = new Date(event.endDate).getTime();
-        const selectedTime = new Date(dateString).getTime();
-        return selectedTime >= eventStart && selectedTime <= eventEnd;
-      }
-      // Если нет endDate, просто сравниваем даты
-      return event.date === dateString;
-    });
+    return msuEvents.filter(event => event.date === dateString);
   };
 
   const renderContent = () => {
@@ -414,107 +351,95 @@ const App = () => {
           <section className="mb-12">
             <h2 className="text-3xl font-bold mb-8 text-center text-gray-800">Подходящие ВУЗы</h2>
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-              {relatedUniversities.length > 0 ? (
-                relatedUniversities.map(uni => (
-                  <div 
-                    key={uni.id}
-                    onClick={() => {
-                      setActiveTab('universities');
-                      setSelectedUniversity(uni);
-                      setSelectedCareerField(null);
-                      window.scrollTo(0, 0);
-                    }}
-                    className="bg-white/90 backdrop-blur-sm rounded-2xl p-6 border border-gray-200 hover:border-blue-500 transition-all duration-300 cursor-pointer shadow-md"
-                  >
-                    <div className="flex items-center mb-3">
-                      <Building2 className="w-8 h-8 text-blue-600 mr-3" />
-                      <h3 className="text-xl font-bold text-gray-800">{uni.name}</h3>
-                    </div>
-                    <p className="text-gray-600 text-sm mb-2">{uni.location}</p>
-                    <p className="text-gray-500 text-xs">{uni.rank}</p>
+              {relatedUniversities.map(uni => (
+                <div 
+                  key={uni.id}
+                  onClick={() => {
+                    setActiveTab('universities');
+                    setSelectedUniversity(uni);
+                    setSelectedCareerField(null);
+                    window.scrollTo(0, 0);
+                  }}
+                  className="bg-white/90 backdrop-blur-sm rounded-2xl p-6 border border-gray-200 hover:border-blue-500 transition-all duration-300 cursor-pointer shadow-md"
+                >
+                  <div className="flex items-center mb-3">
+                    <Building2 className="w-8 h-8 text-blue-600 mr-3" />
+                    <h3 className="text-xl font-bold text-gray-800">{uni.name}</h3>
                   </div>
-                ))
-              ) : (
-                <p className="text-gray-500 text-center col-span-full">ВУЗы не найдены для этой сферы.</p>
-              )}
+                  <p className="text-gray-600 text-sm mb-2">{uni.location}</p>
+                  <p className="text-gray-500 text-xs">{uni.rank}</p>
+                </div>
+              ))}
             </div>
           </section>
 
           <section className="mb-12">
             <h2 className="text-3xl font-bold mb-8 text-center text-gray-800">Направления обучения</h2>
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-              {relatedDirections.length > 0 ? (
-                relatedDirections.map(dir => (
-                  <div 
-                    key={dir.id}
-                    className="bg-white/90 backdrop-blur-sm rounded-2xl p-6 border border-gray-200 hover:border-blue-500 transition-all duration-300 cursor-pointer shadow-md"
-                  >
-                    <div className="flex items-start">
-                      <Building2 className="w-8 h-8 text-blue-600 mr-4 mt-1" />
-                      <div>
-                        <h3 className="text-xl font-bold mb-2 text-blue-600">{dir.university}</h3>
-                        <h4 className="text-lg font-semibold mb-1 text-gray-800">{dir.direction}</h4>
-                        <p className="text-gray-600 text-sm">{dir.faculty}</p>
-                        {dir.relatedProfessions && dir.relatedProfessions.length > 0 && (
-                          <div className="mt-2 flex flex-wrap gap-1">
-                            {dir.relatedProfessions.slice(0, 2).map((prof, idx) => (
-                              <span key={idx} className="px-2 py-1 bg-blue-100 text-blue-800 rounded-full text-xs">
-                                {prof}
-                              </span>
-                            ))}
-                            {dir.relatedProfessions.length > 2 && (
-                              <span className="px-2 py-1 bg-gray-200 text-gray-600 rounded-full text-xs">
-                                +{dir.relatedProfessions.length - 2}
-                              </span>
-                            )}
-                          </div>
-                        )}
-                      </div>
+              {relatedDirections.map(dir => (
+                <div 
+                  key={dir.id}
+                  className="bg-white/90 backdrop-blur-sm rounded-2xl p-6 border border-gray-200 hover:border-blue-500 transition-all duration-300 cursor-pointer shadow-md"
+                >
+                  <div className="flex items-start">
+                    <Building2 className="w-8 h-8 text-blue-600 mr-4 mt-1" />
+                    <div>
+                      <h3 className="text-xl font-bold mb-2 text-blue-600">{dir.university}</h3>
+                      <h4 className="text-lg font-semibold mb-1 text-gray-800">{dir.direction}</h4>
+                      <p className="text-gray-600 text-sm">{dir.faculty}</p>
+                      {dir.relatedProfessions && dir.relatedProfessions.length > 0 && (
+                        <div className="mt-2 flex flex-wrap gap-1">
+                          {dir.relatedProfessions.slice(0, 2).map((prof, idx) => (
+                            <span key={idx} className="px-2 py-1 bg-blue-100 text-blue-800 rounded-full text-xs">
+                              {prof}
+                            </span>
+                          ))}
+                          {dir.relatedProfessions.length > 2 && (
+                            <span className="px-2 py-1 bg-gray-200 text-gray-600 rounded-full text-xs">
+                              +{dir.relatedProfessions.length - 2}
+                            </span>
+                          )}
+                        </div>
+                      )}
                     </div>
                   </div>
-                ))
-              ) : (
-                <p className="text-gray-500 text-center col-span-full">Направления не найдены для этой сферы.</p>
-              )}
+                </div>
+              ))}
             </div>
           </section>
 
           <section className="mb-12">
             <h2 className="text-3xl font-bold mb-8 text-center text-gray-800">Популярные профессии</h2>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {relatedProfessions.length > 0 ? (
-                relatedProfessions.map(prof => (
-                  <div 
-                    key={prof.id}
-                    className="bg-white/90 backdrop-blur-sm rounded-2xl p-6 border border-gray-200 hover:border-blue-500 transition-all duration-300 cursor-pointer shadow-md"
-                  >
-                    <div className="flex items-start mb-3">
-                      <Briefcase className="w-6 h-6 text-blue-600 mr-3 mt-1" />
-                      <h3 className="text-xl font-bold text-gray-800">{prof.name}</h3>
-                    </div>
-                    <p className="text-gray-600">{prof.description}</p>
-                    {prof.requiredSkills && prof.requiredSkills.length > 0 && (
-                      <div className="mt-2">
-                        <p className="text-xs text-gray-500">Нужные навыки:</p>
-                        <div className="flex flex-wrap gap-1 mt-1">
-                          {prof.requiredSkills.slice(0, 3).map((skill, idx) => (
-                            <span key={idx} className="px-2 py-1 bg-blue-100 text-blue-800 rounded-full text-xs">
-                              {skill}
-                            </span>
-                          ))}
-                          {prof.requiredSkills.length > 3 && (
-                            <span className="px-2 py-1 bg-gray-200 text-gray-600 rounded-full text-xs">
-                              +{prof.requiredSkills.length - 3}
-                            </span>
-                          )}
-                        </div>
-                      </div>
-                    )}
+              {relatedProfessions.map(prof => (
+                <div 
+                  key={prof.id}
+                  className="bg-white/90 backdrop-blur-sm rounded-2xl p-6 border border-gray-200 hover:border-blue-500 transition-all duration-300 cursor-pointer shadow-md"
+                >
+                  <div className="flex items-start mb-3">
+                    <Briefcase className="w-6 h-6 text-blue-600 mr-3 mt-1" />
+                    <h3 className="text-xl font-bold text-gray-800">{prof.name}</h3>
                   </div>
-                ))
-              ) : (
-                <p className="text-gray-500 text-center col-span-full">Профессии не найдены для этой сферы.</p>
-              )}
+                  <p className="text-gray-600">{prof.description}</p>
+                  {prof.requiredSkills && prof.requiredSkills.length > 0 && (
+                    <div className="mt-2">
+                      <p className="text-xs text-gray-500">Нужные навыки:</p>
+                      <div className="flex flex-wrap gap-1 mt-1">
+                        {prof.requiredSkills.slice(0, 3).map((skill, idx) => (
+                          <span key={idx} className="px-2 py-1 bg-blue-100 text-blue-800 rounded-full text-xs">
+                            {skill}
+                          </span>
+                        ))}
+                        {prof.requiredSkills.length > 3 && (
+                          <span className="px-2 py-1 bg-gray-200 text-gray-600 rounded-full text-xs">
+                            +{prof.requiredSkills.length - 3}
+                          </span>
+                        )}
+                      </div>
+                    </div>
+                  )}
+                </div>
+              ))}
             </div>
           </section>
 
@@ -656,7 +581,7 @@ const App = () => {
             <section className="text-center py-16">
               <h2 className="text-4xl font-bold mb-8 text-gray-800">🚀 Начни строить свою карьеру сегодня!</h2>
               <div className="flex justify-center gap-6">
-                <button
+                <button 
                   onClick={goToMap}
                   className="bg-gradient-to-r from-blue-600 to-cyan-600 hover:from-blue-700 hover:to-cyan-700 px-12 py-4 rounded-2xl font-semibold transition-all duration-300 transform hover:scale-105 text-white"
                 >
@@ -791,17 +716,18 @@ const App = () => {
         return (
           <div className="py-8">
             <h1 className="text-4xl font-bold mb-8 text-center text-gray-800">📅 Календарь мероприятий</h1>
+            <p className="text-xl text-gray-600 text-center mb-12">Присоединяйтесь к профориентационным событиям</p>
             
             <div className="max-w-4xl mx-auto">
               {/* Заголовок с выбранной датой */}
               <div className="text-center mb-8">
                 <h2 className="text-2xl font-semibold text-gray-800">
-                  Мероприятия на {selectedDate.toLocaleDateString('ru-RU', { day: 'numeric', month: 'long', year: 'numeric' })}
+                  Мероприятия на {formatDate(selectedDate)}
                 </h2>
               </div>
               
               {/* Календарь */}
-              <div className="bg-white/90 backdrop-blur-sm rounded-2xl p-6 border border-gray-200 shadow-lg mb-8">
+              <div className="bg-white/90 backdrop-blur-sm rounded-2xl p-6 border border-gray-200 shadow-md">
                 <div className="flex items-center justify-between mb-6">
                   <button 
                     onClick={prevMonth}
@@ -811,7 +737,7 @@ const App = () => {
                   </button>
                   
                   <h2 className="text-xl font-bold text-gray-800">
-                    {currentDate.toLocaleDateString('ru-RU', { month: 'long', year: 'numeric' })}
+                    {formatMonthYear(currentDate)}
                   </h2>
                   
                   <button 
@@ -850,31 +776,34 @@ const App = () => {
               </div>
               
               {/* Список мероприятий на выбранную дату */}
-              <div className="bg-white/90 backdrop-blur-sm rounded-2xl p-8 border border-gray-200 shadow-md">
-                <h3 className="text-xl font-bold mb-6 text-gray-800">Мероприятия на {selectedDate.toLocaleDateString('ru-RU', { day: 'numeric', month: 'long', year: 'numeric' })}</h3>
+              <div className="mt-8 bg-white/90 backdrop-blur-sm rounded-2xl p-8 border border-gray-200 shadow-md">
+                <h3 className="text-xl font-bold mb-6 text-gray-800">Мероприятия на {formatDate(selectedDate)}</h3>
                 
                 {getEventsForDate(selectedDate).length > 0 ? (
                   <div className="space-y-6">
                     {getEventsForDate(selectedDate).map(event => (
-                      <div key={event.id} className="bg-gradient-to-r from-blue-50 to-cyan-50 rounded-xl p-6 border border-blue-200 shadow-sm">
+                      <div 
+                        key={event.id}
+                        className="bg-gradient-to-r from-blue-50 to-cyan-50 rounded-xl p-6 border border-blue-200 shadow-sm"
+                      >
                         <div className="flex items-start justify-between">
                           <div className="flex-1">
                             <h4 className="text-xl font-bold text-gray-800 mb-2">{event.title}</h4>
                             <div className="space-y-2 text-gray-600 mb-4">
                               <p><strong>Время:</strong> {event.time}</p>
                               <p><strong>Место:</strong> {event.location}</p>
-                              <p><strong>Организатор:</strong> {event.organizer}</p>
                               <p><strong>Категория:</strong> {event.category}</p>
+                              <p><strong>Участников:</strong> {event.participants}</p>
                             </div>
                             <p className="text-gray-700">{event.description}</p>
                           </div>
                           <a 
-                            href={event.registrationLink}
+                            href={event.link}
                             target="_blank"
                             rel="noopener noreferrer"
-                            className="bg-gradient-to-r from-blue-600 to-cyan-600 hover:from-blue-700 hover:to-cyan-700 px-4 py-2 rounded-lg font-semibold text-white transition-all duration-300 transform hover:scale-105 ml-4 whitespace-nowrap"
+                            className="bg-gradient-to-r from-blue-600 to-cyan-600 hover:from-blue-700 hover:to-cyan-700 px-4 py-2 rounded-lg font-semibold text-white transition-all duration-300 transform hover:scale-105 whitespace-nowrap ml-4"
                           >
-                            Зарегистрироваться
+                            Подробнее
                           </a>
                         </div>
                       </div>
@@ -883,8 +812,8 @@ const App = () => {
                 ) : (
                   <div className="text-center py-12">
                     <Calendar className="w-16 h-16 text-gray-400 mx-auto mb-4" />
-                    <h3 className="text-2xl font-semibold text-gray-600 mb-2">Мероприятия на {formatDate(selectedDate)}</h3>
-                    <p className="text-gray-600">На выбранную дату пока нет запланированных мероприятий</p>
+                    <h3 className="text-2xl font-semibold text-gray-600 mb-2">Мероприятия не найдены</h3>
+                    <p className="text-gray-600">На выбранную дату нет запланированных мероприятий</p>
                   </div>
                 )}
               </div>
@@ -948,6 +877,7 @@ const App = () => {
                         </div>
                       )}
                     </div>
+                    
                     {/* Custom Specialty Dropdown */}
                     <div className="relative">
                       <label className="block text-sm font-medium mb-2 text-gray-700">Специальности</label>
@@ -975,6 +905,7 @@ const App = () => {
                         </div>
                       )}
                     </div>
+                    
                     <div>
                       <label className="block text-sm font-medium mb-2 text-gray-700">Город</label>
                       <select 
@@ -986,6 +917,7 @@ const App = () => {
                         <option>Москва</option>
                       </select>
                     </div>
+                    
                     <div className="flex items-center">
                       <input 
                         type="checkbox" 
@@ -996,6 +928,7 @@ const App = () => {
                       />
                       <label htmlFor="partnership" className="text-sm text-gray-700">Партнерские программы</label>
                     </div>
+                    
                     <button 
                       onClick={resetFilters}
                       className="w-full bg-gradient-to-r from-blue-600 to-cyan-600 hover:from-blue-700 hover:to-cyan-700 px-4 py-3 rounded-lg font-semibold transition-all duration-300 text-white"
@@ -1038,12 +971,12 @@ const App = () => {
                             </div>
                             <div className="mt-3 flex flex-wrap gap-2">
                               {uni.specialties.slice(0, 3).map((spec, idx) => (
-                                <span key={idx} className="px-3 py-1 bg-blue-100 text-blue-800 rounded-full text-sm">
+                                <span key={idx} className="px-3 py-1 bg-blue-100 text-blue-800 rounded-full text-xs">
                                   {spec}
                                 </span>
                               ))}
                               {uni.specialties.length > 3 && (
-                                <span className="px-3 py-1 bg-gray-200 text-gray-600 rounded-full text-sm">
+                                <span className="px-3 py-1 bg-gray-200 text-gray-600 rounded-full text-xs">
                                   +{uni.specialties.length - 3} еще
                                 </span>
                               )}
@@ -1073,6 +1006,7 @@ const App = () => {
               <h1 className="text-4xl font-bold mb-2 text-gray-800">💼 Карьерные возможности</h1>
               <p className="text-xl text-gray-600">Исследуйте различные карьерные направления и выберите свой путь</p>
             </div>
+            
             {/* Описание вкладки */}
             <div className="bg-white/90 backdrop-blur-sm rounded-2xl p-8 border border-gray-200 mb-12 shadow-md">
               <h2 className="text-2xl font-bold mb-4 text-blue-600">Добро пожаловать в раздел карьерных возможностей!</h2>
@@ -1087,6 +1021,7 @@ const App = () => {
                 <li>Познакомиться с различными профессиями</li>
               </ul>
             </div>
+            
             {/* Карьерные сферы */}
             <section className="mb-12">
               <h2 className="text-3xl font-bold mb-8 text-center text-gray-800">Карьерные сферы</h2>
@@ -1106,6 +1041,7 @@ const App = () => {
                 ))}
               </div>
             </section>
+            
             {/* Направления в вузах */}
             <section className="mb-12">
               <h2 className="text-3xl font-bold mb-8 text-center text-gray-800">Популярные направления в вузах</h2>
@@ -1126,7 +1062,7 @@ const App = () => {
                           console.warn(`Не найдена сферa для направления ID: ${direction.id}`);
                         }
                       }}
-                      className="bg-white/90 backdrop-blur-sm rounded-2xl p-6 border border-gray-200 hover:border-blue-500 transition-all duration-300 cursor-pointer shadow-md" // Добавлен cursor-pointer
+                      className="bg-white/90 backdrop-blur-sm rounded-2xl p-6 border border-gray-200 hover:border-blue-500 transition-all duration-300 cursor-pointer shadow-md"
                     >
                       <div className="flex items-start">
                         <Building2 className="w-8 h-8 text-blue-600 mr-4 mt-1" />
@@ -1155,6 +1091,7 @@ const App = () => {
                 })}
               </div>
             </section>
+            
             {/* Профессии */}
             <section className="mb-12">
               <h2 className="text-3xl font-bold mb-8 text-center text-gray-800">Популярные профессии</h2>
@@ -1175,7 +1112,7 @@ const App = () => {
                           console.warn(`Не найдена сферa для профессии ID: ${profession.id}`);
                         }
                       }}
-                      className="bg-white/90 backdrop-blur-sm rounded-2xl p-6 border border-gray-200 hover:border-blue-500 transition-all duration-300 cursor-pointer shadow-md" // Добавлен cursor-pointer
+                      className="bg-white/90 backdrop-blur-sm rounded-2xl p-6 border border-gray-200 hover:border-blue-500 transition-all duration-300 cursor-pointer shadow-md"
                     >
                       <div className="flex items-start mb-3">
                         <Briefcase className="w-6 h-6 text-blue-600 mr-3 mt-1" />
@@ -1204,6 +1141,7 @@ const App = () => {
                 })}
               </div>
             </section>
+            
             {/* CTA */}
             <section className="text-center py-16">
               <h2 className="text-4xl font-bold mb-8 text-gray-800">🚀 Начни строить свою карьеру сегодня!</h2>
@@ -1397,10 +1335,10 @@ const App = () => {
                 <a href="#" className="text-gray-600 hover:text-blue-600 transition-colors">
                   <MessageSquare className="w-5 h-5" />
                 </a>
-                <a href="#" className="text-gray-600 hover:text-red-600 transition-colors">
+                <a href="#" className="text-gray-600 hover:text-blue-400 transition-colors">
                   <Hash className="w-5 h-5" />
                 </a>
-                <a href="#" className="text-gray-600 hover:text-blue-400 transition-colors">
+                <a href="#" className="text-gray-600 hover:text-red-600 transition-colors">
                   <AtSign className="w-5 h-5" />
                 </a>
               </div>
