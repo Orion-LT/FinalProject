@@ -26,6 +26,7 @@ const App = () => {
   const [currentDate, setCurrentDate] = useState(new Date());
   const [selectedDate, setSelectedDate] = useState(new Date());
 
+  // Старые данные университетов
   const universities = [
     { id: 1, name: 'Московский государственный университет имени М.В. Ломоносова', location: 'Москва, Ленинские горы, д. 1', students: '40 000', rank: 'Топ-1 в России', type: 'Университет', specialties: ['IT', 'Инженерия', 'Медицина', 'Экономика', 'Право'], shortName: 'МГУ', website: 'https://msu.ru/', aliases: ['МГУ', 'Ломоносовский университет', 'Московский университет', 'университет Ломоносова'] },
     { id: 2, name: 'Московский физико-технический институт', location: 'Москва, Институтский пер., д. 9', students: '7 000', rank: 'Топ-1 в науке', type: 'Институт', specialties: ['IT', 'Инженерия', 'Физика'], shortName: 'МФТИ', website: 'https://mipt.ru/', aliases: ['МФТИ', 'Физтех', 'Физтех институт', 'Московский физтех'] },
@@ -42,7 +43,7 @@ const App = () => {
     { id: 13, name: 'Московский государственный институт международных отношений', location: 'Москва, ул. Профсоюзная, д. 76', students: '11 000', rank: 'Топ-1 в международных отношениях', type: 'Институт', specialties: ['Международные отношения', 'Политология', 'Лингвистика'], shortName: 'МГИМО', website: 'https://mgimo.ru/', aliases: ['МГИМО', 'Московский институт международных отношений', 'институт международных отношений', 'МИМО'] },
     { id: 14, name: 'Первый Московский государственный медицинский университет имени И.М. Сеченова', location: 'Москва, ул. Трубецкая, д. 8, стр. 2', students: '14 000', rank: 'Топ-1 в медицине', type: 'Университет', specialties: ['Медицина', 'Фармация', 'Стоматология'], shortName: 'Сеченовский Университет', website: 'https://www.sechenov.ru/', aliases: ['Сеченовский Университет', 'Первый МГМУ', 'Сеченка', 'медицинский университет Сеченова'] },
     { id: 15, name: 'Московский городской педагогический университет', location: 'Москва, 2-й Сельскохозяйственный проезд, д. 4', students: '13 000', rank: 'Топ-3 в педагогике', type: 'Университет', specialties: ['Педагогика', 'Психология', 'Образование'], shortName: 'МГПУ', website: 'https://www.mgpu.ru/', aliases: ['МГПУ', 'Московский педагогический университет', 'педагогический университет', 'учительский университет'] },
-    { id: 16, name: 'Московский государственный лингвистический университет', location: 'Москва, ул. Воронцовская, д. 8', students: '9 000', rank: 'Топ-1 в лингвистике', type: 'Университет', specialties: ['Лингвистика', 'Перевод', 'Международные отношения'], shortName: 'МГЛУ', website: 'https://linguanet.ru/', aliases: ['МГЛУ', 'Московский лингвистический университет', 'лингвистический университет', 'языковой университет'] },
+    { id: 16, name: 'Московский государственный лингвистический университет', location: 'Москва, ул. Воронцовская, д. 8', students: '8 000', rank: 'Топ-1 в лингвистике', type: 'Университет', specialties: ['Лингвистика', 'Перевод', 'Международные отношения'], shortName: 'МГЛУ', website: 'https://linguanet.ru/', aliases: ['МГЛУ', 'Московский лингвистический университет', 'лингвистический университет', 'языковой университет'] },
     { id: 17, name: 'Московский государственный юридический университет имени О.Е. Кутафина', location: 'Москва, ул. Садовая-Кудринская, д. 9', students: '12 000', rank: 'Топ-1 юридический', type: 'Университет', specialties: ['Право', 'Международные отношения', 'Политология'], shortName: 'МГЮА', website: 'https://msal.ru/', aliases: ['МГЮА', 'Кутафинка', 'юридический университет', 'МГЮ им. Кутафина'] },
     { id: 18, name: 'Финансовый университет при Правительстве Российской Федерации', location: 'Москва, ул. Ленинградский проспект, д. 4', students: '20 000', rank: 'Топ-1 экономический', type: 'Университет', specialties: ['Экономика', 'Финансы', 'Менеджмент', 'IT'], shortName: 'Финансовый университет', website: 'https://fa.ru/', aliases: ['Финансовый университет', 'Финуниверситет', 'Финансовая академия', 'университет финансов'] },
     { id: 19, name: 'Московский университет тонких химических технологий имени М.В. Ломоносова', location: 'Москва, ул. Миусская, д. 26', students: '10 000', rank: 'Топ-1 химический', type: 'Университет', specialties: ['Химия', 'Материаловедение', 'Биотехнология', 'Фармация'], shortName: 'МИТХТ', website: 'https://www.muctr.ru/', aliases: ['МИТХТ', 'Московский институт тонкой химии', 'химический технологический институт', 'институт химических технологий'] },
@@ -53,6 +54,17 @@ const App = () => {
     { id: 24, name: 'Государственный академический университет гуманитарных наук', location: 'Москва, Мароновский переулок, д. 26', students: '4 000', rank: 'Топ-5 в гуманитарных науках', type: 'Университет', specialties: ['Философия', 'История', 'Литература', 'Психология'], shortName: 'ГАУГН', website: 'https://gaugn.ru/', aliases: ['ГАУГН', 'Государственный академический университет гуманитарных наук', 'гуманитарный университет', 'академический университет'] },
     { id: 25, name: 'Московский Политех', location: 'Москва, ул. Павла Корчагина, д. 2', students: '16 000', rank: 'Топ-5 технический', type: 'Университет', specialties: ['Инженерия', 'IT', 'Машиностроение', 'Робототехника'], shortName: 'Московский Политех', website: 'https://mospolytech.ru/', aliases: ['Московский Политех', 'Московский политехнический университет', 'политех', 'Московский политех'] },
   ];
+
+  // Новые центры профориентации
+  const careerCenters = [
+    { id: 26, name: 'Центр занятости «Моя карьера»', location: 'Москва', ageRange: 'от 14 лет', accessibility: 'очно в Москве', description: 'В центре не только помогут определиться с профессией, но и подскажут, как найти первую работу. Проводят тренинги и школы для подростков.', type: 'Центр профориентации', specialties: ['Профориентация', 'Трудоустройство', 'Карьерное планирование'], shortName: 'Моя карьера', website: 'https://mycareer.moscow/#/meetings/info', aliases: ['Центр занятости Моя карьера', 'Моя карьера', 'центр профориентации Москвы'] },
+    { id: 27, name: 'Проект «Билет в будущее»', location: '89 регионов', ageRange: '6—11 класс', accessibility: 'онлайн и офлайн', description: 'Проект помогает школьникам раскрыть таланты и осознанно выбрать карьеру. Предлагает онлайн-диагностику и очные профпробы.', type: 'Центр профориентации', specialties: ['Профориентация', 'Диагностика', 'Профпробы', 'Карьерное планирование'], shortName: 'Билет в будущее', website: 'https://bvbinfo.ru/', aliases: ['Билет в будущее', 'Проект Билет в будущее', 'BVB'] },
+    { id: 28, name: 'Учебный центр Maximum', location: 'Москва', ageRange: '8—11 класс', accessibility: 'онлайн, очно в Москве', description: 'Образовательный центр помогает старшеклассникам понять, что им нравится, и выбрать подходящую профессию. Предлагает тесты и курсы.', type: 'Центр профориентации', specialties: ['Профориентация', 'Тестирование', 'Курсы', 'Консультации'], shortName: 'Maximum', website: 'https://maximumtest.ru/proforientacia', aliases: ['Maximum', 'Учебный центр Maximum', 'Центр Maximum'] },
+    { id: 29, name: 'Навигатор поступления', location: 'Онлайн', ageRange: '7—11 класс', accessibility: 'онлайн', description: 'Создатели сайта с каталогом вузов проводят онлайн-тестирование для старшеклассников. Помогают интерпретировать результаты и составить план поступления.', type: 'Центр профориентации', specialties: ['Профориентация', 'Тестирование', 'Карьерное планирование', 'Поступление'], shortName: 'Навигатор поступления', website: 'https://propostuplenie.ru/promo/proforientacia', aliases: ['Навигатор поступления', 'propostuplenie.ru', 'Центр профориентации Навигатор'] },
+  ];
+
+  // Объединяем университеты и центры профориентации в один массив
+  const allInstitutions = [...universities, ...careerCenters];
 
   const careerFields = [
     { id: 1, name: 'IT и Программирование', description: 'Карьера в сфере информационных технологий, разработки программного обеспечения, анализа данных и кибербезопасности.', icon: '💻', universityIds: [1, 2, 4, 7, 8, 10, 11], directions: ['Программная инженерия', 'Информационные системы', 'Бизнес-информатика', 'Искусственный интеллект'], professions: ['Программист', 'Системный аналитик', 'Data Scientist', 'DevOps-инженер'] },
@@ -89,13 +101,24 @@ const App = () => {
     { id: 10, name: 'Психолог', description: 'Диагностика, консультирование, психотерапия.', careerFieldId: 6, requiredSkills: ['Психодиагностика', 'Психотерапия', 'Консультирование', 'Психология развития'] },
   ];
 
-  // События МГУ
-  const msuEvents = [
-    { id: 1, title: 'VI Международная научно–практическая конференция «Лингвистика дистанцирования. Язык в контексте мультимодальной коммуникации XXI века»', date: '2026-01-26', time: '10:00', location: 'Москва', link: 'https://conf.msu.ru/rus/event/10212/', category: 'Конференция', participants: '150' },
-    { id: 2, title: 'Забытые слова: новые подходы к изучению биографии и творчества М. Е. Салтыкова–Щедрина', date: '2026-01-27', time: '14:00', location: 'Москва', link: 'https://conf.msu.ru/rus/event/10223/', category: 'Конференция', participants: '80' },
-    { id: 3, title: 'XX Международная научная конференция «Сорокинские чтения»: «Российская социология: связь времен и горизонты будущего»', date: '2026-02-19', time: '09:00', location: 'Москва', link: 'https://conf.msu.ru/rus/event/10097/', category: 'Конференция', participants: '200' },
-    { id: 4, title: 'Международная научно–практическая конференция «Новые геополитические горизонты: эволюция международных отношений и интеграционных процессов в современном мире»', date: '2026-02-25', time: '10:00', location: 'Москва', link: 'https://conf.msu.ru/rus/event/10144/', category: 'Конференция', participants: '180' },
-    { id: 5, title: 'Ежегодный Фестиваль школьных средств массовой информации на факультете журналистики МГУ', date: '2026-04-01', time: '10:00', location: 'Москва', link: 'https://conf.msu.ru/rus/event/10115/', category: 'Фестиваль', participants: '300' },
+  const events = [
+    { id: 1, title: 'Хакатон "Технологии будущего"', date: '2025-01-15', time: '10:00', location: 'Москва, Технопарк', participants: 150 },
+    { id: 2, title: 'Карьерная ярмарка IT', date: '2025-01-20', time: '14:00', location: 'Москва, ВДНХ', participants: 300 },
+    { id: 3, title: 'Медицинский форум', date: '2025-01-25', time: '09:00', location: 'Москва, Центральный зал', participants: 200 },
+    { id: 4, title: 'Бизнес-лига', date: '2025-02-01', time: '18:00', location: 'Москва, БЦ "Сити"', participants: 120 },
+    { id: 5, title: 'Конференция "Право будущего"', date: '2025-02-06', time: '16:00', location: 'МГЮА им. Кутафина, конференц-зал', participants: 125 },
+    { id: 6, title: 'Вебинар по юриспруденции', date: '2025-02-02', time: '22:00', location: 'Онлайн', participants: 145 },
+    { id: 7, title: 'Мастер-класс по политологии', date: '2025-02-09', time: '19:00', location: 'МГЮА им. Кутафина, политологический факультет', participants: 70 },
+    { id: 8, title: 'Хакатон "Право-код"', date: '2025-02-16', time: '15:00', location: 'МГЮА им. Кутафина, главный корпус', participants: 230 },
+    { id: 9, title: 'Воркшоп по международному праву', date: '2025-02-20', time: '21:00', location: 'МГЮА им. Кутафина, международный факультет', participants: 85 },
+    { id: 10, title: 'Мастер-класс по экономике', date: '2025-01-31', time: '20:30', location: 'Финансовый университет, главный корпус, ауд. 301', participants: 100 },
+    { id: 11, title: 'Вебинар по финансам', date: '2025-02-03', time: '22:30', location: 'Онлайн', participants: 150 },
+    { id: 12, title: 'Конференция "Финансы будущего"', date: '2025-02-07', time: '16:30', location: 'Финансовый университет, конференц-зал', participants: 130 },
+    { id: 13, title: 'Мастер-класс по менеджменту', date: '2025-02-10', time: '19:30', location: 'Финансовый университет, менеджмент факультет', participants: 75 },
+    { id: 14, title: 'Хакатон "Фин-код"', date: '2025-02-17', time: '15:30', location: 'Финансовый университет, главный корпус', participants: 235 },
+    { id: 15, title: 'Мастер-класс по машиностроению', date: '2025-02-17', time: '23:00', location: 'Московский политех, машиностроительный факультет', participants: 110 },
+    { id: 16, title: 'Хакатон "Политех-код"', date: '2025-02-24', time: '19:00', location: 'Московский политех, главный корпус', participants: 270 },
+    { id: 17, title: 'Воркшоп по робототехнике', date: '2025-02-28', time: '01:00', location: 'Московский политех, робототехническая лаборатория', participants: 125 },
   ];
 
   const features = [
@@ -105,22 +128,21 @@ const App = () => {
     { title: 'Интерактивная карта', desc: 'Найдите мероприятия рядом с вами', icon: <MapPin className="w-8 h-8" /> },
   ];
 
-  // Фильтрация вузов
-  const filteredUniversities = universities.filter(uni => {
+  // Фильтрация учреждений
+  const filteredInstitutions = allInstitutions.filter(institution => {
     // Объединяем все возможные названия и сокращения
-    const allNames = [uni.name, uni.shortName, ...uni.aliases];
+    const allNames = [institution.name, institution.shortName, ...(institution.aliases || [])];
     
     const matchesSearch = searchQuery === '' ||
       allNames.some(name => name.toLowerCase().includes(searchQuery.toLowerCase())) ||
-      uni.location.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      uni.specialties.some(spec => spec.toLowerCase().includes(searchQuery.toLowerCase()));
+      institution.location.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      (institution.specialties && institution.specialties.some(spec => spec.toLowerCase().includes(searchQuery.toLowerCase())));
     
-    const matchesType = selectedType === 'Все типы' || uni.type === selectedType;
-    const matchesSpecialty = selectedSpecialty === 'Все специальности' || uni.specialties.includes(selectedSpecialty);
-    const matchesCity = selectedCity === 'Москва' || uni.location.includes(selectedCity); // Пока только Москва
-    const matchesPartnership = !hasPartnership || true; // Пока нет данных о партнерстве
-
-    return matchesSearch && matchesType && matchesSpecialty && matchesCity && matchesPartnership;
+    const matchesType = selectedType === 'Все типы' || institution.type === selectedType;
+    const matchesSpecialty = selectedSpecialty === 'Все специальности' || (institution.specialties && institution.specialties.includes(selectedSpecialty));
+    const matchesCity = selectedCity === 'Москва' || institution.location.includes(selectedCity) || institution.location === 'Онлайн'; // Пока только Москва и онлайн
+    
+    return matchesSearch && matchesType && matchesSpecialty && matchesCity;
   });
 
   // Функция для сброса фильтров
@@ -251,22 +273,18 @@ const App = () => {
     }
   };
 
-  // Получаем мероприятия для выбранной даты
-  const getEventsForDate = (date) => {
-    if (!date) return [];
-    const dateString = date.toISOString().split('T')[0]; // Преобразуем в формат YYYY-MM-DD
-    return msuEvents.filter(event => event.date === dateString);
-  };
-
   const renderContent = () => {
     if (selectedUniversity) {
+      // Проверяем, является ли выбранное учреждение центром профориентации
+      const isCareerCenter = careerCenters.some(center => center.id === selectedUniversity.id);
+      
       return (
         <div className="py-8">
           <button 
             onClick={() => setSelectedUniversity(null)}
             className="flex items-center text-gray-800 mb-8 bg-gradient-to-r from-gray-100 to-gray-200 hover:from-gray-200 hover:to-gray-300 px-6 py-3 rounded-full font-semibold transition-all duration-300 transform hover:scale-105"
           >
-            <ArrowLeft className="w-5 h-5 mr-2" /> Назад к списку ВУЗов
+            <ArrowLeft className="w-5 h-5 mr-2" /> Назад к списку
           </button>
           
           <div className="bg-white/90 backdrop-blur-sm rounded-2xl p-8 border border-gray-200 shadow-lg">
@@ -278,14 +296,21 @@ const App = () => {
             <div className="space-y-4 text-gray-600 mb-8">
               <p className="text-lg"><strong>Локация:</strong> {selectedUniversity.location}</p>
               <p><strong>Тип:</strong> {selectedUniversity.type}</p>
-              <p><strong>Количество студентов:</strong> {selectedUniversity.students}</p>
-              <p><strong>Рейтинг:</strong> {selectedUniversity.rank}</p>
+              {!isCareerCenter && <p><strong>Количество студентов:</strong> {selectedUniversity.students}</p>}
+              {!isCareerCenter && <p><strong>Рейтинг:</strong> {selectedUniversity.rank}</p>}
+              {isCareerCenter && <p><strong>Возрастная группа:</strong> {selectedUniversity.ageRange}</p>}
+              {isCareerCenter && <p><strong>Доступность:</strong> {selectedUniversity.accessibility}</p>}
             </div>
             
             <div className="bg-gray-50/50 rounded-xl p-6 mb-6">
-              <h3 className="text-xl font-semibold mb-4 text-gray-800">Специальности</h3>
+              <h3 className="text-xl font-semibold mb-4 text-gray-800">Описание</h3>
+              <p className="text-gray-600">{selectedUniversity.description || 'Информация отсутствует'}</p>
+            </div>
+            
+            <div className="bg-gray-50/50 rounded-xl p-6 mb-6">
+              <h3 className="text-xl font-semibold mb-4 text-gray-800">Специальности / Направления</h3>
               <div className="flex flex-wrap gap-2">
-                {selectedUniversity.specialties.map((spec, idx) => (
+                {(selectedUniversity.specialties || []).map((spec, idx) => (
                   <span key={idx} className="px-3 py-1 bg-blue-100 text-blue-800 rounded-full text-sm">
                     {spec}
                   </span>
@@ -294,29 +319,41 @@ const App = () => {
             </div>
             
             <div className="flex gap-4">
-              <button 
-                onClick={() => {
-                  setActiveTab('map');
-                  setSelectedLocation({
-                    name: selectedUniversity.name,
-                    address: selectedUniversity.location,
-                    lat: 55.7038, // Пример координат для МГУ
-                    lng: 37.5326
-                  });
-                  setSelectedUniversity(null);
-                }}
-                className="bg-gradient-to-r from-blue-600 to-cyan-600 hover:from-blue-700 hover:to-cyan-700 px-8 py-3 rounded-xl font-semibold text-white transition-all duration-300 transform hover:scale-105"
-              >
-                Показать на карте
-              </button>
               <a 
                 href={selectedUniversity.website}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="bg-gradient-to-r from-gray-600 to-gray-700 hover:from-gray-700 hover:to-gray-800 px-8 py-3 rounded-xl font-semibold text-white transition-all duration-300 transform hover:scale-105"
+                className="bg-gradient-to-r from-blue-600 to-cyan-600 hover:from-blue-700 hover:to-cyan-700 px-8 py-3 rounded-xl font-semibold text-white transition-all duration-300 transform hover:scale-105"
               >
                 Посетить сайт
               </a>
+              {isCareerCenter ? (
+                <button 
+                  onClick={() => {
+                    setActiveTab('events');
+                    setSelectedUniversity(null);
+                  }}
+                  className="bg-gradient-to-r from-gray-600 to-gray-700 hover:from-gray-700 hover:to-gray-800 px-8 py-3 rounded-xl font-semibold text-white transition-all duration-300 transform hover:scale-105"
+                >
+                  Узнать о мероприятиях
+                </button>
+              ) : (
+                <button 
+                  onClick={() => {
+                    setActiveTab('map');
+                    setSelectedLocation({
+                      name: selectedUniversity.name,
+                      address: selectedUniversity.location,
+                      lat: 55.7038, // Пример координат для МГУ
+                      lng: 37.5326
+                    });
+                    setSelectedUniversity(null);
+                  }}
+                  className="bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 px-8 py-3 rounded-xl font-semibold text-white transition-all duration-300 transform hover:scale-105"
+                >
+                  Показать на карте
+                </button>
+              )}
             </div>
           </div>
         </div>
@@ -349,97 +386,119 @@ const App = () => {
           </div>
 
           <section className="mb-12">
-            <h2 className="text-3xl font-bold mb-8 text-center text-gray-800">Подходящие ВУЗы</h2>
+            <h2 className="text-3xl font-bold mb-8 text-center text-gray-800">Подходящие ВУЗы и Центры</h2>
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-              {relatedUniversities.map(uni => (
-                <div 
-                  key={uni.id}
-                  onClick={() => {
-                    setActiveTab('universities');
-                    setSelectedUniversity(uni);
-                    setSelectedCareerField(null);
-                    window.scrollTo(0, 0);
-                  }}
-                  className="bg-white/90 backdrop-blur-sm rounded-2xl p-6 border border-gray-200 hover:border-blue-500 transition-all duration-300 cursor-pointer shadow-md"
-                >
-                  <div className="flex items-center mb-3">
-                    <Building2 className="w-8 h-8 text-blue-600 mr-3" />
-                    <h3 className="text-xl font-bold text-gray-800">{uni.name}</h3>
+              {relatedUniversities.length > 0 ? (
+                relatedUniversities.map(uni => (
+                  <div 
+                    key={uni.id}
+                    onClick={() => {
+                      setActiveTab('universities');
+                      setSelectedUniversity(uni);
+                      setSelectedCareerField(null);
+                      window.scrollTo(0, 0);
+                    }}
+                    className="bg-white/90 backdrop-blur-sm rounded-2xl p-6 border border-gray-200 hover:border-blue-500 transition-all duration-300 cursor-pointer shadow-md"
+                  >
+                    <div className="flex items-center mb-3">
+                      <Building2 className="w-8 h-8 text-blue-600 mr-3" />
+                      <h3 className="text-xl font-bold text-gray-800">{uni.name}</h3>
+                    </div>
+                    <p className="text-gray-600 text-sm mb-2">{uni.location}</p>
+                    <p className="text-gray-500 text-xs">{uni.rank || 'Центр профориентации'}</p>
                   </div>
-                  <p className="text-gray-600 text-sm mb-2">{uni.location}</p>
-                  <p className="text-gray-500 text-xs">{uni.rank}</p>
-                </div>
-              ))}
+                ))
+              ) : (
+                <p className="text-gray-500 text-center col-span-full">Учреждения не найдены для этой сферы.</p>
+              )}
             </div>
           </section>
 
           <section className="mb-12">
             <h2 className="text-3xl font-bold mb-8 text-center text-gray-800">Направления обучения</h2>
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-              {relatedDirections.map(dir => (
-                <div 
-                  key={dir.id}
-                  className="bg-white/90 backdrop-blur-sm rounded-2xl p-6 border border-gray-200 hover:border-blue-500 transition-all duration-300 cursor-pointer shadow-md"
-                >
-                  <div className="flex items-start">
-                    <Building2 className="w-8 h-8 text-blue-600 mr-4 mt-1" />
-                    <div>
-                      <h3 className="text-xl font-bold mb-2 text-blue-600">{dir.university}</h3>
-                      <h4 className="text-lg font-semibold mb-1 text-gray-800">{dir.direction}</h4>
-                      <p className="text-gray-600 text-sm">{dir.faculty}</p>
-                      {dir.relatedProfessions && dir.relatedProfessions.length > 0 && (
-                        <div className="mt-2 flex flex-wrap gap-1">
-                          {dir.relatedProfessions.slice(0, 2).map((prof, idx) => (
-                            <span key={idx} className="px-2 py-1 bg-blue-100 text-blue-800 rounded-full text-xs">
-                              {prof}
-                            </span>
-                          ))}
-                          {dir.relatedProfessions.length > 2 && (
-                            <span className="px-2 py-1 bg-gray-200 text-gray-600 rounded-full text-xs">
-                              +{dir.relatedProfessions.length - 2}
-                            </span>
-                          )}
-                        </div>
-                      )}
+              {relatedDirections.length > 0 ? (
+                relatedDirections.map(dir => (
+                  <div 
+                    key={dir.id}
+                    className="bg-white/90 backdrop-blur-sm rounded-2xl p-6 border border-gray-200 hover:border-blue-500 transition-all duration-300 cursor-pointer shadow-md"
+                    onClick={() => {
+                      // Найти университет по названию
+                      const university = universities.find(u => u.shortName === dir.university || u.name.includes(dir.university));
+                      if (university) {
+                        setActiveTab('universities');
+                        setSelectedUniversity(university);
+                        setSelectedCareerField(null);
+                        window.scrollTo(0, 0);
+                      }
+                    }}
+                  >
+                    <div className="flex items-start">
+                      <Building2 className="w-8 h-8 text-blue-600 mr-4 mt-1" />
+                      <div>
+                        <h3 className="text-xl font-bold mb-2 text-blue-600">{dir.university}</h3>
+                        <h4 className="text-lg font-semibold mb-1 text-gray-800">{dir.direction}</h4>
+                        <p className="text-gray-600 text-sm">{dir.faculty}</p>
+                        {dir.relatedProfessions && dir.relatedProfessions.length > 0 && (
+                          <div className="mt-2 flex flex-wrap gap-1">
+                            {dir.relatedProfessions.slice(0, 2).map((prof, idx) => (
+                              <span key={idx} className="px-2 py-1 bg-blue-100 text-blue-800 rounded-full text-xs">
+                                {prof}
+                              </span>
+                            ))}
+                            {dir.relatedProfessions.length > 2 && (
+                              <span className="px-2 py-1 bg-gray-200 text-gray-600 rounded-full text-xs">
+                                +{dir.relatedProfessions.length - 2}
+                              </span>
+                            )}
+                          </div>
+                        )}
+                      </div>
                     </div>
                   </div>
-                </div>
-              ))}
+                ))
+              ) : (
+                <p className="text-gray-500 text-center col-span-full">Направления не найдены для этой сферы.</p>
+              )}
             </div>
           </section>
 
           <section className="mb-12">
             <h2 className="text-3xl font-bold mb-8 text-center text-gray-800">Популярные профессии</h2>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {relatedProfessions.map(prof => (
-                <div 
-                  key={prof.id}
-                  className="bg-white/90 backdrop-blur-sm rounded-2xl p-6 border border-gray-200 hover:border-blue-500 transition-all duration-300 cursor-pointer shadow-md"
-                >
-                  <div className="flex items-start mb-3">
-                    <Briefcase className="w-6 h-6 text-blue-600 mr-3 mt-1" />
-                    <h3 className="text-xl font-bold text-gray-800">{prof.name}</h3>
-                  </div>
-                  <p className="text-gray-600">{prof.description}</p>
-                  {prof.requiredSkills && prof.requiredSkills.length > 0 && (
-                    <div className="mt-2">
-                      <p className="text-xs text-gray-500">Нужные навыки:</p>
-                      <div className="flex flex-wrap gap-1 mt-1">
-                        {prof.requiredSkills.slice(0, 3).map((skill, idx) => (
-                          <span key={idx} className="px-2 py-1 bg-blue-100 text-blue-800 rounded-full text-xs">
-                            {skill}
-                          </span>
-                        ))}
-                        {prof.requiredSkills.length > 3 && (
-                          <span className="px-2 py-1 bg-gray-200 text-gray-600 rounded-full text-xs">
-                            +{prof.requiredSkills.length - 3}
-                          </span>
-                        )}
-                      </div>
+              {relatedProfessions.length > 0 ? (
+                relatedProfessions.map(prof => (
+                  <div 
+                    key={prof.id}
+                    className="bg-white/90 backdrop-blur-sm rounded-2xl p-6 border border-gray-200 hover:border-blue-500 transition-all duration-300 cursor-pointer shadow-md"
+                  >
+                    <div className="flex items-start mb-3">
+                      <Briefcase className="w-6 h-6 text-blue-600 mr-3 mt-1" />
+                      <h3 className="text-xl font-bold text-gray-800">{prof.name}</h3>
                     </div>
-                  )}
-                </div>
-              ))}
+                    <p className="text-gray-600">{prof.description}</p>
+                    {prof.requiredSkills && prof.requiredSkills.length > 0 && (
+                      <div className="mt-2">
+                        <p className="text-xs text-gray-500">Нужные навыки:</p>
+                        <div className="flex flex-wrap gap-1 mt-1">
+                          {prof.requiredSkills.slice(0, 3).map((skill, idx) => (
+                            <span key={idx} className="px-2 py-1 bg-blue-100 text-blue-800 rounded-full text-xs">
+                              {skill}
+                            </span>
+                          ))}
+                          {prof.requiredSkills.length > 3 && (
+                            <span className="px-2 py-1 bg-gray-200 text-gray-600 rounded-full text-xs">
+                              +{prof.requiredSkills.length - 3}
+                            </span>
+                          )}
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                ))
+              ) : (
+                <p className="text-gray-500 text-center col-span-full">Профессии не найдены для этой сферы.</p>
+              )}
             </div>
           </section>
 
@@ -489,10 +548,10 @@ const App = () => {
                       className="bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 px-8 py-4 rounded-2xl font-semibold transition-all duration-300 transform hover:scale-105 flex items-center text-white"
                     >
                       <GraduationCap className="w-5 h-5 inline mr-2" />
-                      Изучить ВУЗы
+                      Изучить ВУЗы и Центры
                     </button>
                     <div className="absolute -top-4 -right-4 bg-purple-600 text-white px-3 py-1 rounded-full text-sm font-semibold">
-                      25+
+                      29+
                     </div>
                   </div>
                 </div>
@@ -539,13 +598,13 @@ const App = () => {
                   <div className="flex items-center justify-between mb-4">
                     <div className="flex items-center">
                       <GraduationCap className="w-8 h-8 text-blue-600 mr-3" />
-                      <h3 className="text-xl font-semibold text-gray-800">Изучить ВУЗы</h3>
+                      <h3 className="text-xl font-semibold text-gray-800">Изучить ВУЗы и Центры</h3>
                     </div>
                     <div className="bg-gradient-to-r from-green-600 to-teal-600 px-3 py-1 rounded-lg text-sm font-semibold text-white">
-                      25+ ВУЗов-партнеров
+                      29+ учреждений
                     </div>
                   </div>
-                  <p className="text-gray-600">Найди подходящие учебные заведения</p>
+                  <p className="text-gray-600">Найди подходящие учебные заведения и центры профориентации</p>
                 </div>
                 <div
                   className="bg-white/90 backdrop-blur-sm rounded-2xl p-6 border border-gray-200 hover:border-blue-500 transition-all duration-300 cursor-pointer shadow-md"
@@ -581,7 +640,7 @@ const App = () => {
             <section className="text-center py-16">
               <h2 className="text-4xl font-bold mb-8 text-gray-800">🚀 Начни строить свою карьеру сегодня!</h2>
               <div className="flex justify-center gap-6">
-                <button 
+                <button
                   onClick={goToMap}
                   className="bg-gradient-to-r from-blue-600 to-cyan-600 hover:from-blue-700 hover:to-cyan-700 px-12 py-4 rounded-2xl font-semibold transition-all duration-300 transform hover:scale-105 text-white"
                 >
@@ -715,18 +774,16 @@ const App = () => {
       case 'events':
         return (
           <div className="py-8">
-            <h1 className="text-4xl font-bold mb-8 text-center text-gray-800">📅 Календарь мероприятий</h1>
+            <h1 className="text-4xl font-bold mb-8 text-center text-gray-800">📅 Мероприятия</h1>
             <p className="text-xl text-gray-600 text-center mb-12">Присоединяйтесь к профориентационным событиям</p>
             
             <div className="max-w-4xl mx-auto">
-              {/* Заголовок с выбранной датой */}
               <div className="text-center mb-8">
                 <h2 className="text-2xl font-semibold text-gray-800">
                   Мероприятия на {formatDate(selectedDate)}
                 </h2>
               </div>
               
-              {/* Календарь */}
               <div className="bg-white/90 backdrop-blur-sm rounded-2xl p-6 border border-gray-200 shadow-md">
                 <div className="flex items-center justify-between mb-6">
                   <button 
@@ -775,13 +832,12 @@ const App = () => {
                 </div>
               </div>
               
-              {/* Список мероприятий на выбранную дату */}
               <div className="mt-8 bg-white/90 backdrop-blur-sm rounded-2xl p-8 border border-gray-200 shadow-md">
                 <h3 className="text-xl font-bold mb-6 text-gray-800">Мероприятия на {formatDate(selectedDate)}</h3>
                 
-                {getEventsForDate(selectedDate).length > 0 ? (
+                {events.filter(event => new Date(event.date).toDateString() === selectedDate.toDateString()).length > 0 ? (
                   <div className="space-y-6">
-                    {getEventsForDate(selectedDate).map(event => (
+                    {events.filter(event => new Date(event.date).toDateString() === selectedDate.toDateString()).map(event => (
                       <div 
                         key={event.id}
                         className="bg-gradient-to-r from-blue-50 to-cyan-50 rounded-xl p-6 border border-blue-200 shadow-sm"
@@ -789,31 +845,24 @@ const App = () => {
                         <div className="flex items-start justify-between">
                           <div className="flex-1">
                             <h4 className="text-xl font-bold text-gray-800 mb-2">{event.title}</h4>
-                            <div className="space-y-2 text-gray-600 mb-4">
+                            <div className="space-y-2 text-gray-600">
                               <p><strong>Время:</strong> {event.time}</p>
                               <p><strong>Место:</strong> {event.location}</p>
-                              <p><strong>Категория:</strong> {event.category}</p>
-                              <p><strong>Участников:</strong> {event.participants}</p>
+                              <p><strong>Участники:</strong> {event.participants}</p>
                             </div>
-                            <p className="text-gray-700">{event.description}</p>
                           </div>
-                          <a 
-                            href={event.link}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="bg-gradient-to-r from-blue-600 to-cyan-600 hover:from-blue-700 hover:to-cyan-700 px-4 py-2 rounded-lg font-semibold text-white transition-all duration-300 transform hover:scale-105 whitespace-nowrap ml-4"
-                          >
-                            Подробнее
-                          </a>
+                          <button className="bg-gradient-to-r from-blue-600 to-cyan-600 hover:from-blue-700 hover:to-cyan-700 px-4 py-2 rounded-lg font-semibold text-white transition-all duration-300 transform hover:scale-105 ml-4">
+                            Участвовать
+                          </button>
                         </div>
                       </div>
                     ))}
                   </div>
                 ) : (
                   <div className="text-center py-12">
-                    <Calendar className="w-16 h-16 text-gray-400 mx-auto mb-4" />
-                    <h3 className="text-2xl font-semibold text-gray-600 mb-2">Мероприятия не найдены</h3>
-                    <p className="text-gray-600">На выбранную дату нет запланированных мероприятий</p>
+                    <Calendar className="w-16 h-16 text-blue-600 mx-auto mb-4" />
+                    <h3 className="text-2xl font-semibold text-gray-800 mb-2">Мероприятия на {formatDate(selectedDate)}</h3>
+                    <p className="text-gray-600">На выбранную дату пока нет запланированных мероприятий</p>
                   </div>
                 )}
               </div>
@@ -825,8 +874,8 @@ const App = () => {
         return (
           <div className="py-8">
             <div className="mb-8">
-              <h1 className="text-4xl font-bold mb-2 text-gray-800">🎓 ВУЗы и Колледжи</h1>
-              <p className="text-xl text-gray-600">Найдите подходящее учебное заведение для вашего будущего</p>
+              <h1 className="text-4xl font-bold mb-2 text-gray-800">🎓 ВУЗы и Центры профориентации</h1>
+              <p className="text-xl text-gray-600">Найдите подходящее учебное заведение или центр для вашего будущего</p>
             </div>
 
             <div className="mb-6">
@@ -834,7 +883,7 @@ const App = () => {
                 <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
                 <input
                   type="text"
-                  placeholder="Найдите интересующие ВУЗы..."
+                  placeholder="Найдите интересующие ВУЗы или центры..."
                   className="w-full bg-white/50 border border-gray-300 rounded-2xl pl-12 pr-4 py-4 text-gray-800 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
@@ -862,7 +911,7 @@ const App = () => {
                       </div>
                       {showTypeDropdown && (
                         <div className="absolute z-20 mt-1 w-full bg-gradient-to-br from-blue-600 via-cyan-600 to-purple-600 border border-blue-500 rounded-lg shadow-lg max-h-44 overflow-y-auto">
-                          {['Все типы', 'Университет', 'Институт', 'Политех', 'Академия', 'Колледж'].map((type) => (
+                          {['Все типы', 'Университет', 'Институт', 'Политех', 'Академия', 'Колледж', 'Центр профориентации'].map((type) => (
                             <div
                               key={type}
                               className="px-4 py-3 text-white hover:bg-gradient-to-r hover:from-purple-600 hover:to-cyan-600 hover:text-transparent hover:bg-clip-text hover:bg-clip-text cursor-pointer transition-all duration-200"
@@ -877,7 +926,6 @@ const App = () => {
                         </div>
                       )}
                     </div>
-                    
                     {/* Custom Specialty Dropdown */}
                     <div className="relative">
                       <label className="block text-sm font-medium mb-2 text-gray-700">Специальности</label>
@@ -890,7 +938,7 @@ const App = () => {
                       </div>
                       {showSpecialtyDropdown && (
                         <div className="absolute z-20 mt-1 w-full bg-gradient-to-br from-blue-600 via-cyan-600 to-purple-600 border border-blue-500 rounded-lg shadow-lg max-h-60 overflow-y-auto">
-                          {['Все специальности', 'IT', 'Инженерия', 'Медицина', 'Экономика', 'Право', 'Физика', 'Химия', 'Материаловедение', 'Фармация', 'Психология', 'Лингвистика', 'Педагогика', 'Международные отношения', 'Архитектура', 'Дизайн', 'Машиностроение', 'Энергетика', 'Нефть и газ', 'Биотехнология'].map((specialty) => (
+                          {['Все специальности', 'IT', 'Инженерия', 'Медицина', 'Экономика', 'Право', 'Физика', 'Химия', 'Материаловедение', 'Фармация', 'Психология', 'Лингвистика', 'Педагогика', 'Международные отношения', 'Архитектура', 'Дизайн', 'Машиностроение', 'Энергетика', 'Нефть и газ', 'Биотехнология', 'Профориентация', 'Карьерное планирование', 'Трудоустройство'].map((specialty) => (
                             <div
                               key={specialty}
                               className="px-4 py-3 text-white hover:bg-gradient-to-r hover:from-purple-600 hover:to-cyan-600 hover:text-transparent hover:bg-clip-text hover:bg-clip-text cursor-pointer transition-all duration-200"
@@ -905,7 +953,6 @@ const App = () => {
                         </div>
                       )}
                     </div>
-                    
                     <div>
                       <label className="block text-sm font-medium mb-2 text-gray-700">Город</label>
                       <select 
@@ -917,7 +964,6 @@ const App = () => {
                         <option>Москва</option>
                       </select>
                     </div>
-                    
                     <div className="flex items-center">
                       <input 
                         type="checkbox" 
@@ -928,7 +974,6 @@ const App = () => {
                       />
                       <label htmlFor="partnership" className="text-sm text-gray-700">Партнерские программы</label>
                     </div>
-                    
                     <button 
                       onClick={resetFilters}
                       className="w-full bg-gradient-to-r from-blue-600 to-cyan-600 hover:from-blue-700 hover:to-cyan-700 px-4 py-3 rounded-lg font-semibold transition-all duration-300 text-white"
@@ -941,43 +986,59 @@ const App = () => {
 
               <div className="lg:col-span-3">
                 <div className="space-y-6">
-                  {filteredUniversities.length > 0 ? (
-                    filteredUniversities.map((uni) => (
+                  {filteredInstitutions.length > 0 ? (
+                    filteredInstitutions.map((inst) => (
                       <div 
-                        key={uni.id}
-                        onClick={() => setSelectedUniversity(uni)}
+                        key={inst.id}
+                        onClick={() => setSelectedUniversity(inst)}
                         className="bg-white/90 backdrop-blur-sm rounded-2xl p-6 border border-gray-200 hover:border-blue-500 transition-all duration-300 cursor-pointer shadow-md"
                       >
                         <div className="flex items-start justify-between">
                           <div className="flex-1">
                             <div className="flex items-center mb-3">
                               <Building2 className="w-8 h-8 text-blue-600 mr-3" />
-                              <h3 className="text-2xl font-bold text-gray-800">{uni.name}</h3>
+                              <h3 className="text-2xl font-bold text-gray-800">{inst.name}</h3>
                             </div>
-                            <p className="text-gray-600 mb-4">Московское учебное заведение</p>
+                            <p className="text-gray-600 mb-4">{inst.type}</p>
                             <div className="flex flex-wrap gap-4 text-sm">
                               <div className="flex items-center text-gray-600">
                                 <Globe2 className="w-4 h-4 mr-2" />
-                                {uni.location}
+                                {inst.location}
                               </div>
-                              <div className="flex items-center text-gray-600">
-                                <Users2 className="w-4 h-4 mr-2" />
-                                {uni.students} студентов
-                              </div>
-                              <div className="flex items-center text-blue-600 font-semibold">
-                                <Award className="w-4 h-4 mr-2" />
-                                {uni.rank}
-                              </div>
+                              {inst.students && (
+                                <div className="flex items-center text-gray-600">
+                                  <Users2 className="w-4 h-4 mr-2" />
+                                  {inst.students} студентов
+                                </div>
+                              )}
+                              {inst.rank && (
+                                <div className="flex items-center text-blue-600 font-semibold">
+                                  <Award className="w-4 h-4 mr-2" />
+                                  {inst.rank}
+                                </div>
+                              )}
+                              {inst.ageRange && (
+                                <div className="flex items-center text-green-600 font-semibold">
+                                  <Users2 className="w-4 h-4 mr-2" />
+                                  {inst.ageRange}
+                                </div>
+                              )}
+                              {inst.accessibility && (
+                                <div className="flex items-center text-purple-600">
+                                  <MapPin className="w-4 h-4 mr-2" />
+                                  {inst.accessibility}
+                                </div>
+                              )}
                             </div>
                             <div className="mt-3 flex flex-wrap gap-2">
-                              {uni.specialties.slice(0, 3).map((spec, idx) => (
-                                <span key={idx} className="px-3 py-1 bg-blue-100 text-blue-800 rounded-full text-xs">
+                              {(inst.specialties || []).slice(0, 3).map((spec, idx) => (
+                                <span key={idx} className="px-3 py-1 bg-blue-100 text-blue-800 rounded-full text-sm">
                                   {spec}
                                 </span>
                               ))}
-                              {uni.specialties.length > 3 && (
-                                <span className="px-3 py-1 bg-gray-200 text-gray-600 rounded-full text-xs">
-                                  +{uni.specialties.length - 3} еще
+                              {(inst.specialties || []).length > 3 && (
+                                <span className="px-3 py-1 bg-gray-200 text-gray-600 rounded-full text-sm">
+                                  +{(inst.specialties || []).length - 3} еще
                                 </span>
                               )}
                             </div>
@@ -989,7 +1050,7 @@ const App = () => {
                   ) : (
                     <div className="text-center py-12">
                       <Search className="w-16 h-16 text-gray-400 mx-auto mb-4" />
-                      <h3 className="text-2xl font-semibold text-gray-600 mb-2">ВУЗы не найдены</h3>
+                      <h3 className="text-2xl font-semibold text-gray-600 mb-2">Учреждения не найдены</h3>
                       <p className="text-gray-600">Попробуйте изменить параметры фильтрации</p>
                     </div>
                   )}
@@ -1007,7 +1068,6 @@ const App = () => {
               <p className="text-xl text-gray-600">Исследуйте различные карьерные направления и выберите свой путь</p>
             </div>
             
-            {/* Описание вкладки */}
             <div className="bg-white/90 backdrop-blur-sm rounded-2xl p-8 border border-gray-200 mb-12 shadow-md">
               <h2 className="text-2xl font-bold mb-4 text-blue-600">Добро пожаловать в раздел карьерных возможностей!</h2>
               <p className="text-gray-600 mb-4">
@@ -1021,8 +1081,7 @@ const App = () => {
                 <li>Познакомиться с различными профессиями</li>
               </ul>
             </div>
-            
-            {/* Карьерные сферы */}
+
             <section className="mb-12">
               <h2 className="text-3xl font-bold mb-8 text-center text-gray-800">Карьерные сферы</h2>
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -1041,25 +1100,19 @@ const App = () => {
                 ))}
               </div>
             </section>
-            
-            {/* Направления в вузах */}
+
             <section className="mb-12">
               <h2 className="text-3xl font-bold mb-8 text-center text-gray-800">Популярные направления в вузах</h2>
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
                 {universityDirections.map((direction) => {
-                  // Находим соответствующую сферу для направления
                   const relatedField = careerFields.find(field => field.id === direction.careerFieldId);
                   return (
-                    <div
+                    <div 
                       key={direction.id}
                       onClick={() => {
                         if (relatedField) {
-                          // Устанавливаем выбранную сферу (это вызовет отображение детализированной информации)
                           setSelectedCareerField(relatedField);
-                          // Прокручиваем наверх
                           window.scrollTo(0, 0);
-                        } else {
-                          console.warn(`Не найдена сферa для направления ID: ${direction.id}`);
                         }
                       }}
                       className="bg-white/90 backdrop-blur-sm rounded-2xl p-6 border border-gray-200 hover:border-blue-500 transition-all duration-300 cursor-pointer shadow-md"
@@ -1091,25 +1144,19 @@ const App = () => {
                 })}
               </div>
             </section>
-            
-            {/* Профессии */}
+
             <section className="mb-12">
               <h2 className="text-3xl font-bold mb-8 text-center text-gray-800">Популярные профессии</h2>
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                 {professions.map((profession) => {
-                  // Находим соответствующую сферу для профессии
                   const relatedField = careerFields.find(field => field.id === profession.careerFieldId);
                   return (
                     <div
                       key={profession.id}
                       onClick={() => {
                         if (relatedField) {
-                          // Устанавливаем выбранную сферу (это вызовет отображение детализированной информации)
                           setSelectedCareerField(relatedField);
-                          // Прокручиваем наверх
                           window.scrollTo(0, 0);
-                        } else {
-                          console.warn(`Не найдена сферa для профессии ID: ${profession.id}`);
                         }
                       }}
                       className="bg-white/90 backdrop-blur-sm rounded-2xl p-6 border border-gray-200 hover:border-blue-500 transition-all duration-300 cursor-pointer shadow-md"
@@ -1141,8 +1188,7 @@ const App = () => {
                 })}
               </div>
             </section>
-            
-            {/* CTA */}
+
             <section className="text-center py-16">
               <h2 className="text-4xl font-bold mb-8 text-gray-800">🚀 Начни строить свою карьеру сегодня!</h2>
               <div className="flex justify-center gap-6">
@@ -1248,7 +1294,7 @@ const App = () => {
                 { id: 'home', label: 'Главная', icon: Star },
                 { id: 'map', label: 'Карта', icon: MapPin },
                 { id: 'events', label: 'Мероприятия', icon: Calendar },
-                { id: 'universities', label: 'Вузы и Колледжи', icon: GraduationCap },
+                { id: 'universities', label: 'Вузы и Центры', icon: GraduationCap },
                 { id: 'career', label: 'Карьера', icon: Briefcase },
                 { id: 'blog', label: 'Блог', icon: BookOpen }
               ].map((item) => {
@@ -1332,10 +1378,10 @@ const App = () => {
                 Платформа для профориентации и выбора карьерного пути
               </p>
               <div className="flex space-x-4">
-                <a href="#" className="text-gray-600 hover:text-blue-600 transition-colors">
+                <a href="#" className="text-gray-600 hover:text-blue-400 transition-colors">
                   <MessageSquare className="w-5 h-5" />
                 </a>
-                <a href="#" className="text-gray-600 hover:text-blue-400 transition-colors">
+                <a href="#" className="text-gray-600 hover:text-blue-600 transition-colors">
                   <Hash className="w-5 h-5" />
                 </a>
                 <a href="#" className="text-gray-600 hover:text-red-600 transition-colors">
