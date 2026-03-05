@@ -25,16 +25,12 @@ const App = () => {
   const mapSearchRef = useRef(null);
   const [currentDate, setCurrentDate] = useState(new Date());
   const [selectedDate, setSelectedDate] = useState(new Date());
-
-  // Состояния для теста
   const [showTest, setShowTest] = useState(false);
   const [currentQuestion, setCurrentQuestion] = useState(0);
   const [testAnswers, setTestAnswers] = useState({});
   const [testCompleted, setTestCompleted] = useState(false);
   const [recommendedProfession, setRecommendedProfession] = useState(null);
   const [recommendedCareerField, setRecommendedCareerField] = useState(null);
-
-  // Вопросы для теста
   const testQuestions = [
     {
       id: 1,
@@ -197,8 +193,6 @@ const App = () => {
     { title: 'Мероприятия', desc: 'Участвуйте в профориентационных событиях', icon: <Calendar className="w-8 h-8" /> },
     { title: 'Интерактивная карта', desc: 'Найдите мероприятия рядом с вами', icon: <MapPin className="w-8 h-8" /> },
   ];
-
-  // FAQ данные
   const faqData = [
     {
       question: "Как зарегистрироваться на платформе?",
@@ -234,7 +228,6 @@ const App = () => {
     }
   ];
 
-  // Документация данные
   const documentationData = [
     {
       title: "Введение",
@@ -262,7 +255,6 @@ const App = () => {
     }
   ];
 
-  // API данные
   const apiData = [
     {
       title: "Обзор API",
@@ -286,7 +278,6 @@ const App = () => {
     }
   ];
 
-  // Политика конфиденциальности
   const privacyPolicy = `
 1. ОБЩИЕ ПОЛОЖЕНИЯ
 1.1. Настоящая Политика конфиденциальности определяет порядок обработки и защиты информации о физических лицах, пользующихся услугами платформы ПрофНавигатор.
@@ -325,7 +316,6 @@ const App = () => {
 7.2. Новая редакция вступает в силу с момента публикации на сайте.
 `;
 
-  // Условия использования
   const termsOfUse = `
 1. ОБЩИЕ УСЛОВИЯ
 1.1. Настоящие Условия использования регулируют порядок использования платформы ПрофНавигатор.
@@ -361,8 +351,6 @@ const App = () => {
 `;
 
   const allInstitutions = [...universities, ...careerCenters];
-
-  // Функция для обработки ответа на вопрос
   const handleAnswerSelect = (careerFieldId) => {
     setTestAnswers({
       ...testAnswers,
@@ -370,7 +358,6 @@ const App = () => {
     });
   };
 
-  // Переход к следующему вопросу
   const handleNextQuestion = () => {
     if (currentQuestion < testQuestions.length - 1) {
       setCurrentQuestion(currentQuestion + 1);
@@ -378,15 +365,11 @@ const App = () => {
       calculateResult();
     }
   };
-
-  // Переход к предыдущему вопросу
   const handlePrevQuestion = () => {
     if (currentQuestion > 0) {
       setCurrentQuestion(currentQuestion - 1);
     }
   };
-
-  // Расчет результата теста
   const calculateResult = () => {
     const fieldCounts = {};
     Object.values(testAnswers).forEach(fieldId => {
@@ -410,8 +393,6 @@ const App = () => {
     setRecommendedProfession(profession);
     setTestCompleted(true);
   };
-
-  // Начать тест заново
   const restartTest = () => {
     setCurrentQuestion(0);
     setTestAnswers({});
@@ -419,14 +400,10 @@ const App = () => {
     setRecommendedProfession(null);
     setRecommendedCareerField(null);
   };
-
-  // Закрыть тест
   const closeTest = () => {
     setShowTest(false);
     restartTest();
   };
-
-  // Перейти к изучению вузов для рекомендованной профессии
   const goToUniversitiesForProfession = () => {
     setShowTest(false);
     setActiveTab('universities');
@@ -436,8 +413,6 @@ const App = () => {
     restartTest();
     window.scrollTo(0, 0);
   };
-
-  // === ФУНКЦИИ НАВИГАЦИИ ===
   const goToMap = () => {
     setShowTest(false);
     restartTest();
@@ -655,7 +630,6 @@ const App = () => {
   };
 
   const renderContent = () => {
-    // Показываем тест вместо основного контента
     if (showTest) {
       return (
         <div className="py-8 max-w-3xl mx-auto">
@@ -832,7 +806,6 @@ const App = () => {
       );
     }
 
-    // Рендеринг дополнительных страниц
     if (activeTab === 'faq') {
       return (
         <div className="py-8 max-w-4xl mx-auto">
