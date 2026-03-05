@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { Star, MapPin, Calendar, GraduationCap, Briefcase, BookOpen, UserPlus, User, X, Filter, Search, Building2, Users2, Globe2, ArrowLeft, Settings, Sun, Moon, Award, ChevronRight, Mail, Phone, Globe, Shield, FileText, Instagram, Youtube, Linkedin, Twitter, Facebook, MapPin as MapPinIcon, ChevronLeft, MessageSquare, AtSign, Hash, School2, Target, UserCheck, BarChart3, Brain, CheckCircle } from 'lucide-react';
+import { Star, MapPin, Calendar, GraduationCap, Briefcase, BookOpen, UserPlus, User, X, Filter, Search, Building2, Users2, Globe2, ArrowLeft, Settings, Sun, Moon, Award, ChevronRight, Mail, Phone, Globe, Shield, FileText, Instagram, Youtube, Linkedin, Twitter, Facebook, MapPin as MapPinIcon, ChevronLeft, MessageSquare, AtSign, Hash, School2, Target, UserCheck, BarChart3, Brain, CheckCircle, HelpCircle, FileCode, Lock, ScrollText, Database, ExternalLink } from 'lucide-react';
 
 const App = () => {
   const [activeTab, setActiveTab] = useState('home');
@@ -25,7 +25,7 @@ const App = () => {
   const mapSearchRef = useRef(null);
   const [currentDate, setCurrentDate] = useState(new Date());
   const [selectedDate, setSelectedDate] = useState(new Date());
-  
+
   // Состояния для теста
   const [showTest, setShowTest] = useState(false);
   const [currentQuestion, setCurrentQuestion] = useState(0);
@@ -87,9 +87,6 @@ const App = () => {
       ]
     }
   ];
-
-  // ... (остальные данные: universities, careerCenters, careerFields и т.д. остаются без изменений)
-  // Для краткости не включаю их здесь, но они должны быть в полном коде
 
   const universities = [
     { id: 1, name: 'Московский государственный университет имени М.В. Ломоносова', location: 'Москва, Ленинские горы, д. 1', students: '40 000', rank: 'Топ-1 в России', type: 'Университет', specialties: ['IT', 'Инженерия', 'Медицина', 'Экономика', 'Право'], shortName: 'МГУ', website: 'https://msu.ru/', aliases: ['МГУ', 'Ломоносовский университет', 'Московский университет', 'университет Ломоносова'] },
@@ -201,6 +198,168 @@ const App = () => {
     { title: 'Интерактивная карта', desc: 'Найдите мероприятия рядом с вами', icon: <MapPin className="w-8 h-8" /> },
   ];
 
+  // FAQ данные
+  const faqData = [
+    {
+      question: "Как зарегистрироваться на платформе?",
+      answer: "Нажмите кнопку 'Регистрация' в правом верхнем углу, заполните форму (имя, email, пароль) и подтвердите регистрацию через email."
+    },
+    {
+      question: "Как найти подходящие ВУЗы?",
+      answer: "Перейдите во вкладку 'Вузы и Колледжи', используйте фильтры по типу, специальностям и городу, или воспользуйтесь поиском по названию."
+    },
+    {
+      question: "Как пройти тест на профориентацию?",
+      answer: "На главной странице нажмите кнопку 'Пройти тест на профессию'. Ответьте на 5 вопросов и получите рекомендации по карьере."
+    },
+    {
+      question: "Как добавить мероприятие в календарь?",
+      answer: "Перейдите во вкладку 'Мероприятия', выберите дату в календаре и нажмите 'Участвовать' на интересующем событии."
+    },
+    {
+      question: "Можно ли фильтровать мероприятия по категориям?",
+      answer: "Да, во вкладке 'Карта' и 'Мероприятия' доступны фильтры по категориям: Конференция, Мастер-класс, День открытых дверей и другие."
+    },
+    {
+      question: "Как связаться с поддержкой?",
+      answer: "Напишите нам на matldev92@gmail.com или позвоните по телефону +7 (985) 739-5088."
+    },
+    {
+      question: "Платная ли регистрация на платформе?",
+      answer: "Нет, регистрация и все основные функции платформы бесплатны."
+    },
+    {
+      question: "Как обновить информацию о ВУЗе?",
+      answer: "Отправьте запрос на обновление информации на нашу почту с указанием ВУЗа и необходимых изменений."
+    }
+  ];
+
+  // Документация данные
+  const documentationData = [
+    {
+      title: "Введение",
+      content: "ПрофНавигатор — это платформа для профориентации и выбора карьерного пути. Мы помогаем школьникам и студентам найти подходящие ВУЗы, мероприятия и карьерные направления."
+    },
+    {
+      title: "Основные функции",
+      content: "Платформа предоставляет: поиск ВУЗов с фильтрами, интерактивный календарь мероприятий, тест на профориентацию, карту событий, информацию о карьерных направлениях и профессиях."
+    },
+    {
+      title: "Работа с фильтром ВУЗов",
+      content: "Используйте фильтры по типу (Университет, Институт, Политех), специальностям (IT, Инженерия, Медицина и др.) и городу. Поиск работает по названию, сокращениям и специальностям."
+    },
+    {
+      title: "Календарь мероприятий",
+      content: "Календарь отображает реальные события из ВУЗов и центров профориентации. Кликните на дату, чтобы увидеть мероприятия. Зеленая точка означает наличие событий."
+    },
+    {
+      title: "Тест на профориентацию",
+      content: "Тест состоит из 5 вопросов. На основе ответов система рекомендует карьерную сферу и профессию. Результаты можно использовать для поиска подходящих ВУЗов."
+    },
+    {
+      title: "Карта мероприятий",
+      content: "Интерактивная карта показывает расположение мероприятий в Москве. Используйте поиск для нахождения конкретных мест и фильтры для сортировки по категориям."
+    }
+  ];
+
+  // API данные
+  const apiData = [
+    {
+      title: "Обзор API",
+      content: "API ПрофНавигатор предоставляет доступ к данным о ВУЗах, мероприятиях, карьерных направлениях и профессиях. API находится в разработке."
+    },
+    {
+      title: "Аутентификация",
+      content: "Для доступа к API требуется API-ключ. Запросите ключ через форму обратной связи на сайте."
+    },
+    {
+      title: "Конечные точки",
+      content: "/api/v1/universities - список ВУЗов\n/api/v1/events - список мероприятий\n/api/v1/careers - карьерные направления\n/api/v1/professions - профессии"
+    },
+    {
+      title: "Лимиты запросов",
+      content: "Бесплатный тариф: 100 запросов в час\nПремиум тариф: 1000 запросов в час\nКорпоративный тариф: без ограничений"
+    },
+    {
+      title: "Формат ответов",
+      content: "Все ответы API возвращаются в формате JSON. Пример: {\"success\": true, \"data\": {...}, \"message\": \"...\"}"
+    }
+  ];
+
+  // Политика конфиденциальности
+  const privacyPolicy = `
+1. ОБЩИЕ ПОЛОЖЕНИЯ
+1.1. Настоящая Политика конфиденциальности определяет порядок обработки и защиты информации о физических лицах, пользующихся услугами платформы ПрофНавигатор.
+1.2. Отношения, связанные со сбором, хранением, распространением и защитой информации о пользователях, регулируются настоящей Политикой и действующим законодательством РФ.
+
+2. ЦЕЛИ СБОРА ИНФОРМАЦИИ
+2.1. Персональные данные пользователей собираются для:
+- Регистрации и авторизации на платформе
+- Предоставления персонализированных рекомендаций
+- Уведомления о новых мероприятиях
+- Улучшения качества услуг платформы
+
+3. СОСТАВ ПЕРСОНАЛЬНЫХ ДАННЫХ
+3.1. При регистрации собираются следующие данные:
+- Имя пользователя
+- Адрес электронной почты
+- Пароль (в зашифрованном виде)
+
+4. ОБРАБОТКА ДАННЫХ
+4.1. Обработка персональных данных осуществляется с соблюдением принципов законности и справедливости.
+4.2. Данные не передаются третьим лицам без согласия пользователя, за исключением случаев, предусмотренных законодательством.
+
+5. ЗАЩИТА ДАННЫХ
+5.1. Администрация принимает необходимые технические и организационные меры для защиты персональных данных.
+5.2. Доступ к данным имеют только уполномоченные сотрудники.
+
+6. ПРАВА ПОЛЬЗОВАТЕЛЯ
+6.1. Пользователь имеет право:
+- На доступ к своим персональным данным
+- На исправление неточных данных
+- На удаление своих данных
+- На отзыв согласия на обработку данных
+
+7. ИЗМЕНЕНИЯ В ПОЛИТИКЕ
+7.1. Администрация оставляет за собой право вносить изменения в настоящую Политику.
+7.2. Новая редакция вступает в силу с момента публикации на сайте.
+`;
+
+  // Условия использования
+  const termsOfUse = `
+1. ОБЩИЕ УСЛОВИЯ
+1.1. Настоящие Условия использования регулируют порядок использования платформы ПрофНавигатор.
+1.2. Используя платформу, вы соглашаетесь с настоящими Условиями.
+
+2. РЕГИСТРАЦИЯ И АККАУНТ
+2.1. Для доступа к полным функциям платформы требуется регистрация.
+2.2. Пользователь несет ответственность за сохранность данных своего аккаунта.
+2.3. Запрещается передача аккаунта третьим лицам.
+
+3. ПРАВИЛА ИСПОЛЬЗОВАНИЯ
+3.1. Запрещается:
+- Использовать платформу в незаконных целях
+- Распространять вредоносный контент
+- Нарушать права других пользователей
+- Обходить технические ограничения платформы
+
+4. ИНТЕЛЛЕКТУАЛЬНАЯ СОБСТВЕННОСТЬ
+4.1. Все материалы платформы защищены авторским правом.
+4.2. Копирование материалов без разрешения запрещено.
+
+5. ОТВЕТСТВЕННОСТЬ
+5.1. Администрация не несет ответственности за точность информации о ВУЗах и мероприятиях.
+5.2. Пользователь использует информацию на свой страх и риск.
+
+6. ПРЕКРАЩЕНИЕ ДОСТУПА
+6.1. Администрация вправе заблокировать аккаунт при нарушении Условий.
+6.2. Пользователь может удалить аккаунт в любой момент.
+
+7. ИЗМЕНЕНИЯ УСЛОВИЙ
+7.1. Администрация вправе изменять Условия использования.
+7.2. Продолжение использования платформы означает согласие с новыми Условиями.
+`;
+
   const allInstitutions = [...universities, ...careerCenters];
 
   // Функция для обработки ответа на вопрос
@@ -230,14 +389,13 @@ const App = () => {
   // Расчет результата теста
   const calculateResult = () => {
     const fieldCounts = {};
-    
     Object.values(testAnswers).forEach(fieldId => {
       fieldCounts[fieldId] = (fieldCounts[fieldId] || 0) + 1;
     });
 
     let maxCount = 0;
     let recommendedFieldId = 1;
-    
+
     Object.entries(fieldCounts).forEach(([fieldId, count]) => {
       if (count > maxCount) {
         maxCount = count;
@@ -247,7 +405,7 @@ const App = () => {
 
     const field = careerFields.find(f => f.id === recommendedFieldId);
     const profession = professions.find(p => p.careerFieldId === recommendedFieldId);
-    
+
     setRecommendedCareerField(field);
     setRecommendedProfession(profession);
     setTestCompleted(true);
@@ -279,8 +437,7 @@ const App = () => {
     window.scrollTo(0, 0);
   };
 
-  // === ИСПРАВЛЕННЫЕ ФУНКЦИИ НАВИГАЦИИ ===
-  // Теперь они закрывают тест при переключении
+  // === ФУНКЦИИ НАВИГАЦИИ ===
   const goToMap = () => {
     setShowTest(false);
     restartTest();
@@ -317,8 +474,63 @@ const App = () => {
     window.scrollTo(0, 0);
   };
 
+  const goToBlog = () => {
+    setShowTest(false);
+    restartTest();
+    setActiveTab('blog');
+    setSelectedUniversity(null);
+    setSelectedCareerField(null);
+    window.scrollTo(0, 0);
+  };
+
+  const goToFAQ = () => {
+    setShowTest(false);
+    restartTest();
+    setActiveTab('faq');
+    setSelectedUniversity(null);
+    setSelectedCareerField(null);
+    window.scrollTo(0, 0);
+  };
+
+  const goToDocumentation = () => {
+    setShowTest(false);
+    restartTest();
+    setActiveTab('documentation');
+    setSelectedUniversity(null);
+    setSelectedCareerField(null);
+    window.scrollTo(0, 0);
+  };
+
+  const goToAPI = () => {
+    setShowTest(false);
+    restartTest();
+    setActiveTab('api');
+    setSelectedUniversity(null);
+    setSelectedCareerField(null);
+    window.scrollTo(0, 0);
+  };
+
+  const goToPrivacy = () => {
+    setShowTest(false);
+    restartTest();
+    setActiveTab('privacy');
+    setSelectedUniversity(null);
+    setSelectedCareerField(null);
+    window.scrollTo(0, 0);
+  };
+
+  const goToTerms = () => {
+    setShowTest(false);
+    restartTest();
+    setActiveTab('terms');
+    setSelectedUniversity(null);
+    setSelectedCareerField(null);
+    window.scrollTo(0, 0);
+  };
+
   const filteredInstitutions = allInstitutions.filter(institution => {
     const allNames = [institution.name, institution.shortName || institution.name, ...(institution.aliases || [])];
+    
     const matchesSearch = searchQuery === '' ||
       allNames.some(name => name.toLowerCase().includes(searchQuery.toLowerCase())) ||
       institution.location.toLowerCase().includes(searchQuery.toLowerCase()) ||
@@ -360,6 +572,7 @@ const App = () => {
         setShowMapSearchResults(false);
       }
     };
+
     document.addEventListener('mousedown', handleClickOutside);
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []);
@@ -371,15 +584,17 @@ const App = () => {
     const lastDay = new Date(year, month + 1, 0);
     const daysInMonth = lastDay.getDate();
     const startingDayOfWeek = firstDay.getDay();
+    
     const days = [];
-
+    
     for (let i = 0; i < startingDayOfWeek; i++) {
       days.push(null);
     }
-
+    
     for (let day = 1; day <= daysInMonth; day++) {
       days.push(new Date(year, month, day));
     }
+    
     return days;
   };
 
@@ -409,16 +624,16 @@ const App = () => {
   const isToday = (date) => {
     const today = new Date();
     return date &&
-      date.getDate() === today.getDate() &&
-      date.getMonth() === today.getMonth() &&
-      date.getFullYear() === today.getFullYear();
+           date.getDate() === today.getDate() &&
+           date.getMonth() === today.getMonth() &&
+           date.getFullYear() === today.getFullYear();
   };
 
   const isSelected = (date) => {
     return date &&
-      date.getDate() === selectedDate.getDate() &&
-      date.getMonth() === selectedDate.getMonth() &&
-      date.getFullYear() === selectedDate.getFullYear();
+           date.getDate() === selectedDate.getDate() &&
+           date.getMonth() === selectedDate.getMonth() &&
+           date.getFullYear() === selectedDate.getFullYear();
   };
 
   const hasEvents = (date) => {
@@ -460,7 +675,7 @@ const App = () => {
                     <X className="w-6 h-6" />
                   </button>
                 </div>
-
+                
                 {/* Прогресс бар */}
                 <div className="mb-8">
                   <div className="flex justify-between text-sm text-gray-600 mb-2">
@@ -572,7 +787,6 @@ const App = () => {
                         {recommendedCareerField.description}
                       </p>
                     </div>
-
                     {recommendedProfession && (
                       <div className="bg-white/70 rounded-xl p-6 mb-4">
                         <h4 className="text-lg font-semibold text-gray-800 mb-2 flex items-center justify-center">
@@ -618,11 +832,191 @@ const App = () => {
       );
     }
 
-    // ... (остальной код renderContent остается без изменений)
-    // Для краткости не включаю весь код, но он должен быть в полном файле
-    
+    // Рендеринг дополнительных страниц
+    if (activeTab === 'faq') {
+      return (
+        <div className="py-8 max-w-4xl mx-auto">
+          <button
+            onClick={goToMap}
+            className="flex items-center text-gray-800 mb-8 bg-gradient-to-r from-gray-100 to-gray-200 hover:from-gray-200 hover:to-gray-300 px-6 py-3 rounded-full font-semibold transition-all duration-300 transform hover:scale-105"
+          >
+            <ArrowLeft className="w-5 h-5 mr-2" /> На главную
+          </button>
+          
+          <div className="bg-white/90 backdrop-blur-sm rounded-2xl p-8 border border-gray-200 shadow-lg">
+            <div className="flex items-center mb-8">
+              <HelpCircle className="w-12 h-12 text-blue-600 mr-4" />
+              <h1 className="text-4xl font-bold text-gray-800">Часто задаваемые вопросы</h1>
+            </div>
+            
+            <div className="space-y-6">
+              {faqData.map((faq, index) => (
+                <div key={index} className="bg-gray-50/50 rounded-xl p-6 border border-gray-200">
+                  <h3 className="text-xl font-semibold text-gray-800 mb-3 flex items-center">
+                    <HelpCircle className="w-5 h-5 mr-2 text-blue-600" />
+                    {faq.question}
+                  </h3>
+                  <p className="text-gray-600 leading-relaxed">{faq.answer}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      );
+    }
+
+    if (activeTab === 'documentation') {
+      return (
+        <div className="py-8 max-w-4xl mx-auto">
+          <button
+            onClick={goToMap}
+            className="flex items-center text-gray-800 mb-8 bg-gradient-to-r from-gray-100 to-gray-200 hover:from-gray-200 hover:to-gray-300 px-6 py-3 rounded-full font-semibold transition-all duration-300 transform hover:scale-105"
+          >
+            <ArrowLeft className="w-5 h-5 mr-2" /> На главную
+          </button>
+          
+          <div className="bg-white/90 backdrop-blur-sm rounded-2xl p-8 border border-gray-200 shadow-lg">
+            <div className="flex items-center mb-8">
+              <FileText className="w-12 h-12 text-blue-600 mr-4" />
+              <h1 className="text-4xl font-bold text-gray-800">Документация</h1>
+            </div>
+            
+            <div className="space-y-6">
+              {documentationData.map((doc, index) => (
+                <div key={index} className="bg-gray-50/50 rounded-xl p-6 border border-gray-200">
+                  <h3 className="text-xl font-semibold text-gray-800 mb-3 flex items-center">
+                    <BookOpen className="w-5 h-5 mr-2 text-blue-600" />
+                    {doc.title}
+                  </h3>
+                  <p className="text-gray-600 leading-relaxed whitespace-pre-line">{doc.content}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      );
+    }
+
+    if (activeTab === 'api') {
+      return (
+        <div className="py-8 max-w-4xl mx-auto">
+          <button
+            onClick={goToMap}
+            className="flex items-center text-gray-800 mb-8 bg-gradient-to-r from-gray-100 to-gray-200 hover:from-gray-200 hover:to-gray-300 px-6 py-3 rounded-full font-semibold transition-all duration-300 transform hover:scale-105"
+          >
+            <ArrowLeft className="w-5 h-5 mr-2" /> На главную
+          </button>
+          
+          <div className="bg-white/90 backdrop-blur-sm rounded-2xl p-8 border border-gray-200 shadow-lg">
+            <div className="flex items-center mb-8">
+              <Database className="w-12 h-12 text-blue-600 mr-4" />
+              <h1 className="text-4xl font-bold text-gray-800">API Документация</h1>
+            </div>
+            
+            <div className="space-y-6">
+              {apiData.map((api, index) => (
+                <div key={index} className="bg-gray-50/50 rounded-xl p-6 border border-gray-200">
+                  <h3 className="text-xl font-semibold text-gray-800 mb-3 flex items-center">
+                    <FileCode className="w-5 h-5 mr-2 text-blue-600" />
+                    {api.title}
+                  </h3>
+                  <p className="text-gray-600 leading-relaxed whitespace-pre-line">{api.content}</p>
+                </div>
+              ))}
+            </div>
+            
+            <div className="mt-8 bg-blue-50 rounded-xl p-6 border border-blue-200">
+              <h3 className="text-lg font-semibold text-blue-800 mb-2">Статус API</h3>
+              <p className="text-blue-600">API находится в разработке. Ожидаемый релиз: Q2 2026</p>
+            </div>
+          </div>
+        </div>
+      );
+    }
+
+    if (activeTab === 'privacy') {
+      return (
+        <div className="py-8 max-w-4xl mx-auto">
+          <button
+            onClick={goToMap}
+            className="flex items-center text-gray-800 mb-8 bg-gradient-to-r from-gray-100 to-gray-200 hover:from-gray-200 hover:to-gray-300 px-6 py-3 rounded-full font-semibold transition-all duration-300 transform hover:scale-105"
+          >
+            <ArrowLeft className="w-5 h-5 mr-2" /> На главную
+          </button>
+          
+          <div className="bg-white/90 backdrop-blur-sm rounded-2xl p-8 border border-gray-200 shadow-lg">
+            <div className="flex items-center mb-8">
+              <Lock className="w-12 h-12 text-blue-600 mr-4" />
+              <h1 className="text-4xl font-bold text-gray-800">Политика конфиденциальности</h1>
+            </div>
+            
+            <div className="prose max-w-none">
+              <div className="bg-gray-50/50 rounded-xl p-6 border border-gray-200">
+                <pre className="whitespace-pre-wrap text-gray-600 text-sm leading-relaxed font-sans">
+                  {privacyPolicy}
+                </pre>
+              </div>
+            </div>
+            
+            <div className="mt-8 flex justify-center">
+              <button
+                onClick={() => window.print()}
+                className="bg-gradient-to-r from-blue-600 to-cyan-600 hover:from-blue-700 hover:to-cyan-700 px-8 py-3 rounded-xl font-semibold text-white transition-all duration-300"
+              >
+                Распечатать документ
+              </button>
+            </div>
+          </div>
+        </div>
+      );
+    }
+
+    if (activeTab === 'terms') {
+      return (
+        <div className="py-8 max-w-4xl mx-auto">
+          <button
+            onClick={goToMap}
+            className="flex items-center text-gray-800 mb-8 bg-gradient-to-r from-gray-100 to-gray-200 hover:from-gray-200 hover:to-gray-300 px-6 py-3 rounded-full font-semibold transition-all duration-300 transform hover:scale-105"
+          >
+            <ArrowLeft className="w-5 h-5 mr-2" /> На главную
+          </button>
+          
+          <div className="bg-white/90 backdrop-blur-sm rounded-2xl p-8 border border-gray-200 shadow-lg">
+            <div className="flex items-center mb-8">
+              <ScrollText className="w-12 h-12 text-blue-600 mr-4" />
+              <h1 className="text-4xl font-bold text-gray-800">Условия использования</h1>
+            </div>
+            
+            <div className="prose max-w-none">
+              <div className="bg-gray-50/50 rounded-xl p-6 border border-gray-200">
+                <pre className="whitespace-pre-wrap text-gray-600 text-sm leading-relaxed font-sans">
+                  {termsOfUse}
+                </pre>
+              </div>
+            </div>
+            
+            <div className="mt-8 flex justify-center gap-4">
+              <button
+                onClick={() => window.print()}
+                className="bg-gradient-to-r from-blue-600 to-cyan-600 hover:from-blue-700 hover:to-cyan-700 px-8 py-3 rounded-xl font-semibold text-white transition-all duration-300"
+              >
+                Распечатать документ
+              </button>
+              <button
+                onClick={goToPrivacy}
+                className="bg-gradient-to-r from-gray-600 to-gray-700 hover:from-gray-700 hover:to-gray-800 px-8 py-3 rounded-xl font-semibold text-white transition-all duration-300"
+              >
+                Политика конфиденциальности
+              </button>
+            </div>
+          </div>
+        </div>
+      );
+    }
+
     if (selectedUniversity) {
       const isCareerCenter = careerCenters.some(center => center.id === selectedUniversity.id);
+      
       if (isCareerCenter) {
         return (
           <div className="py-8">
@@ -632,21 +1026,25 @@ const App = () => {
             >
               <ArrowLeft className="w-5 h-5 mr-2" /> Назад к списку
             </button>
+            
             <div className="bg-white/90 backdrop-blur-sm rounded-2xl p-8 border border-gray-200 shadow-lg">
               <div className="flex items-center mb-6">
                 <Target className="w-12 h-12 text-blue-600 mr-4" />
                 <h1 className="text-4xl font-bold text-gray-800">{selectedUniversity.name}</h1>
               </div>
+              
               <div className="space-y-4 text-gray-600 mb-8">
                 <p className="text-lg"><strong>Локация:</strong> {selectedUniversity.location}</p>
                 <p><strong>Возраст:</strong> {selectedUniversity.age}</p>
                 <p><strong>Доступность:</strong> {selectedUniversity.accessibility}</p>
                 <p><strong>Тип:</strong> {selectedUniversity.type}</p>
               </div>
+              
               <div className="bg-gray-50/50 rounded-xl p-6 mb-6">
                 <h3 className="text-xl font-semibold mb-4 text-gray-800">Описание</h3>
                 <p className="text-gray-600">{selectedUniversity.description}</p>
               </div>
+              
               <div className="flex gap-4">
                 <a
                   href={selectedUniversity.website}
@@ -661,6 +1059,7 @@ const App = () => {
           </div>
         );
       }
+      
       return (
         <div className="py-8">
           <button
@@ -669,17 +1068,20 @@ const App = () => {
           >
             <ArrowLeft className="w-5 h-5 mr-2" /> Назад к списку ВУЗов
           </button>
+          
           <div className="bg-white/90 backdrop-blur-sm rounded-2xl p-8 border border-gray-200 shadow-lg">
             <div className="flex items-center mb-6">
               <Building2 className="w-12 h-12 text-blue-600 mr-4" />
               <h1 className="text-4xl font-bold text-gray-800">{selectedUniversity.name}</h1>
             </div>
+            
             <div className="space-y-4 text-gray-600 mb-8">
               <p className="text-lg"><strong>Локация:</strong> {selectedUniversity.location}</p>
               <p><strong>Тип:</strong> {selectedUniversity.type}</p>
               <p><strong>Количество студентов:</strong> {selectedUniversity.students}</p>
               <p><strong>Рейтинг:</strong> {selectedUniversity.rank}</p>
             </div>
+            
             <div className="bg-gray-50/50 rounded-xl p-6 mb-6">
               <h3 className="text-xl font-semibold mb-4 text-gray-800">Специальности</h3>
               <div className="flex flex-wrap gap-2">
@@ -690,6 +1092,7 @@ const App = () => {
                 ))}
               </div>
             </div>
+            
             <div className="flex gap-4">
               <button
                 onClick={() => {
@@ -739,10 +1142,12 @@ const App = () => {
           >
             <ArrowLeft className="w-5 h-5 mr-2" /> Назад к карьерным направлениям
           </button>
+          
           <div className="text-center mb-12">
             <h1 className="text-5xl font-bold text-gray-800 mb-4">{selectedCareerField.name}</h1>
             <p className="text-xl text-gray-600 mt-6 max-w-2xl mx-auto">{selectedCareerField.description}</p>
           </div>
+
           <section className="mb-12">
             <h2 className="text-3xl font-bold mb-8 text-center text-gray-800">Подходящие ВУЗы</h2>
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
@@ -771,6 +1176,7 @@ const App = () => {
               )}
             </div>
           </section>
+
           <section className="mb-12">
             <h2 className="text-3xl font-bold mb-8 text-center text-gray-800">Направления обучения</h2>
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
@@ -809,6 +1215,7 @@ const App = () => {
               )}
             </div>
           </section>
+
           <section className="mb-12">
             <h2 className="text-3xl font-bold mb-8 text-center text-gray-800">Популярные профессии</h2>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -847,6 +1254,7 @@ const App = () => {
               )}
             </div>
           </section>
+
           <section className="text-center py-16">
             <h2 className="text-4xl font-bold mb-8 text-gray-800">🚀 Начни строить свою карьеру сегодня!</h2>
             <div className="flex justify-center gap-6">
@@ -1023,14 +1431,12 @@ const App = () => {
           </div>
         );
 
-      // ... (остальные case для map, events, universities, career, blog остаются без изменений)
-      // Для краткости не включаю их здесь, но они должны быть в полном коде
-      
       case 'map':
         return (
           <div className="py-8">
             <h1 className="text-4xl font-bold mb-8 text-center text-gray-800">🗺️ Карта профориентационных мероприятий Москвы</h1>
             <p className="text-xl text-gray-600 text-center mb-12">Найдите интересующие вас события на интерактивной карте</p>
+            
             <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
               <div className="lg:col-span-1">
                 <div className="bg-white/90 backdrop-blur-sm rounded-2xl p-6 border border-gray-200 shadow-md">
@@ -1056,6 +1462,7 @@ const App = () => {
                         )}
                       </div>
                     </div>
+
                     <div className="relative">
                       <label className="block text-sm font-medium mb-2 text-gray-700">Категория</label>
                       <div
@@ -1085,6 +1492,7 @@ const App = () => {
                         </div>
                       )}
                     </div>
+
                     <div>
                       <label className="block text-sm font-medium mb-2 text-gray-700">Дата начала</label>
                       <input
@@ -1096,6 +1504,7 @@ const App = () => {
                         max="2026-12-31"
                       />
                     </div>
+
                     <div>
                       <label className="block text-sm font-medium mb-2 text-gray-700">Дата окончания</label>
                       <input
@@ -1107,6 +1516,7 @@ const App = () => {
                         max="2026-12-31"
                       />
                     </div>
+
                     <button
                       onClick={() => {
                         setMapSearchQuery('');
@@ -1121,11 +1531,12 @@ const App = () => {
                   </div>
                 </div>
               </div>
+
               <div className="lg:col-span-3">
                 <div className="bg-white/90 backdrop-blur-sm rounded-2xl border border-gray-200 overflow-hidden h-[500px] relative shadow-md">
                   <iframe
-                    src={selectedLocation
-                      ? `https://yandex.ru/map-widget/v1/?ll=${selectedLocation.lng}%2C${selectedLocation.lat}&z=16&l=map`
+                    src={selectedLocation 
+                      ? `https://yandex.ru/map-widget/v1/?ll=${selectedLocation.lng}%2C${selectedLocation.lat}&z=16&l=map` 
                       : "https://yandex.ru/map-widget/v1/?um=constructor%3A1b5e8a3f0b5e8a3f0b5e8a3f0b5e8a3f0b5e8a3f0b5e8a3f0b5e8a3f0b5e8a3f&source=constructor"}
                     width="100%"
                     height="100%"
@@ -1145,30 +1556,35 @@ const App = () => {
           <div className="py-8">
             <h1 className="text-4xl font-bold mb-4 text-center text-gray-800">📅 Календарь мероприятий</h1>
             <p className="text-xl text-gray-600 text-center mb-12">Реальные события из ВУЗов и центров профориентации</p>
+            
             <div className="max-w-5xl mx-auto">
               <div className="text-center mb-8">
                 <h2 className="text-2xl font-semibold text-gray-800">
                   Мероприятия на {formatDate(selectedDate)}
                 </h2>
               </div>
+              
               <div className="bg-white/90 backdrop-blur-sm rounded-2xl p-6 border border-gray-200 shadow-md mb-8">
                 <div className="flex items-center justify-between mb-6">
-                  <button
+                  <button 
                     onClick={prevMonth}
                     className="p-2 rounded-lg bg-gray-100 hover:bg-gray-200 transition-colors"
                   >
                     <ChevronLeft className="w-5 h-5 text-gray-600" />
                   </button>
+                  
                   <h2 className="text-xl font-bold text-gray-800">
                     {formatMonthYear(currentDate)}
                   </h2>
-                  <button
+                  
+                  <button 
                     onClick={nextMonth}
                     className="p-2 rounded-lg bg-gray-100 hover:bg-gray-200 transition-colors"
                   >
                     <ChevronRight className="w-5 h-5 text-gray-600" />
                   </button>
                 </div>
+                
                 <div className="grid grid-cols-7 gap-1 mb-2">
                   {['Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб', 'Вс'].map(day => (
                     <div key={day} className="text-center text-sm font-semibold text-gray-600 py-2">
@@ -1176,11 +1592,12 @@ const App = () => {
                     </div>
                   ))}
                 </div>
+                
                 <div className="grid grid-cols-7 gap-1">
                   {getDaysInMonth(currentDate).map((date, index) => {
                     const dateHasEvents = hasEvents(date);
                     return (
-                      <div
+                      <div 
                         key={index}
                         onClick={() => handleDateClick(date)}
                         className={`
@@ -1204,15 +1621,17 @@ const App = () => {
                   })}
                 </div>
               </div>
+              
               <div className="bg-white/90 backdrop-blur-sm rounded-2xl p-8 border border-gray-200 shadow-md">
                 <h3 className="text-xl font-bold mb-6 text-gray-800 flex items-center">
                   <Calendar className="w-6 h-6 mr-2 text-blue-600" />
                   Мероприятия на {formatDate(selectedDate)}
                 </h3>
+                
                 {getEventsForDate(selectedDate).length > 0 ? (
                   <div className="space-y-6">
                     {getEventsForDate(selectedDate).map(event => (
-                      <div
+                      <div 
                         key={event.id}
                         className="bg-gradient-to-r from-blue-50 to-cyan-50 rounded-xl p-6 border border-blue-200 shadow-sm hover:shadow-md transition-all duration-300"
                       >
@@ -1221,12 +1640,12 @@ const App = () => {
                             <div className="flex items-center mb-2">
                               <span className={`px-3 py-1 rounded-full text-xs font-semibold mr-2 ${
                                 event.category === 'Конференция' ? 'bg-purple-100 text-purple-800' :
-                                  event.category === 'Мастер-класс' ? 'bg-green-100 text-green-800' :
-                                    event.category === 'День открытых дверей' ? 'bg-orange-100 text-orange-800' :
-                                      event.category === 'Фестиваль' ? 'bg-pink-100 text-pink-800' :
-                                        event.category === 'Вебинар' ? 'bg-blue-100 text-blue-800' :
-                                          'bg-gray-100 text-gray-800'
-                                }`}>
+                                event.category === 'Мастер-класс' ? 'bg-green-100 text-green-800' :
+                                event.category === 'День открытых дверей' ? 'bg-orange-100 text-orange-800' :
+                                event.category === 'Фестиваль' ? 'bg-pink-100 text-pink-800' :
+                                event.category === 'Вебинар' ? 'bg-blue-100 text-blue-800' :
+                                'bg-gray-100 text-gray-800'
+                              }`}>
                                 {event.category}
                               </span>
                               <span className="text-sm text-gray-500">{event.organizer}</span>
@@ -1252,7 +1671,7 @@ const App = () => {
                             </div>
                             <p className="text-gray-700 mb-4">{event.description}</p>
                           </div>
-                          <a
+                          <a 
                             href={event.link}
                             target="_blank"
                             rel="noopener noreferrer"
@@ -1273,6 +1692,7 @@ const App = () => {
                   </div>
                 )}
               </div>
+              
               <div className="mt-8 grid grid-cols-1 md:grid-cols-3 gap-6">
                 <div className="bg-white/90 backdrop-blur-sm rounded-2xl p-6 border border-gray-200 shadow-md text-center">
                   <Calendar className="w-12 h-12 text-blue-600 mx-auto mb-3" />
@@ -1301,6 +1721,7 @@ const App = () => {
               <h1 className="text-4xl font-bold mb-2 text-gray-800">🎓 ВУЗы и Центры профориентации</h1>
               <p className="text-xl text-gray-600">Найдите подходящее учебное заведение или центр для вашего будущего</p>
             </div>
+
             <div className="mb-6">
               <div className="relative">
                 <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
@@ -1313,6 +1734,7 @@ const App = () => {
                 />
               </div>
             </div>
+
             <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
               <div className="lg:col-span-1">
                 <div className="bg-white/90 backdrop-blur-sm rounded-2xl p-6 border border-gray-200 shadow-md">
@@ -1323,7 +1745,7 @@ const App = () => {
                   <div className="space-y-4">
                     <div className="relative">
                       <label className="block text-sm font-medium mb-2 text-gray-700">Тип</label>
-                      <div
+                      <div 
                         className="w-full bg-gray-100/50 border border-gray-300 rounded-lg px-3 py-2 text-gray-800 cursor-pointer relative"
                         onClick={() => setShowTypeDropdown(!showTypeDropdown)}
                       >
@@ -1349,7 +1771,7 @@ const App = () => {
                     </div>
                     <div className="relative">
                       <label className="block text-sm font-medium mb-2 text-gray-700">Специальности</label>
-                      <div
+                      <div 
                         className="w-full bg-gray-100/50 border border-gray-300 rounded-lg px-3 py-2 text-gray-800 cursor-pointer relative"
                         onClick={() => setShowSpecialtyDropdown(!showSpecialtyDropdown)}
                       >
@@ -1375,7 +1797,7 @@ const App = () => {
                     </div>
                     <div>
                       <label className="block text-sm font-medium mb-2 text-gray-700">Город</label>
-                      <select
+                      <select 
                         className="w-full bg-gray-100/50 border border-gray-300 rounded-lg px-3 py-2 text-gray-800"
                         value={selectedCity}
                         onChange={(e) => setSelectedCity(e.target.value)}
@@ -1385,16 +1807,16 @@ const App = () => {
                       </select>
                     </div>
                     <div className="flex items-center">
-                      <input
-                        type="checkbox"
-                        id="partnership"
-                        className="mr-2"
+                      <input 
+                        type="checkbox" 
+                        id="partnership" 
+                        className="mr-2" 
                         checked={hasPartnership}
                         onChange={(e) => setHasPartnership(e.target.checked)}
                       />
                       <label htmlFor="partnership" className="text-sm text-gray-700">Партнерские программы</label>
                     </div>
-                    <button
+                    <button 
                       onClick={resetFilters}
                       className="w-full bg-gradient-to-r from-blue-600 to-cyan-600 hover:from-blue-700 hover:to-cyan-700 px-4 py-3 rounded-lg font-semibold transition-all duration-300 text-white"
                     >
@@ -1403,11 +1825,12 @@ const App = () => {
                   </div>
                 </div>
               </div>
+
               <div className="lg:col-span-3">
                 <div className="space-y-6">
                   {filteredInstitutions.length > 0 ? (
                     filteredInstitutions.map((institution) => (
-                      <div
+                      <div 
                         key={institution.id}
                         onClick={() => setSelectedUniversity(institution)}
                         className="bg-white/90 backdrop-blur-sm rounded-2xl p-6 border border-gray-200 hover:border-blue-500 transition-all duration-300 cursor-pointer shadow-md"
@@ -1634,6 +2057,12 @@ const App = () => {
       case 'blog':
         return (
           <div className="py-20 text-center">
+            <button
+              onClick={goToMap}
+              className="flex items-center text-gray-800 mb-8 bg-gradient-to-r from-gray-100 to-gray-200 hover:from-gray-200 hover:to-gray-300 px-6 py-3 rounded-full font-semibold transition-all duration-300 transform hover:scale-105 mx-auto"
+            >
+              <ArrowLeft className="w-5 h-5 mr-2" /> На главную
+            </button>
             <div className="bg-white/90 backdrop-blur-sm rounded-2xl p-12 border border-gray-200 max-w-4xl mx-auto shadow-md">
               <BookOpen className="w-16 h-16 text-blue-600 mx-auto mb-6" />
               <h1 className="text-4xl font-bold mb-6 text-gray-800">📰 Блог и полезные материалы</h1>
@@ -1653,32 +2082,33 @@ const App = () => {
 
   return (
     <div className={`min-h-screen flex flex-col ${
-      currentTheme === 'dark'
-        ? 'bg-gradient-to-br from-gray-900 via-purple-900 to-black text-white'
+      currentTheme === 'dark' 
+        ? 'bg-gradient-to-br from-gray-900 via-purple-900 to-black text-white' 
         : 'bg-gradient-to-br from-gray-50 via-white to-gray-100 text-gray-800'
-      }`}>
+    }`}>
+      
       {showSettings && (
         <>
           <div className="fixed inset-0 z-30" onClick={() => setShowSettings(false)}></div>
           <div className={`absolute right-4 top-20 w-64 ${
-            currentTheme === 'dark'
-              ? 'bg-gray-800/90 backdrop-blur-lg border border-gray-700'
+            currentTheme === 'dark' 
+              ? 'bg-gray-800/90 backdrop-blur-lg border border-gray-700' 
               : 'bg-white/90 backdrop-blur-lg border border-gray-300'
-            } rounded-xl shadow-xl z-40`}>
+          } rounded-xl shadow-xl z-40`}>
             <div className="p-4">
               <h3 className={`text-lg font-semibold mb-3 ${
                 currentTheme === 'dark' ? 'text-white' : 'text-gray-800'
-                }`}>Тема</h3>
+              }`}>Тема</h3>
               <div className="space-y-2">
                 <button
                   onClick={() => setCurrentTheme('light')}
                   className={`w-full px-3 py-2 text-left text-sm rounded-lg transition-all duration-300 ${
-                    currentTheme === 'light'
-                      ? 'bg-blue-600 text-white'
-                      : currentTheme === 'dark'
-                        ? 'text-gray-300 hover:bg-purple-600/20'
+                    currentTheme === 'light' 
+                      ? 'bg-blue-600 text-white' 
+                      : currentTheme === 'dark' 
+                        ? 'text-gray-300 hover:bg-purple-600/20' 
                         : 'text-gray-600 hover:bg-blue-100'
-                    }`}
+                  }`}
                 >
                   <Sun className="w-4 h-4 inline mr-2" />
                   Светлая тема
@@ -1686,12 +2116,12 @@ const App = () => {
                 <button
                   onClick={() => setCurrentTheme('dark')}
                   className={`w-full px-3 py-2 text-left text-sm rounded-lg transition-all duration-300 ${
-                    currentTheme === 'dark'
-                      ? 'bg-purple-600 text-white'
-                      : currentTheme === 'light'
-                        ? 'text-gray-600 hover:bg-blue-100'
+                    currentTheme === 'dark' 
+                      ? 'bg-purple-600 text-white' 
+                      : currentTheme === 'light' 
+                        ? 'text-gray-600 hover:bg-blue-100' 
                         : 'text-gray-300 hover:bg-purple-600/20'
-                    }`}
+                  }`}
                 >
                   <Moon className="w-4 h-4 inline mr-2" />
                   Темная тема
@@ -1702,8 +2132,8 @@ const App = () => {
         </>
       )}
 
-      <header className={currentTheme === 'dark'
-        ? 'bg-gradient-to-r from-gray-900 via-purple-900 to-black border-b border-gray-700'
+      <header className={currentTheme === 'dark' 
+        ? 'bg-gradient-to-r from-gray-900 via-purple-900 to-black border-b border-gray-700' 
         : 'bg-gradient-to-r from-gray-50 via-white to-gray-100 border-b border-gray-200'}>
         <div className="container mx-auto px-4 py-4 relative z-10">
           <div className="flex items-center justify-between">
@@ -1715,6 +2145,7 @@ const App = () => {
                 ПрофНавигатор
               </h1>
             </div>
+
             <nav className="hidden md:flex items-center space-x-8">
               {[
                 { id: 'home', label: 'Главная', icon: Star },
@@ -1738,15 +2169,15 @@ const App = () => {
                     }}
                     className={`flex items-center space-x-2 px-4 py-3 rounded-xl transition-all duration-300 ${
                       activeTab === item.id ||
-                        (selectedUniversity && item.id === 'universities') ||
-                        (selectedCareerField && item.id === 'career')
-                        ? currentTheme === 'dark'
-                          ? 'bg-purple-600 text-white'
+                      (selectedUniversity && item.id === 'universities') ||
+                      (selectedCareerField && item.id === 'career')
+                        ? currentTheme === 'dark' 
+                          ? 'bg-purple-600 text-white' 
                           : 'bg-blue-600 text-white'
-                        : currentTheme === 'dark'
-                          ? 'text-gray-300 hover:text-white hover:bg-purple-600/20'
+                        : currentTheme === 'dark' 
+                          ? 'text-gray-300 hover:text-white hover:bg-purple-600/20' 
                           : 'text-gray-600 hover:text-gray-800 hover:bg-blue-100'
-                      }`}
+                    }`}
                   >
                     <Icon className="w-4 h-4" />
                     <span>{item.label}</span>
@@ -1754,6 +2185,7 @@ const App = () => {
                 );
               })}
             </nav>
+
             <div className="flex items-center space-x-4">
               <button
                 onClick={() => setShowRegister(true)}
@@ -1771,10 +2203,10 @@ const App = () => {
               <button
                 onClick={() => setShowSettings(!showSettings)}
                 className={`p-2 rounded-lg transition-all duration-300 ${
-                  currentTheme === 'dark'
-                    ? 'text-gray-300 hover:text-white hover:bg-gray-700'
+                  currentTheme === 'dark' 
+                    ? 'text-gray-300 hover:text-white hover:bg-gray-700' 
                     : 'text-gray-600 hover:text-gray-800 hover:bg-gray-100'
-                  }`}
+                }`}
               >
                 <Settings className="w-5 h-5" />
               </button>
@@ -1787,8 +2219,8 @@ const App = () => {
         {renderContent()}
       </main>
 
-      <footer className={currentTheme === 'dark'
-        ? 'bg-gradient-to-r from-gray-900 via-purple-900 to-black border-t border-gray-700 py-12 mt-auto'
+      <footer className={currentTheme === 'dark' 
+        ? 'bg-gradient-to-r from-gray-900 via-purple-900 to-black border-t border-gray-700 py-12 mt-auto' 
         : 'bg-gradient-to-r from-gray-50 via-white to-gray-100 border-t border-gray-200 py-12 mt-auto'}>
         <div className="container mx-auto px-4">
           <div className="grid grid-cols-1 md:grid-cols-4 gap-8 mb-8">
@@ -1816,6 +2248,17 @@ const App = () => {
                 </a>
               </div>
             </div>
+            
+            <div>
+              <h3 className="text-lg font-semibold mb-4 text-gray-800">Ресурсы</h3>
+              <div className="space-y-2">
+                <button onClick={goToBlog} className="block text-gray-600 hover:text-blue-600 transition-colors text-left">Блог</button>
+                <button onClick={goToFAQ} className="block text-gray-600 hover:text-blue-600 transition-colors text-left">FAQ</button>
+                <button onClick={goToDocumentation} className="block text-gray-600 hover:text-blue-600 transition-colors text-left">Документация</button>
+                <button onClick={goToAPI} className="block text-gray-600 hover:text-blue-600 transition-colors text-left">API</button>
+              </div>
+            </div>
+            
             <div>
               <h3 className="text-lg font-semibold mb-4 text-gray-800">Контакты</h3>
               <div className="space-y-2">
@@ -1833,29 +2276,22 @@ const App = () => {
                 </div>
               </div>
             </div>
-            <div>
-              <h3 className="text-lg font-semibold mb-4 text-gray-800">Ресурсы</h3>
-              <div className="space-y-2">
-                <a href="#" className="block text-gray-600 hover:text-blue-600 transition-colors">Блог</a>
-                <a href="#" className="block text-gray-600 hover:text-blue-600 transition-colors">FAQ</a>
-                <a href="#" className="block text-gray-600 hover:text-blue-600 transition-colors">Документация</a>
-                <a href="#" className="block text-gray-600 hover:text-blue-600 transition-colors">API</a>
-              </div>
-            </div>
+            
             <div>
               <h3 className="text-lg font-semibold mb-4 text-gray-800">Правовая информация</h3>
               <div className="space-y-2">
-                <a href="#" className="block text-gray-600 hover:text-blue-600 transition-colors">
+                <button onClick={goToPrivacy} className="block text-gray-600 hover:text-blue-600 transition-colors text-left">
                   <Shield className="w-4 h-4 inline mr-2" />
                   Политика конфиденциальности
-                </a>
-                <a href="#" className="block text-gray-600 hover:text-blue-600 transition-colors">
+                </button>
+                <button onClick={goToTerms} className="block text-gray-600 hover:text-blue-600 transition-colors text-left">
                   <FileText className="w-4 h-4 inline mr-2" />
                   Условия использования
-                </a>
+                </button>
               </div>
             </div>
           </div>
+          
           <div className="border-t border-gray-200 pt-6">
             <div className="flex flex-col md:flex-row justify-between items-center">
               <div className="flex items-center space-x-4 mb-4 md:mb-0">
@@ -1866,10 +2302,11 @@ const App = () => {
                   <span className="text-gray-600">2025 ПрофНавигатор. Все права защищены.</span>
                 </div>
               </div>
+              
               <div className="flex space-x-6 text-gray-600">
-                <a href="#" className="hover:text-blue-600 transition-colors">Контакты</a>
-                <a href="#" className="hover:text-blue-600 transition-colors">О нас</a>
-                <a href="#" className="hover:text-blue-600 transition-colors">Карта сайта</a>
+                <button onClick={goToMap} className="hover:text-blue-600 transition-colors">Контакты</button>
+                <button onClick={goToMap} className="hover:text-blue-600 transition-colors">О нас</button>
+                <button onClick={goToMap} className="hover:text-blue-600 transition-colors">Карта сайта</button>
               </div>
             </div>
           </div>
@@ -1897,8 +2334,8 @@ const App = () => {
                 <input
                   type="email"
                   placeholder="Введите ваш email"
-                  className={`w-full ${currentTheme === 'dark'
-                    ? 'bg-gray-700/50 border border-gray-600 text-white placeholder-gray-400'
+                  className={`w-full ${currentTheme === 'dark' 
+                    ? 'bg-gray-700/50 border border-gray-600 text-white placeholder-gray-400' 
                     : 'bg-gray-100/50 border border-gray-300 text-gray-800 placeholder-gray-500'} rounded-lg px-4 py-3 focus:border-blue-500 focus:outline-none`}
                 />
               </div>
@@ -1909,8 +2346,8 @@ const App = () => {
                 <input
                   type="password"
                   placeholder="••••••••"
-                  className={`w-full ${currentTheme === 'dark'
-                    ? 'bg-gray-700/50 border border-gray-600 text-white placeholder-gray-400'
+                  className={`w-full ${currentTheme === 'dark' 
+                    ? 'bg-gray-700/50 border border-gray-600 text-white placeholder-gray-400' 
                     : 'bg-gray-100/50 border border-gray-300 text-gray-800 placeholder-gray-500'} rounded-lg px-4 py-3 focus:border-blue-500 focus:outline-none`}
                 />
               </div>
@@ -1975,8 +2412,8 @@ const App = () => {
                 <input
                   type="text"
                   placeholder="Введите ваше имя"
-                  className={`w-full ${currentTheme === 'dark'
-                    ? 'bg-gray-700/50 border border-gray-600 text-white placeholder-gray-400'
+                  className={`w-full ${currentTheme === 'dark' 
+                    ? 'bg-gray-700/50 border border-gray-600 text-white placeholder-gray-400' 
                     : 'bg-gray-100/50 border border-gray-300 text-gray-800 placeholder-gray-500'} rounded-lg px-4 py-3 focus:border-green-500 focus:outline-none`}
                 />
               </div>
@@ -1987,8 +2424,8 @@ const App = () => {
                 <input
                   type="email"
                   placeholder="Введите ваш email"
-                  className={`w-full ${currentTheme === 'dark'
-                    ? 'bg-gray-700/50 border border-gray-600 text-white placeholder-gray-400'
+                  className={`w-full ${currentTheme === 'dark' 
+                    ? 'bg-gray-700/50 border border-gray-600 text-white placeholder-gray-400' 
                     : 'bg-gray-100/50 border border-gray-300 text-gray-800 placeholder-gray-500'} rounded-lg px-4 py-3 focus:border-green-500 focus:outline-none`}
                 />
               </div>
@@ -1999,8 +2436,8 @@ const App = () => {
                 <input
                   type="password"
                   placeholder="••••••••"
-                  className={`w-full ${currentTheme === 'dark'
-                    ? 'bg-gray-700/50 border border-gray-600 text-white placeholder-gray-400'
+                  className={`w-full ${currentTheme === 'dark' 
+                    ? 'bg-gray-700/50 border border-gray-600 text-white placeholder-gray-400' 
                     : 'bg-gray-100/50 border border-gray-300 text-gray-800 placeholder-gray-500'} rounded-lg px-4 py-3 focus:border-green-500 focus:outline-none`}
                 />
               </div>
@@ -2011,8 +2448,8 @@ const App = () => {
                 <input
                   type="password"
                   placeholder="••••••••"
-                  className={`w-full ${currentTheme === 'dark'
-                    ? 'bg-gray-700/50 border border-gray-600 text-white placeholder-gray-400'
+                  className={`w-full ${currentTheme === 'dark' 
+                    ? 'bg-gray-700/50 border border-gray-600 text-white placeholder-gray-400' 
                     : 'bg-gray-100/50 border border-gray-300 text-gray-800 placeholder-gray-500'} rounded-lg px-4 py-3 focus:border-green-500 focus:outline-none`}
                 />
               </div>
