@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { Star, MapPin, Calendar, GraduationCap, Briefcase, BookOpen, UserPlus, User, X, Filter, Search, Building2, Users2, Globe2, ArrowLeft, Settings, Sun, Moon, Award, Mail, Phone, Globe, Shield, FileText, MessageSquare, Hash, AtSign, MapPin as MapPinIcon, ChevronLeft, ChevronRight } from 'lucide-react';
+import { Star, MapPin, Calendar, GraduationCap, Briefcase, BookOpen, UserPlus, User, X, Filter, Search, Building2, Users2, Globe2, ArrowLeft, Settings, Sun, Moon, Award, ChevronRight, Mail, Phone, Globe, Shield, FileText, Instagram, Youtube, Linkedin, Twitter, Facebook, MapPin as MapPinIcon, ChevronLeft, MessageSquare, AtSign, Hash, School2, Target, UserCheck, BarChart3, Brain, CheckCircle } from 'lucide-react';
 
 const App = () => {
   const [activeTab, setActiveTab] = useState('home');
@@ -25,11 +25,76 @@ const App = () => {
   const mapSearchRef = useRef(null);
   const [currentDate, setCurrentDate] = useState(new Date());
   const [selectedDate, setSelectedDate] = useState(new Date());
+  
+  // Состояния для теста
+  const [showTest, setShowTest] = useState(false);
+  const [currentQuestion, setCurrentQuestion] = useState(0);
+  const [testAnswers, setTestAnswers] = useState({});
+  const [testCompleted, setTestCompleted] = useState(false);
+  const [recommendedProfession, setRecommendedProfession] = useState(null);
+  const [recommendedCareerField, setRecommendedCareerField] = useState(null);
+
+  // Вопросы для теста
+  const testQuestions = [
+    {
+      id: 1,
+      question: "Что вам нравится делать больше всего?",
+      options: [
+        { text: "Решать логические задачи и работать с числами", careerFieldId: 1 },
+        { text: "Создавать что-то своими руками, конструировать", careerFieldId: 2 },
+        { text: "Помогать людям, заботиться о их здоровье", careerFieldId: 3 },
+        { text: "Планировать, управлять, организовывать", careerFieldId: 4 }
+      ]
+    },
+    {
+      id: 2,
+      question: "Какой предмет в школе вам давался легче всего?",
+      options: [
+        { text: "Информатика и математика", careerFieldId: 1 },
+        { text: "Физика и черчение", careerFieldId: 2 },
+        { text: "Биология и химия", careerFieldId: 3 },
+        { text: "Обществознание и экономика", careerFieldId: 4 }
+      ]
+    },
+    {
+      id: 3,
+      question: "Как вы предпочитаете проводить свободное время?",
+      options: [
+        { text: "Играю в компьютерные игры, программирую", careerFieldId: 1 },
+        { text: "Чиню технику, мастерю что-то", careerFieldId: 2 },
+        { text: "Читаю медицинскую литературу, ухаживаю за животными", careerFieldId: 3 },
+        { text: "Читаю книги по психологии, общаюсь с людьми", careerFieldId: 6 }
+      ]
+    },
+    {
+      id: 4,
+      question: "Что для вас важнее всего в будущей работе?",
+      options: [
+        { text: "Высокая зарплата и карьерный рост", careerFieldId: 4 },
+        { text: "Возможность помогать людям", careerFieldId: 3 },
+        { text: "Интересные задачи и интеллектуальный вызов", careerFieldId: 1 },
+        { text: "Стабильность и социальные гарантии", careerFieldId: 5 }
+      ]
+    },
+    {
+      id: 5,
+      question: "Какая деятельность вам ближе?",
+      options: [
+        { text: "Анализ данных, поиск закономерностей", careerFieldId: 1 },
+        { text: "Проектирование и создание механизмов", careerFieldId: 2 },
+        { text: "Диагностика и лечение", careerFieldId: 3 },
+        { text: "Обучение и воспитание других", careerFieldId: 6 }
+      ]
+    }
+  ];
+
+  // ... (остальные данные: universities, careerCenters, careerFields и т.д. остаются без изменений)
+  // Для краткости не включаю их здесь, но они должны быть в полном коде
 
   const universities = [
     { id: 1, name: 'Московский государственный университет имени М.В. Ломоносова', location: 'Москва, Ленинские горы, д. 1', students: '40 000', rank: 'Топ-1 в России', type: 'Университет', specialties: ['IT', 'Инженерия', 'Медицина', 'Экономика', 'Право'], shortName: 'МГУ', website: 'https://msu.ru/', aliases: ['МГУ', 'Ломоносовский университет', 'Московский университет', 'университет Ломоносова'] },
     { id: 2, name: 'Московский физико-технический институт', location: 'Москва, Институтский пер., д. 9', students: '7 000', rank: 'Топ-1 в науке', type: 'Институт', specialties: ['IT', 'Инженерия', 'Физика'], shortName: 'МФТИ', website: 'https://mipt.ru/', aliases: ['МФТИ', 'Физтех', 'Физтех институт', 'Московский физтех'] },
-    { id: 3, name: 'Национальный исследовательский ядерный университет «МИФИ»', location: 'Москва, Каширское ш., д. 31', students: '12 000', rank: 'Топ-5 в инженерии', type: 'Университет', specialties: ['Инженерия', 'Физика', 'Химия'], shortName: 'НИЯУ МИФИ', website: 'https://mephi.ru/', aliases: ['НИЯУ МИФИ', 'МИФИ', 'Московский инженерный физико-технический институт', 'институт ядерной физики'] },
+    { id: 3, name: 'Национальный исследовательский ядерный университет «МИФИ»', location: 'Москва, Каширское ш., д. 31', students: '12 000', rank: 'Топ-5 в инженерии', type: 'Институт', specialties: ['Инженерия', 'Физика', 'Химия'], shortName: 'НИЯУ МИФИ', website: 'https://mephi.ru/', aliases: ['НИЯУ МИФИ', 'МИФИ', 'Московский инженерный физико-технический институт', 'институт ядерной физики'] },
     { id: 4, name: 'Национальный исследовательский технологический университет «МИСиС»', location: 'Москва, Ленинский пр., д. 65', students: '10 000', rank: 'Топ-3 в инженерии', type: 'Университет', specialties: ['Инженерия', 'Материаловедение', 'Металлургия'], shortName: 'НИТУ МИСиС', website: 'https://misis.ru/', aliases: ['НИТУ МИСиС', 'МИСиС', 'Московский институт стали и сплавов', 'институт сталеплавильщиков'] },
     { id: 5, name: 'Российский национальный исследовательский медицинский университет имени Н.И. Пирогова', location: 'Москва, ул. Островитянова, д. 1', students: '15 000', rank: 'Топ-1 в медицине', type: 'Университет', specialties: ['Медицина', 'Фармация', 'Стоматология'], shortName: 'РНИМУ', website: 'https://rsmu.ru/', aliases: ['РНИМУ', 'РНМУ', 'Пироговский университет', 'медицинский университет Пирогова', 'университет Пирогова'] },
     { id: 6, name: 'Московский авиационный институт', location: 'Москва, Волоколамское ш., д. 4', students: '14 000', rank: 'Топ-2 в авиации', type: 'Институт', specialties: ['Инженерия', 'Авиация', 'Космос'], shortName: 'МАИ', website: 'https://mai.ru/', aliases: ['МАИ', 'Московский авиационный институт', 'авиационный институт', 'институт авиации'] },
@@ -41,8 +106,8 @@ const App = () => {
     { id: 12, name: 'Московский государственный строительный университет', location: 'Москва, Ярославское ш., д. 26', students: '10 000', rank: 'Топ-3 в строительстве', type: 'Университет', specialties: ['Инженерия', 'Строительство', 'Архитектура'], shortName: 'МГСУ', website: 'https://mgsu.ru/', aliases: ['МГСУ', 'Московский строительный университет', 'строительный университет', 'институт строительства'] },
     { id: 13, name: 'Московский государственный институт международных отношений', location: 'Москва, ул. Профсоюзная, д. 76', students: '11 000', rank: 'Топ-1 в международных отношениях', type: 'Институт', specialties: ['Международные отношения', 'Политология', 'Лингвистика'], shortName: 'МГИМО', website: 'https://mgimo.ru/', aliases: ['МГИМО', 'Московский институт международных отношений', 'институт международных отношений', 'МИМО'] },
     { id: 14, name: 'Первый Московский государственный медицинский университет имени И.М. Сеченова', location: 'Москва, ул. Трубецкая, д. 8, стр. 2', students: '14 000', rank: 'Топ-1 в медицине', type: 'Университет', specialties: ['Медицина', 'Фармация', 'Стоматология'], shortName: 'Сеченовский Университет', website: 'https://www.sechenov.ru/', aliases: ['Сеченовский Университет', 'Первый МГМУ', 'Сеченка', 'медицинский университет Сеченова'] },
-    { id: 15, name: 'Московский городской педагогический университет', location: 'Москва, 2-й Сельскохозяйственный проезд, д. 4', students: '13 000', rank: 'Топ-3 в педагогике', type: 'Университет', specialties: ['Педагогика', 'Психология', 'Образование'], shortName: 'МГПУ', website: 'https://www.mgpu.ru/', aliases: ['МГПУ', 'Московский педагогический университет', 'педагогический университет', 'учительский университет'] },
-    { id: 16, name: 'Московский государственный лингвистический университет', location: 'Москва, ул. Воронцовская, д. 8', students: '9 000', rank: 'Топ-1 в лингвистике', type: 'Университет', specialties: ['Лингвистика', 'Перевод', 'Международные отношения'], shortName: 'МГЛУ', website: 'https://linguanet.ru/', aliases: ['МГЛУ', 'Московский лингвистический университет', 'лингвистический университет', 'языковой университет'] },
+    { id: 15, name: 'Московский городской педагогический университет', location: 'Москва, 2-й Сельскохозяйственный проезд, д. 4', students: '13 000', rank: 'Топ-3 в педагогике', type: 'Университет', specialties: ['Педагогика', 'Психология', 'Образование'], shortName: 'МГППУ', website: 'https://www.mgpu.ru/', aliases: ['МГППУ', 'Московский педагогический университет', 'педагогический университет', 'учительский университет'] },
+    { id: 16, name: 'Московский государственный лингвистический университет', location: 'Москва, ул. Остоженка, д. 38', students: '8 000', rank: 'Топ-1 в лингвистике', type: 'Университет', specialties: ['Лингвистика', 'Перевод', 'Филология'], shortName: 'МГЛУ', website: 'https://linguanet.ru/', aliases: ['МГЛУ', 'Московский лингвистический университет', 'лингвистический университет', 'языковой университет'] },
     { id: 17, name: 'Московский государственный юридический университет имени О.Е. Кутафина', location: 'Москва, ул. Садовая-Кудринская, д. 9', students: '12 000', rank: 'Топ-1 юридический', type: 'Университет', specialties: ['Право', 'Международные отношения', 'Политология'], shortName: 'МГЮА', website: 'https://msal.ru/', aliases: ['МГЮА', 'Кутафинка', 'юридический университет', 'МГЮ им. Кутафина'] },
     { id: 18, name: 'Финансовый университет при Правительстве Российской Федерации', location: 'Москва, ул. Ленинградский проспект, д. 4', students: '20 000', rank: 'Топ-1 экономический', type: 'Университет', specialties: ['Экономика', 'Финансы', 'Менеджмент', 'IT'], shortName: 'Финансовый университет', website: 'https://fa.ru/', aliases: ['Финансовый университет', 'Финуниверситет', 'Финансовая академия', 'университет финансов'] },
     { id: 19, name: 'Московский университет тонких химических технологий имени М.В. Ломоносова', location: 'Москва, ул. Миусская, д. 26', students: '10 000', rank: 'Топ-1 химический', type: 'Университет', specialties: ['Химия', 'Материаловедение', 'Биотехнология', 'Фармация'], shortName: 'МИТХТ', website: 'https://www.muctr.ru/', aliases: ['МИТХТ', 'Московский институт тонкой химии', 'химический технологический институт', 'институт химических технологий'] },
@@ -52,6 +117,13 @@ const App = () => {
     { id: 23, name: 'Российская экономическая академия имени Г.В. Плеханова', location: 'Москва, ул. Стремянная, д. 36', students: '19 000', rank: 'Топ-3 экономический', type: 'Университет', specialties: ['Экономика', 'Менеджмент', 'Финансы', 'IT'], shortName: 'РЭУ им. Плеханова', website: 'https://www.rea.ru/', aliases: ['РЭУ им. Плеханова', 'Плеханка', 'экономическая академия', 'академия экономики'] },
     { id: 24, name: 'Государственный академический университет гуманитарных наук', location: 'Москва, Мароновский переулок, д. 26', students: '4 000', rank: 'Топ-5 в гуманитарных науках', type: 'Университет', specialties: ['Философия', 'История', 'Литература', 'Психология'], shortName: 'ГАУГН', website: 'https://gaugn.ru/', aliases: ['ГАУГН', 'Государственный академический университет гуманитарных наук', 'гуманитарный университет', 'академический университет'] },
     { id: 25, name: 'Московский Политех', location: 'Москва, ул. Павла Корчагина, д. 2', students: '16 000', rank: 'Топ-5 технический', type: 'Университет', specialties: ['Инженерия', 'IT', 'Машиностроение', 'Робототехника'], shortName: 'Московский Политех', website: 'https://mospolytech.ru/', aliases: ['Московский Политех', 'Московский политехнический университет', 'политех', 'Московский политех'] },
+  ];
+
+  const careerCenters = [
+    { id: 1, name: 'Центр занятости «Моя карьера»', location: 'Москва', age: 'от 14 лет', accessibility: 'очно', description: 'В центре не только помогут определиться с профессией, но и подскажут, как найти первую работу. Организуют тренинги, деловые игры и школу «Лето моей карьеры» для подростков 14-17 лет.', type: 'Центр профориентации', website: 'https://mycareer.moscow/#/meetings/info' },
+    { id: 2, name: 'Проект «Билет в будущее»', location: '89 регионов', age: '6-11 класс', accessibility: 'онлайн и офлайн', description: 'Проект помогает школьникам раскрыть таланты и осознанно выбрать карьеру. После регистрации у ребенка появляется педагог-навигатор, который поможет пройти диагностику и записать на профпробы.', type: 'Центр профориентации', website: 'https://bvbinfo.ru/' },
+    { id: 3, name: 'Учебный центр Maximum', location: 'Москва', age: '8-11 класс', accessibility: 'онлайн, очно', description: 'Образовательный центр помогает старшеклассникам понять, что им нравится, и выбрать подходящую профессию. Проводит профориентационные курсы и консультации с профориентологами.', type: 'Центр профориентации', website: 'https://maximumtest.ru/proforientacia' },
+    { id: 4, name: 'Навигатор поступления', location: 'онлайн', age: '7-11 класс', accessibility: 'онлайн', description: 'Создатели сайта с каталогом вузов и программ бесплатно проводят онлайн-тестирование для старшеклассников. Профориентолог поможет интерпретировать результаты и составить план подготовки к поступлению.', type: 'Центр профориентации', website: 'https://propostuplenie.ru/promo/proforientacia' },
   ];
 
   const careerFields = [
@@ -89,65 +161,37 @@ const App = () => {
     { id: 10, name: 'Психолог', description: 'Диагностика, консультирование, психотерапия.', careerFieldId: 6, requiredSkills: ['Психодиагностика', 'Психотерапия', 'Консультирование', 'Психология развития'] },
   ];
 
-  // Новые мероприятия
   const events = [
-    {
-      id: 1,
-      title: "VI Международная научно–практическая конференция «Лингвистика дистанцирования. Язык в контексте мультимодальной коммуникации XXI века»",
-      date: "2025-01-26",
-      endDate: "2025-01-28",
-      time: "09:00",
-      location: "Москва",
-      description: "Международная конференция по лингвистике",  
-      category: "Наука",
-      organizer: "МГУ",
-      registrationLink: "https://conf.msu.ru/rus/event/10212/"
-    },
-    {
-      id: 2,
-      title: "Забытые слова: новые подходы к изучению биографии и творчества М. Е. Салтыкова–Щедрина",
-      date: "2025-01-27",
-      time: "10:00",
-      location: "Москва",
-      description: "Научная конференция по литературе",
-      category: "Культура",
-      organizer: "МГУ",
-      registrationLink: "https://conf.msu.ru/rus/event/10223/"
-    },
-    {
-      id: 3,
-      title: "XX Международная научная конференция «Сорокинские чтения»: «Российская социология: связь времен и горизонты будущего»",
-      date: "2025-02-19",
-      time: "11:00",
-      location: "Москва",
-      description: "Международная конференция по социологии",
-      category: "Наука",
-      organizer: "МГУ",
-      registrationLink: "https://conf.msu.ru/rus/event/10097/"
-    },
-    {
-      id: 4,
-      title: "Международная научно–практическая конференция «Новые геополитические горизонты: эволюция международных отношений и интеграционных процессов в современном мире»",
-      date: "2025-02-25",
-      time: "12:00",
-      location: "Москва",
-      description: "Конференция по международным отношениям",
-      category: "Образование",
-      organizer: "МГУ",
-      registrationLink: "https://conf.msu.ru/rus/event/10144/"
-    },
-    {
-      id: 5,
-      title: "Ежегодный Фестиваль школьных средств массовой информации на факультете журналистики МГУ",
-      date: "2025-04-01",
-      endDate: "2025-04-30",
-      time: "09:00",
-      location: "Москва",
-      description: "Фестиваль для школьников",
-      category: "Образование",
-      organizer: "МГУ",
-      registrationLink: "https://conf.msu.ru/rus/event/10115/"
-    }
+    { id: 1, title: 'VI Международная научно-практическая конференция «Лингвистика дистанцирования»', date: '2026-01-26', time: '10:00', location: 'МГУ, Филологический факультет', participants: '200', organizer: 'МГУ', category: 'Конференция', link: 'https://conf.msu.ru/rus/event/10212/', description: 'Язык в контексте мультимодальной коммуникации XXI века' },
+    { id: 2, title: 'VI Международная научно-практическая конференция «Лингвистика дистанцирования»', date: '2026-01-27', time: '10:00', location: 'МГУ, Филологический факультет', participants: '200', organizer: 'МГУ', category: 'Конференция', link: 'https://conf.msu.ru/rus/event/10212/', description: 'Межкультурная коммуникация в глобальном онлайн пространстве' },
+    { id: 3, title: 'VI Международная научно-практическая конференция «Лингвистика дистанцирования»', date: '2026-01-28', time: '10:00', location: 'МГУ, Филологический факультет', participants: '200', organizer: 'МГУ', category: 'Конференция', link: 'https://conf.msu.ru/rus/event/10212/', description: 'Цифровизация в современной лингвистике' },
+    { id: 4, title: 'Забытые слова: новые подходы к изучению биографии и творчества М. Е. Салтыкова-Щедрина', date: '2026-01-27', time: '11:00', location: 'МГУ, Филологический факультет', participants: '150', organizer: 'МГУ', category: 'Круглый стол', link: 'https://conf.msu.ru/rus/event/10223/', description: 'К 200-летию со дня рождения М.Е. Салтыкова-Щедрина' },
+    { id: 5, title: 'XX Международная научная конференция «Сорокинские чтения»', date: '2026-02-19', time: '10:00', location: 'МГУ, Социологический факультет', participants: '300', organizer: 'МГУ', category: 'Конференция', link: 'https://conf.msu.ru/rus/event/10097/', description: 'Российская социология: связь времен и горизонты будущего' },
+    { id: 6, title: 'Международная научно-практическая конференция «Новые геополитические горизонты»', date: '2026-02-25', time: '10:00', location: 'МГУ, Факультет политологии', participants: '250', organizer: 'МГУ', category: 'Конференция', link: 'https://conf.msu.ru/rus/event/10144/', description: 'Эволюция международных отношений и интеграционных процессов в современном мире' },
+    { id: 7, title: 'Ежегодный Фестиваль школьных средств массовой информации', date: '2026-04-01', time: '10:00', location: 'МГУ, Факультет журналистики', participants: '500', organizer: 'МГУ', category: 'Фестиваль', link: 'https://conf.msu.ru/rus/event/10115/', description: 'Фестиваль проводится в рамках комплексного проекта «Медиаобразование в школе»' },
+    { id: 8, title: 'Ежегодный Фестиваль школьных средств массовой информации', date: '2026-04-15', time: '10:00', location: 'МГУ, Факультет журналистики', participants: '500', organizer: 'МГУ', category: 'Фестиваль', link: 'https://conf.msu.ru/rus/event/10115/', description: 'Конкурс медийных проектов и мастер-классы' },
+    { id: 9, title: 'Ежегодный Фестиваль школьных средств массовой информации', date: '2026-04-30', time: '10:00', location: 'МГУ, Факультет журналистики', participants: '500', organizer: 'МГУ', category: 'Фестиваль', link: 'https://conf.msu.ru/rus/event/10115/', description: 'Награждение победителей и закрытие фестиваля' },
+    { id: 10, title: 'День открытых дверей НИТУ МИСиС', date: '2026-01-20', time: '12:00', location: 'МИСиС, Главный корпус', participants: '400', organizer: 'МИСиС', category: 'День открытых дверей', link: 'https://misis.ru/', description: 'Знакомство с лабораториями и инжиниринговыми центрами мирового уровня' },
+    { id: 11, title: 'Мастер-класс по материаловедению', date: '2026-02-10', time: '14:00', location: 'МИСиС, Лаборатория нанотехнологий', participants: '80', organizer: 'МИСиС', category: 'Мастер-класс', link: 'https://misis.ru/', description: 'Изучение современных материалов под микроскопом Axio Imager Z2' },
+    { id: 12, title: 'Физтех-Школа для старшеклассников', date: '2026-01-25', time: '10:00', location: 'МФТИ, Главный корпус', participants: '200', organizer: 'МФТИ', category: 'Образовательная программа', link: 'https://mipt.ru/', description: 'Интенсивная подготовка по физике и математике' },
+    { id: 13, title: 'Научная конференция «Физика будущего»', date: '2026-02-15', time: '11:00', location: 'МФТИ, Конференц-зал', participants: '150', organizer: 'МФТИ', category: 'Конференция', link: 'https://mipt.ru/', description: 'Доклады молодых ученых в области квантовых технологий' },
+    { id: 14, title: 'Летняя школа в Китае для студентов МИЭТ', date: '2026-07-03', time: '09:00', location: 'МИЭТ, Зеленоград', participants: '50', organizer: 'МИЭТ', category: 'Образовательная программа', link: 'https://miet.ru/', description: 'Международная образовательная программа по цифровому дизайну' },
+    { id: 15, title: 'Выставка графических работ студентов', date: '2026-07-02', time: '10:00', location: 'МИЭТ, Институт цифрового дизайна', participants: '100', organizer: 'МИЭТ', category: 'Выставка', link: 'https://miet.ru/', description: 'Работы студентов Института цифрового дизайна' },
+    { id: 16, title: 'День энергетика в НИУ МЭИ', date: '2026-03-15', time: '10:00', location: 'МЭИ, Главный корпус', participants: '350', organizer: 'МЭИ', category: 'Праздник', link: 'https://mpei.ru/', description: 'Праздничные мероприятия и выставки достижений университета' },
+    { id: 17, title: 'Мастер-класс от Студенческого Медиацентра', date: '2026-03-20', time: '14:00', location: 'МЭИ, Медиацентр', participants: '60', organizer: 'МЭИ', category: 'Мастер-класс', link: 'https://mpei.ru/', description: 'Обучение созданию медиа-контента для социальных сетей' },
+    { id: 18, title: 'День авиации и космонавтики', date: '2026-04-12', time: '10:00', location: 'МАИ, Главный корпус', participants: '500', organizer: 'МАИ', category: 'Праздник', link: 'https://mai.ru/', description: 'Праздничные мероприятия ко Дню космонавтики' },
+    { id: 19, title: 'Открытая лекция «Ракетные системы будущего»', date: '2026-04-20', time: '15:00', location: 'МАИ, Лаборатория ракетных систем', participants: '120', organizer: 'МАИ', category: 'Лекция', link: 'https://mai.ru/', description: 'Лекция от ведущих специалистов ракетно-космической отрасли' },
+    { id: 20, title: 'Международный день студента в РУДН', date: '2026-02-17', time: '12:00', location: 'РУДН, Главный корпус', participants: '1000', organizer: 'РУДН', category: 'Праздник', link: 'https://www.rosunimed.ru/', description: 'Культурная программа с участием студентов из 160 стран' },
+    { id: 21, title: 'День иностранных языков', date: '2026-03-25', time: '10:00', location: 'МГЛУ, Главный корпус', participants: '300', organizer: 'МГЛУ', category: 'Праздник', link: 'https://linguanet.ru/', description: 'Мероприятия, посвященные изучению иностранных языков' },
+    { id: 22, title: 'Бизнес-акселератор «Мама может»', date: '2026-02-05', time: '14:00', location: 'Центр «Моя карьера»', participants: '50', organizer: 'Моя карьера', category: 'Обучение', link: 'https://mycareer.moscow/#/meetings/info', description: 'Обучение для мам, желающих открыть свой бизнес' },
+    { id: 23, title: 'Профориентационное тестирование', date: '2026-01-30', time: '10:00', location: 'Онлайн', participants: '200', organizer: 'Билет в будущее', category: 'Тестирование', link: 'https://bvbinfo.ru/', description: 'Бесплатное профтестирование для школьников 6-11 классов' },
+    { id: 24, title: 'Консультация с профориентологом', date: '2026-02-01', time: '15:00', location: 'Онлайн', participants: '30', organizer: 'Maximum Education', category: 'Консультация', link: 'https://maximumtest.ru/proforientacia', description: 'Индивидуальная консультация для школьников 8-11 классов' },
+    { id: 25, title: 'Вебинар «Как выбрать профессию»', date: '2026-02-08', time: '18:00', location: 'Онлайн', participants: '150', organizer: 'Навигатор поступления', category: 'Вебинар', link: 'https://propostuplenie.ru/promo/proforientacia', description: 'Бесплатный вебинар для учеников 7-11 классов' },
+    { id: 26, title: 'День открытых дверей МГЮА', date: '2026-03-10', time: '11:00', location: 'МГЮА, Главный корпус', participants: '400', organizer: 'МГЮА', category: 'День открытых дверей', link: 'https://msal.ru/', description: 'Знакомство с юридическим университетом' },
+    { id: 27, title: 'Экономический форум ВШЭ', date: '2026-04-05', time: '10:00', location: 'ВШЭ, Покровский бульвар', participants: '500', organizer: 'ВШЭ', category: 'Форум', link: 'https://www.hse.ru/', description: 'Ежегодный экономический форум с участием ведущих экспертов' },
+    { id: 28, title: 'Техническая олимпиада «Бауманский призыв»', date: '2026-03-01', time: '09:00', location: 'МГТУ им. Баумана', participants: '300', organizer: 'МГТУ им. Баумана', category: 'Олимпиада', link: 'https://bmstu.ru/', description: 'Олимпиада по техническим дисциплинам для старшеклассников' },
+    { id: 29, title: 'День нефти и газа', date: '2026-04-25', time: '10:00', location: 'РГУ нефти и газа им. Губкина', participants: '250', organizer: 'РГУ нефти и газа', category: 'Праздник', link: 'https://gubkin.ru/', description: 'Профессиональный праздник работников нефтегазовой отрасли' },
+    { id: 30, title: 'День здоровья в Сеченовском университете', date: '2026-04-07', time: '10:00', location: 'Первый МГМУ им. Сеченова', participants: '400', organizer: 'Сеченовский Университет', category: 'Праздник', link: 'https://www.sechenov.ru/', description: 'Всемирный день здоровья' }
   ];
 
   const features = [
@@ -157,25 +201,139 @@ const App = () => {
     { title: 'Интерактивная карта', desc: 'Найдите мероприятия рядом с вами', icon: <MapPin className="w-8 h-8" /> },
   ];
 
-  // Фильтрация вузов
-  const filteredUniversities = universities.filter(uni => {
-    // Объединяем все возможные названия и сокращения
-    const allNames = [uni.name, uni.shortName, ...uni.aliases];
+  const allInstitutions = [...universities, ...careerCenters];
+
+  // Функция для обработки ответа на вопрос
+  const handleAnswerSelect = (careerFieldId) => {
+    setTestAnswers({
+      ...testAnswers,
+      [currentQuestion]: careerFieldId
+    });
+  };
+
+  // Переход к следующему вопросу
+  const handleNextQuestion = () => {
+    if (currentQuestion < testQuestions.length - 1) {
+      setCurrentQuestion(currentQuestion + 1);
+    } else {
+      calculateResult();
+    }
+  };
+
+  // Переход к предыдущему вопросу
+  const handlePrevQuestion = () => {
+    if (currentQuestion > 0) {
+      setCurrentQuestion(currentQuestion - 1);
+    }
+  };
+
+  // Расчет результата теста
+  const calculateResult = () => {
+    const fieldCounts = {};
     
+    Object.values(testAnswers).forEach(fieldId => {
+      fieldCounts[fieldId] = (fieldCounts[fieldId] || 0) + 1;
+    });
+
+    let maxCount = 0;
+    let recommendedFieldId = 1;
+    
+    Object.entries(fieldCounts).forEach(([fieldId, count]) => {
+      if (count > maxCount) {
+        maxCount = count;
+        recommendedFieldId = parseInt(fieldId);
+      }
+    });
+
+    const field = careerFields.find(f => f.id === recommendedFieldId);
+    const profession = professions.find(p => p.careerFieldId === recommendedFieldId);
+    
+    setRecommendedCareerField(field);
+    setRecommendedProfession(profession);
+    setTestCompleted(true);
+  };
+
+  // Начать тест заново
+  const restartTest = () => {
+    setCurrentQuestion(0);
+    setTestAnswers({});
+    setTestCompleted(false);
+    setRecommendedProfession(null);
+    setRecommendedCareerField(null);
+  };
+
+  // Закрыть тест
+  const closeTest = () => {
+    setShowTest(false);
+    restartTest();
+  };
+
+  // Перейти к изучению вузов для рекомендованной профессии
+  const goToUniversitiesForProfession = () => {
+    setShowTest(false);
+    setActiveTab('universities');
+    if (recommendedCareerField) {
+      setSelectedSpecialty(recommendedCareerField.name.split(' ')[0]);
+    }
+    restartTest();
+    window.scrollTo(0, 0);
+  };
+
+  // === ИСПРАВЛЕННЫЕ ФУНКЦИИ НАВИГАЦИИ ===
+  // Теперь они закрывают тест при переключении
+  const goToMap = () => {
+    setShowTest(false);
+    restartTest();
+    setActiveTab('map');
+    setSelectedUniversity(null);
+    setSelectedCareerField(null);
+    window.scrollTo(0, 0);
+  };
+
+  const goToUniversities = () => {
+    setShowTest(false);
+    restartTest();
+    setActiveTab('universities');
+    setSelectedUniversity(null);
+    setSelectedCareerField(null);
+    window.scrollTo(0, 0);
+  };
+
+  const goToCareer = () => {
+    setShowTest(false);
+    restartTest();
+    setActiveTab('career');
+    setSelectedUniversity(null);
+    setSelectedCareerField(null);
+    window.scrollTo(0, 0);
+  };
+
+  const goToEvents = () => {
+    setShowTest(false);
+    restartTest();
+    setActiveTab('events');
+    setSelectedUniversity(null);
+    setSelectedCareerField(null);
+    window.scrollTo(0, 0);
+  };
+
+  const filteredInstitutions = allInstitutions.filter(institution => {
+    const allNames = [institution.name, institution.shortName || institution.name, ...(institution.aliases || [])];
     const matchesSearch = searchQuery === '' ||
       allNames.some(name => name.toLowerCase().includes(searchQuery.toLowerCase())) ||
-      uni.location.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      uni.specialties.some(spec => spec.toLowerCase().includes(searchQuery.toLowerCase()));
+      institution.location.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      (institution.specialties && institution.specialties.some(spec => spec.toLowerCase().includes(searchQuery.toLowerCase())));
     
-    const matchesType = selectedType === 'Все типы' || uni.type === selectedType;
-    const matchesSpecialty = selectedSpecialty === 'Все специальности' || uni.specialties.includes(selectedSpecialty);
-    const matchesCity = selectedCity === 'Москва' || uni.location.includes(selectedCity); // Пока только Москва
-    const matchesPartnership = !hasPartnership || true; // Пока нет данных о партнерстве
+    const matchesType = selectedType === 'Все типы' || institution.type === selectedType;
+    const matchesSpecialty = selectedSpecialty === 'Все специальности' ||
+      (institution.specialties && institution.specialties.includes(selectedSpecialty)) ||
+      (institution.accessibility && institution.accessibility.includes(selectedSpecialty));
+    const matchesCity = selectedCity === 'Москва' || institution.location.includes(selectedCity);
+    const matchesPartnership = !hasPartnership || true;
 
     return matchesSearch && matchesType && matchesSpecialty && matchesCity && matchesPartnership;
   });
 
-  // Функция для сброса фильтров
   const resetFilters = () => {
     setSearchQuery('');
     setSelectedType('Все типы');
@@ -196,66 +354,32 @@ const App = () => {
     setShowMapSearchResults(false);
   };
 
-  const goToMap = () => {
-    setActiveTab('map');
-    setSelectedUniversity(null);
-    setSelectedCareerField(null);
-    window.scrollTo(0, 0);
-  };
-
-  const goToUniversities = () => {
-    setActiveTab('universities');
-    setSelectedUniversity(null);
-    setSelectedCareerField(null);
-    window.scrollTo(0, 0);
-  };
-
-  const goToCareer = () => {
-    setActiveTab('career');
-    setSelectedUniversity(null);
-    setSelectedCareerField(null);
-    window.scrollTo(0, 0);
-  };
-
-  const goToEvents = () => {
-    setActiveTab('events');
-    setSelectedUniversity(null);
-    setSelectedCareerField(null);
-    window.scrollTo(0, 0);
-  };
-
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (mapSearchRef.current && !mapSearchRef.current.contains(event.target)) {
         setShowMapSearchResults(false);
       }
     };
-
     document.addEventListener('mousedown', handleClickOutside);
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []);
 
-  // Функции для работы с календарем
   const getDaysInMonth = (date) => {
     const year = date.getFullYear();
     const month = date.getMonth();
     const firstDay = new Date(year, month, 1);
     const lastDay = new Date(year, month + 1, 0);
     const daysInMonth = lastDay.getDate();
-    const startingDayOfWeek = firstDay.getDay(); // 0 = воскресенье, 1 = понедельник, ...
-    
+    const startingDayOfWeek = firstDay.getDay();
     const days = [];
-    
-    // Добавляем пустые ячейки для дней до начала месяца
+
     for (let i = 0; i < startingDayOfWeek; i++) {
       days.push(null);
     }
-    
-    // Добавляем дни месяца
+
     for (let day = 1; day <= daysInMonth; day++) {
       days.push(new Date(year, month, day));
     }
-    
     return days;
   };
 
@@ -268,33 +392,39 @@ const App = () => {
   };
 
   const formatDate = (date) => {
-    return date.toLocaleDateString('ru-RU', { 
-      day: 'numeric', 
-      month: 'long', 
-      year: 'numeric' 
+    return date.toLocaleDateString('ru-RU', {
+      day: 'numeric',
+      month: 'long',
+      year: 'numeric'
     });
   };
 
   const formatMonthYear = (date) => {
-    return date.toLocaleDateString('ru-RU', { 
-      month: 'long', 
-      year: 'numeric' 
+    return date.toLocaleDateString('ru-RU', {
+      month: 'long',
+      year: 'numeric'
     });
   };
 
   const isToday = (date) => {
     const today = new Date();
-    return date && 
-           date.getDate() === today.getDate() &&
-           date.getMonth() === today.getMonth() &&
-           date.getFullYear() === today.getFullYear();
+    return date &&
+      date.getDate() === today.getDate() &&
+      date.getMonth() === today.getMonth() &&
+      date.getFullYear() === today.getFullYear();
   };
 
   const isSelected = (date) => {
-    return date && 
-           date.getDate() === selectedDate.getDate() &&
-           date.getMonth() === selectedDate.getMonth() &&
-           date.getFullYear() === selectedDate.getFullYear();
+    return date &&
+      date.getDate() === selectedDate.getDate() &&
+      date.getMonth() === selectedDate.getMonth() &&
+      date.getFullYear() === selectedDate.getFullYear();
+  };
+
+  const hasEvents = (date) => {
+    if (!date) return false;
+    const dateString = date.toISOString().split('T')[0];
+    return events.some(event => event.date === dateString);
   };
 
   const handleDateClick = (date) => {
@@ -303,48 +433,253 @@ const App = () => {
     }
   };
 
-  // Получаем мероприятия для выбранной даты
   const getEventsForDate = (date) => {
     if (!date) return [];
-    const dateString = date.toISOString().split('T')[0]; // Преобразуем в формат YYYY-MM-DD
-    
-    // Проверяем, попадает ли дата в диапазон мероприятия (если есть endDate)
-    return events.filter(event => {
-      if (event.endDate) {
-        const eventStart = new Date(event.date).getTime();
-        const eventEnd = new Date(event.endDate).getTime();
-        const selectedTime = new Date(dateString).getTime();
-        return selectedTime >= eventStart && selectedTime <= eventEnd;
-      }
-      // Если нет endDate, просто сравниваем даты
-      return event.date === dateString;
-    });
+    const dateString = date.toISOString().split('T')[0];
+    return events.filter(event => event.date === dateString);
   };
 
   const renderContent = () => {
+    // Показываем тест вместо основного контента
+    if (showTest) {
+      return (
+        <div className="py-8 max-w-3xl mx-auto">
+          <div className="bg-white/90 backdrop-blur-sm rounded-2xl p-8 border border-gray-200 shadow-lg">
+            {!testCompleted ? (
+              <>
+                <div className="flex items-center justify-between mb-8">
+                  <h2 className="text-3xl font-bold text-gray-800 flex items-center">
+                    <Brain className="w-8 h-8 mr-3 text-blue-600" />
+                    Тест на профориентацию
+                  </h2>
+                  <button
+                    onClick={closeTest}
+                    className="text-gray-400 hover:text-gray-600 transition-colors"
+                    title="Закрыть тест"
+                  >
+                    <X className="w-6 h-6" />
+                  </button>
+                </div>
+
+                {/* Прогресс бар */}
+                <div className="mb-8">
+                  <div className="flex justify-between text-sm text-gray-600 mb-2">
+                    <span>Вопрос {currentQuestion + 1} из {testQuestions.length}</span>
+                    <span>{Math.round(((currentQuestion + 1) / testQuestions.length) * 100)}%</span>
+                  </div>
+                  <div className="w-full bg-gray-200 rounded-full h-2">
+                    <div
+                      className="bg-gradient-to-r from-blue-600 to-cyan-600 h-2 rounded-full transition-all duration-300"
+                      style={{ width: `${((currentQuestion + 1) / testQuestions.length) * 100}%` }}
+                    ></div>
+                  </div>
+                </div>
+
+                {/* Вопрос */}
+                <div className="mb-8">
+                  <h3 className="text-2xl font-semibold text-gray-800 mb-6">
+                    {testQuestions[currentQuestion].question}
+                  </h3>
+                  <div className="space-y-3">
+                    {testQuestions[currentQuestion].options.map((option, index) => (
+                      <button
+                        key={index}
+                        onClick={() => handleAnswerSelect(option.careerFieldId)}
+                        className={`w-full text-left p-4 rounded-xl border-2 transition-all duration-300 ${
+                          testAnswers[currentQuestion] === option.careerFieldId
+                            ? 'border-blue-600 bg-blue-50 shadow-md'
+                            : 'border-gray-200 hover:border-blue-300 hover:bg-gray-50'
+                        }`}
+                      >
+                        <div className="flex items-center">
+                          <div className={`w-6 h-6 rounded-full border-2 mr-4 flex items-center justify-center ${
+                            testAnswers[currentQuestion] === option.careerFieldId
+                              ? 'border-blue-600 bg-blue-600'
+                              : 'border-gray-400'
+                          }`}>
+                            {testAnswers[currentQuestion] === option.careerFieldId && (
+                              <CheckCircle className="w-4 h-4 text-white" />
+                            )}
+                          </div>
+                          <span className="text-gray-800 font-medium">{option.text}</span>
+                        </div>
+                      </button>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Кнопки навигации */}
+                <div className="flex justify-between">
+                  <button
+                    onClick={handlePrevQuestion}
+                    disabled={currentQuestion === 0}
+                    className={`px-6 py-3 rounded-xl font-semibold transition-all duration-300 ${
+                      currentQuestion === 0
+                        ? 'bg-gray-200 text-gray-400 cursor-not-allowed'
+                        : 'bg-gray-200 text-gray-800 hover:bg-gray-300'
+                    }`}
+                  >
+                    <ChevronLeft className="w-5 h-5 inline mr-2" />
+                    Назад
+                  </button>
+                  <div className="flex gap-3">
+                    <button
+                      onClick={closeTest}
+                      className="px-6 py-3 rounded-xl font-semibold transition-all duration-300 bg-gray-200 text-gray-800 hover:bg-gray-300"
+                    >
+                      Выйти из теста
+                    </button>
+                    <button
+                      onClick={handleNextQuestion}
+                      disabled={!testAnswers[currentQuestion]}
+                      className={`px-8 py-3 rounded-xl font-semibold transition-all duration-300 ${
+                        testAnswers[currentQuestion]
+                          ? 'bg-gradient-to-r from-blue-600 to-cyan-600 hover:from-blue-700 hover:to-cyan-700 text-white transform hover:scale-105'
+                          : 'bg-gray-200 text-gray-400 cursor-not-allowed'
+                      }`}
+                    >
+                      {currentQuestion === testQuestions.length - 1 ? 'Завершить тест' : 'Далее'}
+                      {currentQuestion !== testQuestions.length - 1 && (
+                        <ChevronRight className="w-5 h-5 inline ml-2" />
+                      )}
+                    </button>
+                  </div>
+                </div>
+              </>
+            ) : (
+              <>
+                {/* Результаты теста */}
+                <div className="text-center mb-8">
+                  <div className="w-20 h-20 bg-gradient-to-r from-green-500 to-emerald-500 rounded-full flex items-center justify-center mx-auto mb-6">
+                    <CheckCircle className="w-12 h-12 text-white" />
+                  </div>
+                  <h2 className="text-3xl font-bold text-gray-800 mb-4">
+                    Тест завершен!
+                  </h2>
+                  <p className="text-xl text-gray-600 mb-8">
+                    На основе ваших ответов мы определили вашу предрасположенность
+                  </p>
+                </div>
+
+                {recommendedCareerField && (
+                  <div className="bg-gradient-to-r from-blue-50 to-cyan-50 rounded-2xl p-8 mb-6 border border-blue-200">
+                    <div className="text-center mb-6">
+                      <span className="text-6xl mb-4 block">{recommendedCareerField.icon}</span>
+                      <h3 className="text-2xl font-bold text-gray-800 mb-2">
+                        {recommendedCareerField.name}
+                      </h3>
+                      <p className="text-gray-600">
+                        {recommendedCareerField.description}
+                      </p>
+                    </div>
+
+                    {recommendedProfession && (
+                      <div className="bg-white/70 rounded-xl p-6 mb-4">
+                        <h4 className="text-lg font-semibold text-gray-800 mb-2 flex items-center justify-center">
+                          <Briefcase className="w-5 h-5 mr-2 text-blue-600" />
+                          Рекомендуемая профессия
+                        </h4>
+                        <p className="text-xl font-bold text-blue-600 text-center mb-2">
+                          {recommendedProfession.name}
+                        </p>
+                        <p className="text-gray-600 text-center text-sm">
+                          {recommendedProfession.description}
+                        </p>
+                      </div>
+                    )}
+                  </div>
+                )}
+
+                <div className="flex flex-col sm:flex-row gap-4 justify-center">
+                  <button
+                    onClick={goToUniversitiesForProfession}
+                    className="bg-gradient-to-r from-blue-600 to-cyan-600 hover:from-blue-700 hover:to-cyan-700 px-8 py-4 rounded-xl font-semibold text-white transition-all duration-300 transform hover:scale-105 flex items-center justify-center"
+                  >
+                    <GraduationCap className="w-5 h-5 mr-2" />
+                    Изучить ВУЗы для этой профессии
+                  </button>
+                  <button
+                    onClick={restartTest}
+                    className="bg-gradient-to-r from-gray-600 to-gray-700 hover:from-gray-700 hover:to-gray-800 px-8 py-4 rounded-xl font-semibold text-white transition-all duration-300"
+                  >
+                    Пройти тест заново
+                  </button>
+                  <button
+                    onClick={closeTest}
+                    className="bg-gradient-to-r from-gray-400 to-gray-500 hover:from-gray-500 hover:to-gray-600 px-8 py-4 rounded-xl font-semibold text-white transition-all duration-300"
+                  >
+                    Закрыть
+                  </button>
+                </div>
+              </>
+            )}
+          </div>
+        </div>
+      );
+    }
+
+    // ... (остальной код renderContent остается без изменений)
+    // Для краткости не включаю весь код, но он должен быть в полном файле
+    
     if (selectedUniversity) {
+      const isCareerCenter = careerCenters.some(center => center.id === selectedUniversity.id);
+      if (isCareerCenter) {
+        return (
+          <div className="py-8">
+            <button
+              onClick={() => setSelectedUniversity(null)}
+              className="flex items-center text-gray-800 mb-8 bg-gradient-to-r from-gray-100 to-gray-200 hover:from-gray-200 hover:to-gray-300 px-6 py-3 rounded-full font-semibold transition-all duration-300 transform hover:scale-105"
+            >
+              <ArrowLeft className="w-5 h-5 mr-2" /> Назад к списку
+            </button>
+            <div className="bg-white/90 backdrop-blur-sm rounded-2xl p-8 border border-gray-200 shadow-lg">
+              <div className="flex items-center mb-6">
+                <Target className="w-12 h-12 text-blue-600 mr-4" />
+                <h1 className="text-4xl font-bold text-gray-800">{selectedUniversity.name}</h1>
+              </div>
+              <div className="space-y-4 text-gray-600 mb-8">
+                <p className="text-lg"><strong>Локация:</strong> {selectedUniversity.location}</p>
+                <p><strong>Возраст:</strong> {selectedUniversity.age}</p>
+                <p><strong>Доступность:</strong> {selectedUniversity.accessibility}</p>
+                <p><strong>Тип:</strong> {selectedUniversity.type}</p>
+              </div>
+              <div className="bg-gray-50/50 rounded-xl p-6 mb-6">
+                <h3 className="text-xl font-semibold mb-4 text-gray-800">Описание</h3>
+                <p className="text-gray-600">{selectedUniversity.description}</p>
+              </div>
+              <div className="flex gap-4">
+                <a
+                  href={selectedUniversity.website}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="bg-gradient-to-r from-blue-600 to-cyan-600 hover:from-blue-700 hover:to-cyan-700 px-8 py-3 rounded-xl font-semibold text-white transition-all duration-300 transform hover:scale-105"
+                >
+                  Посетить сайт
+                </a>
+              </div>
+            </div>
+          </div>
+        );
+      }
       return (
         <div className="py-8">
-          <button 
+          <button
             onClick={() => setSelectedUniversity(null)}
             className="flex items-center text-gray-800 mb-8 bg-gradient-to-r from-gray-100 to-gray-200 hover:from-gray-200 hover:to-gray-300 px-6 py-3 rounded-full font-semibold transition-all duration-300 transform hover:scale-105"
           >
             <ArrowLeft className="w-5 h-5 mr-2" /> Назад к списку ВУЗов
           </button>
-          
           <div className="bg-white/90 backdrop-blur-sm rounded-2xl p-8 border border-gray-200 shadow-lg">
             <div className="flex items-center mb-6">
               <Building2 className="w-12 h-12 text-blue-600 mr-4" />
               <h1 className="text-4xl font-bold text-gray-800">{selectedUniversity.name}</h1>
             </div>
-            
             <div className="space-y-4 text-gray-600 mb-8">
               <p className="text-lg"><strong>Локация:</strong> {selectedUniversity.location}</p>
               <p><strong>Тип:</strong> {selectedUniversity.type}</p>
               <p><strong>Количество студентов:</strong> {selectedUniversity.students}</p>
               <p><strong>Рейтинг:</strong> {selectedUniversity.rank}</p>
             </div>
-            
             <div className="bg-gray-50/50 rounded-xl p-6 mb-6">
               <h3 className="text-xl font-semibold mb-4 text-gray-800">Специальности</h3>
               <div className="flex flex-wrap gap-2">
@@ -355,15 +690,14 @@ const App = () => {
                 ))}
               </div>
             </div>
-            
             <div className="flex gap-4">
-              <button 
+              <button
                 onClick={() => {
                   setActiveTab('map');
                   setSelectedLocation({
                     name: selectedUniversity.name,
                     address: selectedUniversity.location,
-                    lat: 55.7038, // Пример координат для МГУ
+                    lat: 55.7038,
                     lng: 37.5326
                   });
                   setSelectedUniversity(null);
@@ -372,7 +706,7 @@ const App = () => {
               >
                 Показать на карте
               </button>
-              <a 
+              <a
                 href={selectedUniversity.website}
                 target="_blank"
                 rel="noopener noreferrer"
@@ -387,36 +721,34 @@ const App = () => {
     }
 
     if (selectedCareerField) {
-      const relatedUniversities = universities.filter(uni => 
+      const relatedUniversities = universities.filter(uni =>
         selectedCareerField.universityIds.includes(uni.id)
       );
-      const relatedDirections = universityDirections.filter(dir => 
+      const relatedDirections = universityDirections.filter(dir =>
         dir.careerFieldId === selectedCareerField.id
       );
-      const relatedProfessions = professions.filter(prof => 
+      const relatedProfessions = professions.filter(prof =>
         prof.careerFieldId === selectedCareerField.id
       );
 
       return (
         <div className="py-8">
-          <button 
+          <button
             onClick={() => setSelectedCareerField(null)}
             className="flex items-center text-gray-800 mb-8 bg-gradient-to-r from-gray-100 to-gray-200 hover:from-gray-200 hover:to-gray-300 px-6 py-3 rounded-full font-semibold transition-all duration-300 transform hover:scale-105"
           >
             <ArrowLeft className="w-5 h-5 mr-2" /> Назад к карьерным направлениям
           </button>
-          
           <div className="text-center mb-12">
             <h1 className="text-5xl font-bold text-gray-800 mb-4">{selectedCareerField.name}</h1>
             <p className="text-xl text-gray-600 mt-6 max-w-2xl mx-auto">{selectedCareerField.description}</p>
           </div>
-
           <section className="mb-12">
             <h2 className="text-3xl font-bold mb-8 text-center text-gray-800">Подходящие ВУЗы</h2>
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
               {relatedUniversities.length > 0 ? (
                 relatedUniversities.map(uni => (
-                  <div 
+                  <div
                     key={uni.id}
                     onClick={() => {
                       setActiveTab('universities');
@@ -439,13 +771,12 @@ const App = () => {
               )}
             </div>
           </section>
-
           <section className="mb-12">
             <h2 className="text-3xl font-bold mb-8 text-center text-gray-800">Направления обучения</h2>
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
               {relatedDirections.length > 0 ? (
                 relatedDirections.map(dir => (
-                  <div 
+                  <div
                     key={dir.id}
                     className="bg-white/90 backdrop-blur-sm rounded-2xl p-6 border border-gray-200 hover:border-blue-500 transition-all duration-300 cursor-pointer shadow-md"
                   >
@@ -478,13 +809,12 @@ const App = () => {
               )}
             </div>
           </section>
-
           <section className="mb-12">
             <h2 className="text-3xl font-bold mb-8 text-center text-gray-800">Популярные профессии</h2>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
               {relatedProfessions.length > 0 ? (
                 relatedProfessions.map(prof => (
-                  <div 
+                  <div
                     key={prof.id}
                     className="bg-white/90 backdrop-blur-sm rounded-2xl p-6 border border-gray-200 hover:border-blue-500 transition-all duration-300 cursor-pointer shadow-md"
                   >
@@ -517,11 +847,10 @@ const App = () => {
               )}
             </div>
           </section>
-
           <section className="text-center py-16">
             <h2 className="text-4xl font-bold mb-8 text-gray-800">🚀 Начни строить свою карьеру сегодня!</h2>
             <div className="flex justify-center gap-6">
-              <button 
+              <button
                 onClick={goToMap}
                 className="bg-gradient-to-r from-blue-600 to-cyan-600 hover:from-blue-700 hover:to-cyan-700 px-12 py-4 rounded-2xl font-semibold transition-all duration-300 transform hover:scale-105 text-white"
               >
@@ -555,7 +884,7 @@ const App = () => {
                       Найти мероприятия рядом
                     </button>
                     <div className="absolute -top-4 -right-4 bg-blue-600 text-white px-3 py-1 rounded-full text-sm font-semibold">
-                      50+
+                      {events.length}+
                     </div>
                   </div>
                   <div className="relative">
@@ -567,7 +896,19 @@ const App = () => {
                       Изучить ВУЗы
                     </button>
                     <div className="absolute -top-4 -right-4 bg-purple-600 text-white px-3 py-1 rounded-full text-sm font-semibold">
-                      25+
+                      {universities.length}+
+                    </div>
+                  </div>
+                  <div className="relative">
+                    <button
+                      onClick={() => setShowTest(true)}
+                      className="bg-gradient-to-r from-green-600 to-emerald-600 hover:from-green-700 hover:to-emerald-700 px-8 py-4 rounded-2xl font-semibold transition-all duration-300 transform hover:scale-105 flex items-center text-white"
+                    >
+                      <Brain className="w-5 h-5 inline mr-2" />
+                      Пройти тест на профессию
+                    </button>
+                    <div className="absolute -top-4 -right-4 bg-green-600 text-white px-3 py-1 rounded-full text-sm font-semibold animate-pulse">
+                      NEW
                     </div>
                   </div>
                 </div>
@@ -587,7 +928,7 @@ const App = () => {
                       <h3 className="text-xl font-semibold text-gray-800">Найти мероприятия</h3>
                     </div>
                     <div className="bg-gradient-to-r from-blue-600 to-cyan-600 px-3 py-1 rounded-lg text-sm font-semibold text-white">
-                      50+ мероприятий
+                      {events.length}+ мероприятий
                     </div>
                   </div>
                   <p className="text-gray-600">Открой для себя интересные события в твоем городе</p>
@@ -599,13 +940,13 @@ const App = () => {
                   <div className="flex items-center justify-between mb-4">
                     <div className="flex items-center">
                       <Calendar className="w-8 h-8 text-blue-600 mr-3" />
-                      <h3 className="text-xl font-semibold text-gray-800">Запланировать участие</h3>
+                      <h3 className="text-xl font-semibold text-gray-800">Календарь событий</h3>
                     </div>
                     <div className="bg-gradient-to-r from-purple-600 to-blue-600 px-3 py-1 rounded-lg text-sm font-semibold text-white">
-                      5000+ участников
+                      Интерактивный
                     </div>
                   </div>
-                  <p className="text-gray-600">Добавляй события в свой календарь</p>
+                  <p className="text-gray-600">Планируй участие в мероприятиях</p>
                 </div>
                 <div
                   className="bg-white/90 backdrop-blur-sm rounded-2xl p-6 border border-gray-200 hover:border-blue-500 transition-all duration-300 cursor-pointer shadow-md"
@@ -617,10 +958,25 @@ const App = () => {
                       <h3 className="text-xl font-semibold text-gray-800">Изучить ВУЗы</h3>
                     </div>
                     <div className="bg-gradient-to-r from-green-600 to-teal-600 px-3 py-1 rounded-lg text-sm font-semibold text-white">
-                      25+ ВУЗов-партнеров
+                      {universities.length}+ ВУЗов
                     </div>
                   </div>
                   <p className="text-gray-600">Найди подходящие учебные заведения</p>
+                </div>
+                <div
+                  className="bg-white/90 backdrop-blur-sm rounded-2xl p-6 border border-gray-200 hover:border-blue-500 transition-all duration-300 cursor-pointer shadow-md"
+                  onClick={() => setShowTest(true)}
+                >
+                  <div className="flex items-center justify-between mb-4">
+                    <div className="flex items-center">
+                      <Brain className="w-8 h-8 text-green-600 mr-3" />
+                      <h3 className="text-xl font-semibold text-gray-800">Пройти тестирование</h3>
+                    </div>
+                    <div className="bg-gradient-to-r from-green-600 to-emerald-600 px-3 py-1 rounded-lg text-sm font-semibold text-white">
+                      5 вопросов
+                    </div>
+                  </div>
+                  <p className="text-gray-600">Определи свою будущую профессию</p>
                 </div>
                 <div
                   className="bg-white/90 backdrop-blur-sm rounded-2xl p-6 border border-gray-200 hover:border-blue-500 transition-all duration-300 cursor-pointer shadow-md"
@@ -632,7 +988,7 @@ const App = () => {
                       <h3 className="text-xl font-semibold text-gray-800">Построить карьеру</h3>
                     </div>
                     <div className="bg-gradient-to-r from-purple-600 to-pink-600 px-3 py-1 rounded-lg text-sm font-semibold text-white">
-                      6+ направлений
+                      {careerFields.length}+ направлений
                     </div>
                   </div>
                   <p className="text-gray-600">Определи своё профессиональное будущее</p>
@@ -667,12 +1023,14 @@ const App = () => {
           </div>
         );
 
+      // ... (остальные case для map, events, universities, career, blog остаются без изменений)
+      // Для краткости не включаю их здесь, но они должны быть в полном коде
+      
       case 'map':
         return (
           <div className="py-8">
             <h1 className="text-4xl font-bold mb-8 text-center text-gray-800">🗺️ Карта профориентационных мероприятий Москвы</h1>
             <p className="text-xl text-gray-600 text-center mb-12">Найдите интересующие вас события на интерактивной карте</p>
-            
             <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
               <div className="lg:col-span-1">
                 <div className="bg-white/90 backdrop-blur-sm rounded-2xl p-6 border border-gray-200 shadow-md">
@@ -698,7 +1056,6 @@ const App = () => {
                         )}
                       </div>
                     </div>
-
                     <div className="relative">
                       <label className="block text-sm font-medium mb-2 text-gray-700">Категория</label>
                       <div
@@ -714,7 +1071,7 @@ const App = () => {
                       </div>
                       {showMapCategoryDropdown && (
                         <div className="absolute z-20 w-full bg-white/90 backdrop-blur-lg border border-gray-300 rounded-lg shadow-lg mt-1">
-                          {['Все категории', 'IT', 'Инженерия', 'Медицина', 'Бизнес'].map((category, index) => (
+                          {['Все категории', 'Конференция', 'Мастер-класс', 'День открытых дверей', 'Фестиваль'].map((category, index) => (
                             <div
                               key={index}
                               className="px-4 py-3 text-gray-800 hover:bg-gradient-to-r hover:from-blue-600 hover:to-cyan-600 hover:text-white cursor-pointer transition-all duration-200 border-b border-gray-200 last:border-b-0"
@@ -728,7 +1085,6 @@ const App = () => {
                         </div>
                       )}
                     </div>
-
                     <div>
                       <label className="block text-sm font-medium mb-2 text-gray-700">Дата начала</label>
                       <input
@@ -740,7 +1096,6 @@ const App = () => {
                         max="2026-12-31"
                       />
                     </div>
-
                     <div>
                       <label className="block text-sm font-medium mb-2 text-gray-700">Дата окончания</label>
                       <input
@@ -752,7 +1107,6 @@ const App = () => {
                         max="2026-12-31"
                       />
                     </div>
-
                     <button
                       onClick={() => {
                         setMapSearchQuery('');
@@ -760,19 +1114,18 @@ const App = () => {
                         setStartDate('');
                         setEndDate('');
                       }}
-                      className="w-full bg-gradient-to-r from-gray-600 to-gray-700 hover:from-gray-700 hover:to-gray-800 px-4 py-3 rounded-lg font-semibold transition-all duration-300 text-white"
+                      className="w-full bg-gradient-to-r from-gray-600 to-gray-700 hover:from-gray-700 hover:to-gray-800 px-4 py-3 rounded-lg font-semibold text-white transition-all duration-300"
                     >
                       Сбросить фильтры
                     </button>
                   </div>
                 </div>
               </div>
-
               <div className="lg:col-span-3">
                 <div className="bg-white/90 backdrop-blur-sm rounded-2xl border border-gray-200 overflow-hidden h-[500px] relative shadow-md">
                   <iframe
-                    src={selectedLocation 
-                      ? `https://yandex.ru/map-widget/v1/?ll=${selectedLocation.lng}%2C${selectedLocation.lat}&z=16&l=map` 
+                    src={selectedLocation
+                      ? `https://yandex.ru/map-widget/v1/?ll=${selectedLocation.lng}%2C${selectedLocation.lat}&z=16&l=map`
                       : "https://yandex.ru/map-widget/v1/?um=constructor%3A1b5e8a3f0b5e8a3f0b5e8a3f0b5e8a3f0b5e8a3f0b5e8a3f0b5e8a3f0b5e8a3f&source=constructor"}
                     width="100%"
                     height="100%"
@@ -790,38 +1143,32 @@ const App = () => {
       case 'events':
         return (
           <div className="py-8">
-            <h1 className="text-4xl font-bold mb-8 text-center text-gray-800">📅 Календарь мероприятий</h1>
-            
-            <div className="max-w-4xl mx-auto">
-              {/* Заголовок с выбранной датой */}
+            <h1 className="text-4xl font-bold mb-4 text-center text-gray-800">📅 Календарь мероприятий</h1>
+            <p className="text-xl text-gray-600 text-center mb-12">Реальные события из ВУЗов и центров профориентации</p>
+            <div className="max-w-5xl mx-auto">
               <div className="text-center mb-8">
                 <h2 className="text-2xl font-semibold text-gray-800">
-                  Мероприятия на {selectedDate.toLocaleDateString('ru-RU', { day: 'numeric', month: 'long', year: 'numeric' })}
+                  Мероприятия на {formatDate(selectedDate)}
                 </h2>
               </div>
-              
-              {/* Календарь */}
-              <div className="bg-white/90 backdrop-blur-sm rounded-2xl p-6 border border-gray-200 shadow-lg mb-8">
+              <div className="bg-white/90 backdrop-blur-sm rounded-2xl p-6 border border-gray-200 shadow-md mb-8">
                 <div className="flex items-center justify-between mb-6">
-                  <button 
+                  <button
                     onClick={prevMonth}
                     className="p-2 rounded-lg bg-gray-100 hover:bg-gray-200 transition-colors"
                   >
                     <ChevronLeft className="w-5 h-5 text-gray-600" />
                   </button>
-                  
                   <h2 className="text-xl font-bold text-gray-800">
-                    {currentDate.toLocaleDateString('ru-RU', { month: 'long', year: 'numeric' })}
+                    {formatMonthYear(currentDate)}
                   </h2>
-                  
-                  <button 
+                  <button
                     onClick={nextMonth}
                     className="p-2 rounded-lg bg-gray-100 hover:bg-gray-200 transition-colors"
                   >
                     <ChevronRight className="w-5 h-5 text-gray-600" />
                   </button>
                 </div>
-                
                 <div className="grid grid-cols-7 gap-1 mb-2">
                   {['Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб', 'Вс'].map(day => (
                     <div key={day} className="text-center text-sm font-semibold text-gray-600 py-2">
@@ -829,52 +1176,89 @@ const App = () => {
                     </div>
                   ))}
                 </div>
-                
                 <div className="grid grid-cols-7 gap-1">
-                  {getDaysInMonth(currentDate).map((date, index) => (
-                    <div 
-                      key={index}
-                      onClick={() => handleDateClick(date)}
-                      className={`
-                        h-16 flex items-center justify-center cursor-pointer rounded-lg transition-all duration-300
-                        ${date ? 'hover:bg-blue-100' : ''}
-                        ${isSelected(date) ? 'bg-blue-600 text-white' : ''}
-                        ${isToday(date) ? 'border-2 border-blue-500' : ''}
-                        ${!date ? 'invisible' : ''}
-                      `}
-                    >
-                      {date ? date.getDate() : ''}
-                    </div>
-                  ))}
+                  {getDaysInMonth(currentDate).map((date, index) => {
+                    const dateHasEvents = hasEvents(date);
+                    return (
+                      <div
+                        key={index}
+                        onClick={() => handleDateClick(date)}
+                        className={`
+                          h-16 flex flex-col items-center justify-center cursor-pointer rounded-lg transition-all duration-300 relative
+                          ${date ? 'hover:bg-blue-100' : ''}
+                          ${isSelected(date) ? 'bg-blue-600 text-white' : ''}
+                          ${isToday(date) ? 'border-2 border-blue-500' : ''}
+                          ${!date ? 'invisible' : ''}
+                        `}
+                      >
+                        {date && (
+                          <>
+                            <span className="text-lg font-semibold">{date.getDate()}</span>
+                            {dateHasEvents && (
+                              <div className="absolute bottom-1 w-2 h-2 bg-green-500 rounded-full"></div>
+                            )}
+                          </>
+                        )}
+                      </div>
+                    );
+                  })}
                 </div>
               </div>
-              
-              {/* Список мероприятий на выбранную дату */}
               <div className="bg-white/90 backdrop-blur-sm rounded-2xl p-8 border border-gray-200 shadow-md">
-                <h3 className="text-xl font-bold mb-6 text-gray-800">Мероприятия на {selectedDate.toLocaleDateString('ru-RU', { day: 'numeric', month: 'long', year: 'numeric' })}</h3>
-                
+                <h3 className="text-xl font-bold mb-6 text-gray-800 flex items-center">
+                  <Calendar className="w-6 h-6 mr-2 text-blue-600" />
+                  Мероприятия на {formatDate(selectedDate)}
+                </h3>
                 {getEventsForDate(selectedDate).length > 0 ? (
                   <div className="space-y-6">
                     {getEventsForDate(selectedDate).map(event => (
-                      <div key={event.id} className="bg-gradient-to-r from-blue-50 to-cyan-50 rounded-xl p-6 border border-blue-200 shadow-sm">
+                      <div
+                        key={event.id}
+                        className="bg-gradient-to-r from-blue-50 to-cyan-50 rounded-xl p-6 border border-blue-200 shadow-sm hover:shadow-md transition-all duration-300"
+                      >
                         <div className="flex items-start justify-between">
                           <div className="flex-1">
-                            <h4 className="text-xl font-bold text-gray-800 mb-2">{event.title}</h4>
-                            <div className="space-y-2 text-gray-600 mb-4">
-                              <p><strong>Время:</strong> {event.time}</p>
-                              <p><strong>Место:</strong> {event.location}</p>
-                              <p><strong>Организатор:</strong> {event.organizer}</p>
-                              <p><strong>Категория:</strong> {event.category}</p>
+                            <div className="flex items-center mb-2">
+                              <span className={`px-3 py-1 rounded-full text-xs font-semibold mr-2 ${
+                                event.category === 'Конференция' ? 'bg-purple-100 text-purple-800' :
+                                  event.category === 'Мастер-класс' ? 'bg-green-100 text-green-800' :
+                                    event.category === 'День открытых дверей' ? 'bg-orange-100 text-orange-800' :
+                                      event.category === 'Фестиваль' ? 'bg-pink-100 text-pink-800' :
+                                        event.category === 'Вебинар' ? 'bg-blue-100 text-blue-800' :
+                                          'bg-gray-100 text-gray-800'
+                                }`}>
+                                {event.category}
+                              </span>
+                              <span className="text-sm text-gray-500">{event.organizer}</span>
                             </div>
-                            <p className="text-gray-700">{event.description}</p>
+                            <h4 className="text-xl font-bold text-gray-800 mb-3">{event.title}</h4>
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-3 text-gray-600 mb-3">
+                              <div className="flex items-center">
+                                <Calendar className="w-4 h-4 mr-2 text-blue-600" />
+                                <span><strong>Дата:</strong> {new Date(event.date).toLocaleDateString('ru-RU')}</span>
+                              </div>
+                              <div className="flex items-center">
+                                <Users2 className="w-4 h-4 mr-2 text-blue-600" />
+                                <span><strong>Время:</strong> {event.time}</span>
+                              </div>
+                              <div className="flex items-center">
+                                <MapPin className="w-4 h-4 mr-2 text-blue-600" />
+                                <span><strong>Место:</strong> {event.location}</span>
+                              </div>
+                              <div className="flex items-center">
+                                <Users2 className="w-4 h-4 mr-2 text-blue-600" />
+                                <span><strong>Участников:</strong> {event.participants}</span>
+                              </div>
+                            </div>
+                            <p className="text-gray-700 mb-4">{event.description}</p>
                           </div>
-                          <a 
-                            href={event.registrationLink}
+                          <a
+                            href={event.link}
                             target="_blank"
                             rel="noopener noreferrer"
-                            className="bg-gradient-to-r from-blue-600 to-cyan-600 hover:from-blue-700 hover:to-cyan-700 px-4 py-2 rounded-lg font-semibold text-white transition-all duration-300 transform hover:scale-105 ml-4 whitespace-nowrap"
+                            className="bg-gradient-to-r from-blue-600 to-cyan-600 hover:from-blue-700 hover:to-cyan-700 px-6 py-3 rounded-lg font-semibold text-white transition-all duration-300 transform hover:scale-105 whitespace-nowrap ml-4"
                           >
-                            Зарегистрироваться
+                            Подробнее
                           </a>
                         </div>
                       </div>
@@ -883,10 +1267,28 @@ const App = () => {
                 ) : (
                   <div className="text-center py-12">
                     <Calendar className="w-16 h-16 text-gray-400 mx-auto mb-4" />
-                    <h3 className="text-2xl font-semibold text-gray-600 mb-2">Мероприятия на {formatDate(selectedDate)}</h3>
-                    <p className="text-gray-600">На выбранную дату пока нет запланированных мероприятий</p>
+                    <h3 className="text-2xl font-semibold text-gray-600 mb-2">Мероприятия не найдены</h3>
+                    <p className="text-gray-600">На выбранную дату нет запланированных мероприятий</p>
+                    <p className="text-gray-500 mt-2 text-sm">Выберите другую дату в календаре</p>
                   </div>
                 )}
+              </div>
+              <div className="mt-8 grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div className="bg-white/90 backdrop-blur-sm rounded-2xl p-6 border border-gray-200 shadow-md text-center">
+                  <Calendar className="w-12 h-12 text-blue-600 mx-auto mb-3" />
+                  <h4 className="text-3xl font-bold text-gray-800">{events.length}</h4>
+                  <p className="text-gray-600">Всего мероприятий</p>
+                </div>
+                <div className="bg-white/90 backdrop-blur-sm rounded-2xl p-6 border border-gray-200 shadow-md text-center">
+                  <Building2 className="w-12 h-12 text-purple-600 mx-auto mb-3" />
+                  <h4 className="text-3xl font-bold text-gray-800">{universities.length}</h4>
+                  <p className="text-gray-600">ВУЗов-участников</p>
+                </div>
+                <div className="bg-white/90 backdrop-blur-sm rounded-2xl p-6 border border-gray-200 shadow-md text-center">
+                  <Target className="w-12 h-12 text-green-600 mx-auto mb-3" />
+                  <h4 className="text-3xl font-bold text-gray-800">{careerCenters.length}</h4>
+                  <p className="text-gray-600">Центров профориентации</p>
+                </div>
               </div>
             </div>
           </div>
@@ -896,23 +1298,21 @@ const App = () => {
         return (
           <div className="py-8">
             <div className="mb-8">
-              <h1 className="text-4xl font-bold mb-2 text-gray-800">🎓 ВУЗы и Колледжи</h1>
-              <p className="text-xl text-gray-600">Найдите подходящее учебное заведение для вашего будущего</p>
+              <h1 className="text-4xl font-bold mb-2 text-gray-800">🎓 ВУЗы и Центры профориентации</h1>
+              <p className="text-xl text-gray-600">Найдите подходящее учебное заведение или центр для вашего будущего</p>
             </div>
-
             <div className="mb-6">
               <div className="relative">
                 <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
                 <input
                   type="text"
-                  placeholder="Найдите интересующие ВУЗы..."
+                  placeholder="Найдите интересующие ВУЗы или центры..."
                   className="w-full bg-white/50 border border-gray-300 rounded-2xl pl-12 pr-4 py-4 text-gray-800 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
                 />
               </div>
             </div>
-
             <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
               <div className="lg:col-span-1">
                 <div className="bg-white/90 backdrop-blur-sm rounded-2xl p-6 border border-gray-200 shadow-md">
@@ -921,10 +1321,9 @@ const App = () => {
                     ФИЛЬТРЫ
                   </h3>
                   <div className="space-y-4">
-                    {/* Custom Type Dropdown */}
                     <div className="relative">
                       <label className="block text-sm font-medium mb-2 text-gray-700">Тип</label>
-                      <div 
+                      <div
                         className="w-full bg-gray-100/50 border border-gray-300 rounded-lg px-3 py-2 text-gray-800 cursor-pointer relative"
                         onClick={() => setShowTypeDropdown(!showTypeDropdown)}
                       >
@@ -933,7 +1332,7 @@ const App = () => {
                       </div>
                       {showTypeDropdown && (
                         <div className="absolute z-20 mt-1 w-full bg-gradient-to-br from-blue-600 via-cyan-600 to-purple-600 border border-blue-500 rounded-lg shadow-lg max-h-44 overflow-y-auto">
-                          {['Все типы', 'Университет', 'Институт', 'Политех', 'Академия', 'Колледж'].map((type) => (
+                          {['Все типы', 'Университет', 'Институт', 'Политех', 'Академия', 'Колледж', 'Центр профориентации'].map((type) => (
                             <div
                               key={type}
                               className="px-4 py-3 text-white hover:bg-gradient-to-r hover:from-purple-600 hover:to-cyan-600 hover:text-transparent hover:bg-clip-text hover:bg-clip-text cursor-pointer transition-all duration-200"
@@ -948,10 +1347,9 @@ const App = () => {
                         </div>
                       )}
                     </div>
-                    {/* Custom Specialty Dropdown */}
                     <div className="relative">
                       <label className="block text-sm font-medium mb-2 text-gray-700">Специальности</label>
-                      <div 
+                      <div
                         className="w-full bg-gray-100/50 border border-gray-300 rounded-lg px-3 py-2 text-gray-800 cursor-pointer relative"
                         onClick={() => setShowSpecialtyDropdown(!showSpecialtyDropdown)}
                       >
@@ -977,7 +1375,7 @@ const App = () => {
                     </div>
                     <div>
                       <label className="block text-sm font-medium mb-2 text-gray-700">Город</label>
-                      <select 
+                      <select
                         className="w-full bg-gray-100/50 border border-gray-300 rounded-lg px-3 py-2 text-gray-800"
                         value={selectedCity}
                         onChange={(e) => setSelectedCity(e.target.value)}
@@ -987,16 +1385,16 @@ const App = () => {
                       </select>
                     </div>
                     <div className="flex items-center">
-                      <input 
-                        type="checkbox" 
-                        id="partnership" 
-                        className="mr-2" 
+                      <input
+                        type="checkbox"
+                        id="partnership"
+                        className="mr-2"
                         checked={hasPartnership}
                         onChange={(e) => setHasPartnership(e.target.checked)}
                       />
                       <label htmlFor="partnership" className="text-sm text-gray-700">Партнерские программы</label>
                     </div>
-                    <button 
+                    <button
                       onClick={resetFilters}
                       className="w-full bg-gradient-to-r from-blue-600 to-cyan-600 hover:from-blue-700 hover:to-cyan-700 px-4 py-3 rounded-lg font-semibold transition-all duration-300 text-white"
                     >
@@ -1005,49 +1403,74 @@ const App = () => {
                   </div>
                 </div>
               </div>
-
               <div className="lg:col-span-3">
                 <div className="space-y-6">
-                  {filteredUniversities.length > 0 ? (
-                    filteredUniversities.map((uni) => (
-                      <div 
-                        key={uni.id}
-                        onClick={() => setSelectedUniversity(uni)}
+                  {filteredInstitutions.length > 0 ? (
+                    filteredInstitutions.map((institution) => (
+                      <div
+                        key={institution.id}
+                        onClick={() => setSelectedUniversity(institution)}
                         className="bg-white/90 backdrop-blur-sm rounded-2xl p-6 border border-gray-200 hover:border-blue-500 transition-all duration-300 cursor-pointer shadow-md"
                       >
                         <div className="flex items-start justify-between">
                           <div className="flex-1">
                             <div className="flex items-center mb-3">
-                              <Building2 className="w-8 h-8 text-blue-600 mr-3" />
-                              <h3 className="text-2xl font-bold text-gray-800">{uni.name}</h3>
-                            </div>
-                            <p className="text-gray-600 mb-4">Московское учебное заведение</p>
-                            <div className="flex flex-wrap gap-4 text-sm">
-                              <div className="flex items-center text-gray-600">
-                                <Globe2 className="w-4 h-4 mr-2" />
-                                {uni.location}
-                              </div>
-                              <div className="flex items-center text-gray-600">
-                                <Users2 className="w-4 h-4 mr-2" />
-                                {uni.students} студентов
-                              </div>
-                              <div className="flex items-center text-blue-600 font-semibold">
-                                <Award className="w-4 h-4 mr-2" />
-                                {uni.rank}
-                              </div>
-                            </div>
-                            <div className="mt-3 flex flex-wrap gap-2">
-                              {uni.specialties.slice(0, 3).map((spec, idx) => (
-                                <span key={idx} className="px-3 py-1 bg-blue-100 text-blue-800 rounded-full text-sm">
-                                  {spec}
-                                </span>
-                              ))}
-                              {uni.specialties.length > 3 && (
-                                <span className="px-3 py-1 bg-gray-200 text-gray-600 rounded-full text-sm">
-                                  +{uni.specialties.length - 3} еще
-                                </span>
+                              {institution.type === 'Центр профориентации' ? (
+                                <Target className="w-8 h-8 text-blue-600 mr-3" />
+                              ) : (
+                                <Building2 className="w-8 h-8 text-blue-600 mr-3" />
                               )}
+                              <h3 className="text-2xl font-bold text-gray-800">{institution.name}</h3>
                             </div>
+                            {institution.type === 'Центр профориентации' ? (
+                              <>
+                                <p className="text-gray-600 mb-2">Профориентационный центр</p>
+                                <div className="flex flex-wrap gap-4 text-sm">
+                                  <div className="flex items-center text-gray-600">
+                                    <MapPin className="w-4 h-4 mr-2" />
+                                    {institution.location}
+                                  </div>
+                                  <div className="flex items-center text-gray-600">
+                                    <UserCheck className="w-4 h-4 mr-2" />
+                                    Возраст: {institution.age}
+                                  </div>
+                                  <div className="flex items-center text-blue-600 font-semibold">
+                                    <Globe2 className="w-4 h-4 mr-2" />
+                                    {institution.accessibility}
+                                  </div>
+                                </div>
+                              </>
+                            ) : (
+                              <>
+                                <p className="text-gray-600 mb-2">Московское учебное заведение</p>
+                                <div className="flex flex-wrap gap-4 text-sm">
+                                  <div className="flex items-center text-gray-600">
+                                    <Globe2 className="w-4 h-4 mr-2" />
+                                    {institution.location}
+                                  </div>
+                                  <div className="flex items-center text-gray-600">
+                                    <Users2 className="w-4 h-4 mr-2" />
+                                    {institution.students} студентов
+                                  </div>
+                                  <div className="flex items-center text-blue-600 font-semibold">
+                                    <Award className="w-4 h-4 mr-2" />
+                                    {institution.rank}
+                                  </div>
+                                </div>
+                                <div className="mt-3 flex flex-wrap gap-2">
+                                  {(institution.specialties || []).slice(0, 3).map((spec, idx) => (
+                                    <span key={idx} className="px-3 py-1 bg-blue-100 text-blue-800 rounded-full text-xs">
+                                      {spec}
+                                    </span>
+                                  ))}
+                                  {(institution.specialties || []).length > 3 && (
+                                    <span className="px-3 py-1 bg-gray-200 text-gray-600 rounded-full text-xs">
+                                      +{(institution.specialties || []).length - 3} еще
+                                    </span>
+                                  )}
+                                </div>
+                              </>
+                            )}
                           </div>
                           <ChevronRight className="w-6 h-6 text-gray-400" />
                         </div>
@@ -1056,7 +1479,7 @@ const App = () => {
                   ) : (
                     <div className="text-center py-12">
                       <Search className="w-16 h-16 text-gray-400 mx-auto mb-4" />
-                      <h3 className="text-2xl font-semibold text-gray-600 mb-2">ВУЗы не найдены</h3>
+                      <h3 className="text-2xl font-semibold text-gray-600 mb-2">ВУЗы и центры не найдены</h3>
                       <p className="text-gray-600">Попробуйте изменить параметры фильтрации</p>
                     </div>
                   )}
@@ -1073,7 +1496,6 @@ const App = () => {
               <h1 className="text-4xl font-bold mb-2 text-gray-800">💼 Карьерные возможности</h1>
               <p className="text-xl text-gray-600">Исследуйте различные карьерные направления и выберите свой путь</p>
             </div>
-            {/* Описание вкладки */}
             <div className="bg-white/90 backdrop-blur-sm rounded-2xl p-8 border border-gray-200 mb-12 shadow-md">
               <h2 className="text-2xl font-bold mb-4 text-blue-600">Добро пожаловать в раздел карьерных возможностей!</h2>
               <p className="text-gray-600 mb-4">
@@ -1087,12 +1509,11 @@ const App = () => {
                 <li>Познакомиться с различными профессиями</li>
               </ul>
             </div>
-            {/* Карьерные сферы */}
             <section className="mb-12">
               <h2 className="text-3xl font-bold mb-8 text-center text-gray-800">Карьерные сферы</h2>
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                 {careerFields.map((field) => (
-                  <div 
+                  <div
                     key={field.id}
                     onClick={() => setSelectedCareerField(field)}
                     className="bg-white/90 backdrop-blur-sm rounded-2xl p-6 border border-gray-200 hover:border-blue-500 transition-all duration-300 cursor-pointer group shadow-md"
@@ -1106,27 +1527,23 @@ const App = () => {
                 ))}
               </div>
             </section>
-            {/* Направления в вузах */}
             <section className="mb-12">
               <h2 className="text-3xl font-bold mb-8 text-center text-gray-800">Популярные направления в вузах</h2>
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
                 {universityDirections.map((direction) => {
-                  // Находим соответствующую сферу для направления
                   const relatedField = careerFields.find(field => field.id === direction.careerFieldId);
                   return (
                     <div
                       key={direction.id}
                       onClick={() => {
                         if (relatedField) {
-                          // Устанавливаем выбранную сферу (это вызовет отображение детализированной информации)
                           setSelectedCareerField(relatedField);
-                          // Прокручиваем наверх
                           window.scrollTo(0, 0);
                         } else {
                           console.warn(`Не найдена сферa для направления ID: ${direction.id}`);
                         }
                       }}
-                      className="bg-white/90 backdrop-blur-sm rounded-2xl p-6 border border-gray-200 hover:border-blue-500 transition-all duration-300 cursor-pointer shadow-md" // Добавлен cursor-pointer
+                      className="bg-white/90 backdrop-blur-sm rounded-2xl p-6 border border-gray-200 hover:border-blue-500 transition-all duration-300 cursor-pointer shadow-md"
                     >
                       <div className="flex items-start">
                         <Building2 className="w-8 h-8 text-blue-600 mr-4 mt-1" />
@@ -1155,27 +1572,23 @@ const App = () => {
                 })}
               </div>
             </section>
-            {/* Профессии */}
             <section className="mb-12">
               <h2 className="text-3xl font-bold mb-8 text-center text-gray-800">Популярные профессии</h2>
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                 {professions.map((profession) => {
-                  // Находим соответствующую сферу для профессии
                   const relatedField = careerFields.find(field => field.id === profession.careerFieldId);
                   return (
                     <div
                       key={profession.id}
                       onClick={() => {
                         if (relatedField) {
-                          // Устанавливаем выбранную сферу (это вызовет отображение детализированной информации)
                           setSelectedCareerField(relatedField);
-                          // Прокручиваем наверх
                           window.scrollTo(0, 0);
                         } else {
                           console.warn(`Не найдена сферa для профессии ID: ${profession.id}`);
                         }
                       }}
-                      className="bg-white/90 backdrop-blur-sm rounded-2xl p-6 border border-gray-200 hover:border-blue-500 transition-all duration-300 cursor-pointer shadow-md" // Добавлен cursor-pointer
+                      className="bg-white/90 backdrop-blur-sm rounded-2xl p-6 border border-gray-200 hover:border-blue-500 transition-all duration-300 cursor-pointer shadow-md"
                     >
                       <div className="flex items-start mb-3">
                         <Briefcase className="w-6 h-6 text-blue-600 mr-3 mt-1" />
@@ -1204,11 +1617,10 @@ const App = () => {
                 })}
               </div>
             </section>
-            {/* CTA */}
             <section className="text-center py-16">
               <h2 className="text-4xl font-bold mb-8 text-gray-800">🚀 Начни строить свою карьеру сегодня!</h2>
               <div className="flex justify-center gap-6">
-                <button 
+                <button
                   onClick={goToMap}
                   className="bg-gradient-to-r from-blue-600 to-cyan-600 hover:from-blue-700 hover:to-cyan-700 px-12 py-4 rounded-2xl font-semibold transition-all duration-300 transform hover:scale-105 text-white"
                 >
@@ -1241,33 +1653,32 @@ const App = () => {
 
   return (
     <div className={`min-h-screen flex flex-col ${
-      currentTheme === 'dark' 
-        ? 'bg-gradient-to-br from-gray-900 via-purple-900 to-black text-white' 
+      currentTheme === 'dark'
+        ? 'bg-gradient-to-br from-gray-900 via-purple-900 to-black text-white'
         : 'bg-gradient-to-br from-gray-50 via-white to-gray-100 text-gray-800'
-    }`}>
-      
+      }`}>
       {showSettings && (
         <>
           <div className="fixed inset-0 z-30" onClick={() => setShowSettings(false)}></div>
           <div className={`absolute right-4 top-20 w-64 ${
-            currentTheme === 'dark' 
-              ? 'bg-gray-800/90 backdrop-blur-lg border border-gray-700' 
+            currentTheme === 'dark'
+              ? 'bg-gray-800/90 backdrop-blur-lg border border-gray-700'
               : 'bg-white/90 backdrop-blur-lg border border-gray-300'
-          } rounded-xl shadow-xl z-40`}>
+            } rounded-xl shadow-xl z-40`}>
             <div className="p-4">
               <h3 className={`text-lg font-semibold mb-3 ${
                 currentTheme === 'dark' ? 'text-white' : 'text-gray-800'
-              }`}>Тема</h3>
+                }`}>Тема</h3>
               <div className="space-y-2">
                 <button
                   onClick={() => setCurrentTheme('light')}
                   className={`w-full px-3 py-2 text-left text-sm rounded-lg transition-all duration-300 ${
-                    currentTheme === 'light' 
-                      ? 'bg-blue-600 text-white' 
-                      : currentTheme === 'dark' 
-                        ? 'text-gray-300 hover:bg-purple-600/20' 
+                    currentTheme === 'light'
+                      ? 'bg-blue-600 text-white'
+                      : currentTheme === 'dark'
+                        ? 'text-gray-300 hover:bg-purple-600/20'
                         : 'text-gray-600 hover:bg-blue-100'
-                  }`}
+                    }`}
                 >
                   <Sun className="w-4 h-4 inline mr-2" />
                   Светлая тема
@@ -1275,12 +1686,12 @@ const App = () => {
                 <button
                   onClick={() => setCurrentTheme('dark')}
                   className={`w-full px-3 py-2 text-left text-sm rounded-lg transition-all duration-300 ${
-                    currentTheme === 'dark' 
-                      ? 'bg-purple-600 text-white' 
-                      : currentTheme === 'light' 
-                        ? 'text-gray-600 hover:bg-blue-100' 
+                    currentTheme === 'dark'
+                      ? 'bg-purple-600 text-white'
+                      : currentTheme === 'light'
+                        ? 'text-gray-600 hover:bg-blue-100'
                         : 'text-gray-300 hover:bg-purple-600/20'
-                  }`}
+                    }`}
                 >
                   <Moon className="w-4 h-4 inline mr-2" />
                   Темная тема
@@ -1291,8 +1702,8 @@ const App = () => {
         </>
       )}
 
-      <header className={currentTheme === 'dark' 
-        ? 'bg-gradient-to-r from-gray-900 via-purple-900 to-black border-b border-gray-700' 
+      <header className={currentTheme === 'dark'
+        ? 'bg-gradient-to-r from-gray-900 via-purple-900 to-black border-b border-gray-700'
         : 'bg-gradient-to-r from-gray-50 via-white to-gray-100 border-b border-gray-200'}>
         <div className="container mx-auto px-4 py-4 relative z-10">
           <div className="flex items-center justify-between">
@@ -1304,7 +1715,6 @@ const App = () => {
                 ПрофНавигатор
               </h1>
             </div>
-
             <nav className="hidden md:flex items-center space-x-8">
               {[
                 { id: 'home', label: 'Главная', icon: Star },
@@ -1319,22 +1729,24 @@ const App = () => {
                   <button
                     key={item.id}
                     onClick={() => {
+                      setShowTest(false);
+                      restartTest();
                       setActiveTab(item.id);
                       setSelectedUniversity(null);
                       setSelectedCareerField(null);
                       window.scrollTo(0, 0);
                     }}
                     className={`flex items-center space-x-2 px-4 py-3 rounded-xl transition-all duration-300 ${
-                      activeTab === item.id || 
-                      (selectedUniversity && item.id === 'universities') || 
-                      (selectedCareerField && item.id === 'career')
-                        ? currentTheme === 'dark' 
-                          ? 'bg-purple-600 text-white' 
+                      activeTab === item.id ||
+                        (selectedUniversity && item.id === 'universities') ||
+                        (selectedCareerField && item.id === 'career')
+                        ? currentTheme === 'dark'
+                          ? 'bg-purple-600 text-white'
                           : 'bg-blue-600 text-white'
-                        : currentTheme === 'dark' 
-                          ? 'text-gray-300 hover:text-white hover:bg-purple-600/20' 
+                        : currentTheme === 'dark'
+                          ? 'text-gray-300 hover:text-white hover:bg-purple-600/20'
                           : 'text-gray-600 hover:text-gray-800 hover:bg-blue-100'
-                    }`}
+                      }`}
                   >
                     <Icon className="w-4 h-4" />
                     <span>{item.label}</span>
@@ -1342,7 +1754,6 @@ const App = () => {
                 );
               })}
             </nav>
-
             <div className="flex items-center space-x-4">
               <button
                 onClick={() => setShowRegister(true)}
@@ -1360,10 +1771,10 @@ const App = () => {
               <button
                 onClick={() => setShowSettings(!showSettings)}
                 className={`p-2 rounded-lg transition-all duration-300 ${
-                  currentTheme === 'dark' 
-                    ? 'text-gray-300 hover:text-white hover:bg-gray-700' 
+                  currentTheme === 'dark'
+                    ? 'text-gray-300 hover:text-white hover:bg-gray-700'
                     : 'text-gray-600 hover:text-gray-800 hover:bg-gray-100'
-                }`}
+                  }`}
               >
                 <Settings className="w-5 h-5" />
               </button>
@@ -1376,8 +1787,8 @@ const App = () => {
         {renderContent()}
       </main>
 
-      <footer className={currentTheme === 'dark' 
-        ? 'bg-gradient-to-r from-gray-900 via-purple-900 to-black border-t border-gray-700 py-12 mt-auto' 
+      <footer className={currentTheme === 'dark'
+        ? 'bg-gradient-to-r from-gray-900 via-purple-900 to-black border-t border-gray-700 py-12 mt-auto'
         : 'bg-gradient-to-r from-gray-50 via-white to-gray-100 border-t border-gray-200 py-12 mt-auto'}>
         <div className="container mx-auto px-4">
           <div className="grid grid-cols-1 md:grid-cols-4 gap-8 mb-8">
@@ -1405,7 +1816,6 @@ const App = () => {
                 </a>
               </div>
             </div>
-            
             <div>
               <h3 className="text-lg font-semibold mb-4 text-gray-800">Контакты</h3>
               <div className="space-y-2">
@@ -1423,7 +1833,6 @@ const App = () => {
                 </div>
               </div>
             </div>
-            
             <div>
               <h3 className="text-lg font-semibold mb-4 text-gray-800">Ресурсы</h3>
               <div className="space-y-2">
@@ -1433,7 +1842,6 @@ const App = () => {
                 <a href="#" className="block text-gray-600 hover:text-blue-600 transition-colors">API</a>
               </div>
             </div>
-            
             <div>
               <h3 className="text-lg font-semibold mb-4 text-gray-800">Правовая информация</h3>
               <div className="space-y-2">
@@ -1448,7 +1856,6 @@ const App = () => {
               </div>
             </div>
           </div>
-          
           <div className="border-t border-gray-200 pt-6">
             <div className="flex flex-col md:flex-row justify-between items-center">
               <div className="flex items-center space-x-4 mb-4 md:mb-0">
@@ -1459,7 +1866,6 @@ const App = () => {
                   <span className="text-gray-600">2025 ПрофНавигатор. Все права защищены.</span>
                 </div>
               </div>
-              
               <div className="flex space-x-6 text-gray-600">
                 <a href="#" className="hover:text-blue-600 transition-colors">Контакты</a>
                 <a href="#" className="hover:text-blue-600 transition-colors">О нас</a>
@@ -1491,8 +1897,8 @@ const App = () => {
                 <input
                   type="email"
                   placeholder="Введите ваш email"
-                  className={`w-full ${currentTheme === 'dark' 
-                    ? 'bg-gray-700/50 border border-gray-600 text-white placeholder-gray-400' 
+                  className={`w-full ${currentTheme === 'dark'
+                    ? 'bg-gray-700/50 border border-gray-600 text-white placeholder-gray-400'
                     : 'bg-gray-100/50 border border-gray-300 text-gray-800 placeholder-gray-500'} rounded-lg px-4 py-3 focus:border-blue-500 focus:outline-none`}
                 />
               </div>
@@ -1503,8 +1909,8 @@ const App = () => {
                 <input
                   type="password"
                   placeholder="••••••••"
-                  className={`w-full ${currentTheme === 'dark' 
-                    ? 'bg-gray-700/50 border border-gray-600 text-white placeholder-gray-400' 
+                  className={`w-full ${currentTheme === 'dark'
+                    ? 'bg-gray-700/50 border border-gray-600 text-white placeholder-gray-400'
                     : 'bg-gray-100/50 border border-gray-300 text-gray-800 placeholder-gray-500'} rounded-lg px-4 py-3 focus:border-blue-500 focus:outline-none`}
                 />
               </div>
@@ -1569,8 +1975,8 @@ const App = () => {
                 <input
                   type="text"
                   placeholder="Введите ваше имя"
-                  className={`w-full ${currentTheme === 'dark' 
-                    ? 'bg-gray-700/50 border border-gray-600 text-white placeholder-gray-400' 
+                  className={`w-full ${currentTheme === 'dark'
+                    ? 'bg-gray-700/50 border border-gray-600 text-white placeholder-gray-400'
                     : 'bg-gray-100/50 border border-gray-300 text-gray-800 placeholder-gray-500'} rounded-lg px-4 py-3 focus:border-green-500 focus:outline-none`}
                 />
               </div>
@@ -1581,8 +1987,8 @@ const App = () => {
                 <input
                   type="email"
                   placeholder="Введите ваш email"
-                  className={`w-full ${currentTheme === 'dark' 
-                    ? 'bg-gray-700/50 border border-gray-600 text-white placeholder-gray-400' 
+                  className={`w-full ${currentTheme === 'dark'
+                    ? 'bg-gray-700/50 border border-gray-600 text-white placeholder-gray-400'
                     : 'bg-gray-100/50 border border-gray-300 text-gray-800 placeholder-gray-500'} rounded-lg px-4 py-3 focus:border-green-500 focus:outline-none`}
                 />
               </div>
@@ -1593,8 +1999,8 @@ const App = () => {
                 <input
                   type="password"
                   placeholder="••••••••"
-                  className={`w-full ${currentTheme === 'dark' 
-                    ? 'bg-gray-700/50 border border-gray-600 text-white placeholder-gray-400' 
+                  className={`w-full ${currentTheme === 'dark'
+                    ? 'bg-gray-700/50 border border-gray-600 text-white placeholder-gray-400'
                     : 'bg-gray-100/50 border border-gray-300 text-gray-800 placeholder-gray-500'} rounded-lg px-4 py-3 focus:border-green-500 focus:outline-none`}
                 />
               </div>
@@ -1605,8 +2011,8 @@ const App = () => {
                 <input
                   type="password"
                   placeholder="••••••••"
-                  className={`w-full ${currentTheme === 'dark' 
-                    ? 'bg-gray-700/50 border border-gray-600 text-white placeholder-gray-400' 
+                  className={`w-full ${currentTheme === 'dark'
+                    ? 'bg-gray-700/50 border border-gray-600 text-white placeholder-gray-400'
                     : 'bg-gray-100/50 border border-gray-300 text-gray-800 placeholder-gray-500'} rounded-lg px-4 py-3 focus:border-green-500 focus:outline-none`}
                 />
               </div>
