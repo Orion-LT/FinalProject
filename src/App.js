@@ -2228,7 +2228,7 @@ const App = () => {
                 <button onClick={goToBlog} className="block text-gray-600 hover:text-blue-600 transition-colors text-left">Блог</button>
                 <button onClick={goToFAQ} className="block text-gray-600 hover:text-blue-600 transition-colors text-left">FAQ</button>
                 <button onClick={goToDocumentation} className="block text-gray-600 hover:text-blue-600 transition-colors text-left">Документация</button>
-                <button onClick={goToAPI} className="block text-gray-600 hover:text-blue-600 transition-colors text-left">API</button>
+                <button onClick={goToAPI} className="block text-gray-600 hover:text-blue-600 transition-colors text-left">API документация</button>
               </div>
             </div>
             
