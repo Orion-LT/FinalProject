@@ -1,39 +1,24 @@
-/* src/index.css */
 
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-/* --- Фикс масштаба --- */
 :root {
   --base-width: 1920;
   --scale-factor: calc((100vw / var(--base-width)) * 100);
   --min-scale: 0.8;
   --max-scale: 1.5;
 }
-  
-/* Применяем масштабирование к корневому элементу html */
 html {
   transform: scale(clamp(var(--min-scale), calc(var(--scale-factor) / 100), var(--max-scale)));
-  transform-origin: 0 0; /* Масштабируем от верхнего левого угла */
-  /* Компенсируем размеры, чтобы избежать скролла */
+  transform-origin: 0 0; 
   width: calc(100% / clamp(var(--min-scale), calc(var(--scale-factor) / 100), var(--max-scale)));
   height: calc(100% / clamp(var(--min-scale), calc(var(--scale-factor) / 100), var(--max-scale)));
-  /* Убедитесь, что фон html соответствует фону body */
-  background-color: inherit; /* Наследует фон от body или задайте явно */
-  overflow-x: hidden; /* Скрываем горизонтальный скролл, если он появляется */
-  /* overflow-y: auto; /* Оставляем вертикальный скролл по умолчанию */
+  
+  background-color: inherit; 
+  overflow-x: hidden;
 }
-
-/* Убираем трансформацию с body, если она была */
 body {
   margin: 0;
   padding: 0;
-  /* document.body.style.transform = ... УДАЛЯЕТСЯ ИЗ App.js */
-  /* Убедитесь, что фон body установлен */
-  /* background-color: #...; или используйте Tailwind классы на div.root */
-  /* overflow-x: hidden; УДАЛЯЕТСЯ ИЗ App.js */
-  /* overflow-y: auto; по умолчанию */
 }
-
-/* --- Конец фикса масштаба --- */

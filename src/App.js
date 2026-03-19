@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { Star, MapPin, Calendar, GraduationCap, Briefcase, BookOpen, UserPlus, User, X, Filter, Search, Building2, Users2, Globe2, ArrowLeft, Settings, Sun, Moon, Award, ChevronRight, Mail, Phone, Globe, Shield, FileText, Instagram, Youtube, Linkedin, Twitter, Facebook, MapPin as MapPinIcon, ChevronLeft, MessageSquare, AtSign, Hash, School2, Target, UserCheck, BarChart3, Brain, CheckCircle, HelpCircle, FileCode, Lock, ScrollText, Database, ExternalLink } from 'lucide-react';
 
-const App = () => {
+const App = () => { 
   const [activeTab, setActiveTab] = useState('home');
   const [selectedUniversity, setSelectedUniversity] = useState(null);
   const [selectedCareerField, setSelectedCareerField] = useState(null);
